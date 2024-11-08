@@ -4,7 +4,16 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        eGreen: '#32FF7E',
+        heroTitleBg: '#1B1C22',
+        darkGreen: '#076229',
+      },
+      backgroundImage: {
+        'herocar': "url('./src/assets/images/hero_section.png')"
+      }
+    },
   },
   plugins: [],
 }
