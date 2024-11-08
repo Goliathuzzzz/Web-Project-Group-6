@@ -9,6 +9,7 @@ export default {
         eGreen: '#32FF7E',
         heroTitleBg: '#1B1C22',
         darkGreen: '#076229',
+        bodyBg: '#242633',
       },
       backgroundImage: {
         'herocar': "url('./src/assets/images/hero_section.png')"
