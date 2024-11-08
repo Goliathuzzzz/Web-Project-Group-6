@@ -1,11 +1,23 @@
 import React from "react";
-import { processData } from "./processData";
+import arrow from "../../assets/images/arrow_right.png";
 
-function Process() {
+function Process({ id, image, text }) {
+  const arrowImg = arrow;
+
   return (
-    <section>
-      <div className="flex flex-col sm:flex-row sm:flex-wrap max-w-[1400px] my-8 from-darkerBlue to-darkBlue"></div>
-    </section>
+    <div className="flex flex-col items-center sm:flex-row my-2">
+      <div className="flex text-center items-center max-w-48">
+        <p className="text-white font-Roboto text-xl">{text}</p>
+      </div>
+      <div className="flex flex-col">
+        <img src={image} alt={text} />
+      </div>
+      {id !== 4 && (
+        <div className="flex items-center justify-center rotate-90 sm:rotate-0">
+          <img src={arrowImg} alt="Arrow" id="arrow-image" />
+        </div>
+      )}
+    </div>
   );
 }
 

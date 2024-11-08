@@ -1,6 +1,6 @@
 import React from "react";
 import Hero from "./components/heroComponents/Hero";
-import Process from "./components/processComponents/Process";
+import ProcessList from "./components/processComponents/ProcessList";
 
 /* Placeholder code for testing */
 function App() {
@@ -8,7 +8,7 @@ function App() {
     <>
       <div className="max-w-screen-2xl m-auto">
         <Hero />
-        <Process />
+        <ProcessList />
       </div>
     </>
   );

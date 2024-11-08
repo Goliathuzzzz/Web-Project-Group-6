@@ -1,7 +1,7 @@
-import locate_pic from '../../assets/images/locate_pic';
-import charge_pic from '../../assets/images/charge_pic';
-import favorite_pic from '../../assets/images/favorite_pic';
-import navigate_pic from '../../assets/images/navigate_pic';
+import locate_pic from '../../assets/images/locate_pic.png';
+import charge_pic from '../../assets/images/charge_pic.png';
+import favorite_pic from '../../assets/images/favorite_pic.png';
+import navigate_pic from '../../assets/images/navigate_pic.png';
 
 export const processData = [
     { id: 1, image: locate_pic, text: "Find nearby EV charging stations on our map." },
