@@ -6,7 +6,7 @@ const {
   createStation,
   updateStation,
   deleteStation,
-} = require('../controllers/stationControllers');
+} = require('../controllers/stationController');
 
 // GET /stations
 router.get('/', getAllStations);
