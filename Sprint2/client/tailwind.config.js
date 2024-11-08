@@ -12,6 +12,10 @@ export default {
       },
       backgroundImage: {
         'herocar': "url('./src/assets/images/hero_section.png')"
+      },
+      fontFamily: {
+        Orbitron: ['Orbitron', 'sans-serif'],
+        Roboto: ['Roboto', 'sans-serif'],
       }
     },
   },
