@@ -7,9 +7,11 @@ export default {
     extend: {
       colors: {
         eGreen: '#32FF7E',
+        eGreen_dark: '#28CC65',
         heroTitleBg: '#1B1C22',
         darkGreen: '#076229',
         bodyBg: '#242633',
+        borderBlue: '#4CAFB7',
       },
       backgroundImage: {
         'herocar': "url('./src/assets/images/hero_section.png')"
