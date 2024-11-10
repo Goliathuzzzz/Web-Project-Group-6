@@ -12,13 +12,13 @@ function Login() {
             <span class="text-gray-700 font-medium text-xs">Continue with Google</span>
           </button>
         <p className="flex mb-2 font-bold">Or</p>
-        <input className="flex w-3/4 border mb-2 rounded-sm bg-gray-200 text-xs p-1 border-borderBlue pl-2" placeholder="Username"></input>
-        <input className="flex w-3/4 border mb-2 rounded-sm bg-gray-200 text-xs p-1 border-borderBlue p" placeholder="Password"></input>
+        <input className="flex w-3/4 border mb-2 rounded-sm bg-inputGrey text-xs p-1 border-borderBlue pl-2" placeholder="Username"></input>
+        <input className="flex w-3/4 border mb-2 rounded-sm bg-inputGrey text-xs p-1 border-borderBlue p" placeholder="Password"></input>
         <div className="w-3/4 flex flex-row justify-start mb-2 items-center">
           <input type="checkbox" className="appearance-none h-3 w-3 rounded-sm border border-borderBlue"></input>
           <label className="pl-2 font-bold text-xs p-1">Remember me</label>
         </div>
-        <button className="flex w-3/4 justify-center p-2 rounded-3xl font-bold bg-gradient-to-r from-eGreen to-eGreen_dark">Login</button>
+        <button className="flex w-3/4 justify-center p-2 rounded-3xl font-bold bg-gradient-to-r from-eGreen to-eGreenDark">Login</button>
       </div>
       <div className="h-screen flex items-center justify-center">
         <img src={image} alt="placeholder" className=" h-1/2"/>
