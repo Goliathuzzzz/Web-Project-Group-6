@@ -14,6 +14,8 @@ export default {
         darkBlue: '#1F223D',
         mediumBlue: '#292C4B',
         lightGreen: '#283641',
+        electricBlue: '#2B7FE5',
+        lilac: '#6A6DCD',
       },
       backgroundImage: {
         'herocar': "url('./src/assets/images/hero_section.png')",
