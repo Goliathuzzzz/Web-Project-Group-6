@@ -1,3 +1,8 @@
+import instagram from "./assets/images/ig.png";
+import discord from "./assets/images/discord.png";
+import twitter from "./assets/images/x.png";
+import youtube from "./assets/images/yt.png";
+
 export const pageLinks = [
   { id: 1, href: "#map", text: "Map" },
   { id: 2, href: "#about", text: "About" },
@@ -23,3 +28,10 @@ export const legalLinks = [
   { id: 2, href: "#cookie-policy", text: "Cookie Policy >" },
   { id: 3, href: "#terms-of-service", text: "Terms of Service >" },
 ]
+
+export const socialLinks = [
+  { id: 1, href: "https://www.instagram.com/", icon: instagram },
+  { id: 2, href: "https://discord.com/", icon: discord },
+  { id: 3, href: "https://x.com/?lang=en", icon: twitter },
+  { id: 4, href: "https://www.youtube.com/", icon: youtube },
+];
