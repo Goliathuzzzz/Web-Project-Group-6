@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import yt from '../assets/images/yt.png';
+import google from '../assets/images/google_logo.png';
 import image from '../assets/images/login_page.png';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+
+  //google login
 
   const handleLogin = () => {
     if (username && password) {
@@ -18,9 +20,9 @@ function Login() {
 
   return (
     <div className="flex items-center justify-center h-screen w-screen">
-      <div className="flex flex-col bg-white w-1/2 justify-center items-center h-1/2 w-1/4 font-Roboto">
+      <div className="flex flex-col bg-white max-w-[450px] min-w-[300px] lg:w-1/2 xl:w-1/2 sm:w-1/2 justify-center items-center h-1/2 w-1/4 font-Roboto">
         <button className="flex items-center justify-center border p-2 mb-2 w-3/4 rounded-sm border-borderBlue">
-          <img src={yt} alt="Google Logo" className="w-6 h-6 mr-2" />
+          <img src={google} alt="Google Logo" className="w-6 h-6 mr-2" />
           <span className="text-gray-700 font-medium text-xs">
             Continue with Google
           </span>
@@ -61,8 +63,8 @@ function Login() {
           </button>
         </form>
       </div>
-      <div className="h-screen flex items-center justify-center">
-        <img src={image} alt="placeholder" className=" h-1/2" />
+      <div className="h-screen flex items-center justify-center sm:">
+        <img src={image} alt="placeholder" className="h-1/2 sm:block hidden" />
       </div>
     </div>
   );
