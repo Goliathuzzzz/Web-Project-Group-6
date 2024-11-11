@@ -12,6 +12,7 @@ export default {
         bodyBg: '#242633',
         darkerBlue: '#1E1F26',
         darkBlue: '#1F223D',
+        mediumBlue: '#292C4B',
       },
       backgroundImage: {
         'herocar': "url('./src/assets/images/hero_section.png')"
