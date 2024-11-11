@@ -10,7 +10,9 @@ function App() {
       <div className="max-w-screen-2xl m-auto bg-darkerBlue">
         <Hero />
         <ProcessList />
-        <ReviewList />
+        <div className="flex flex-col md:flex-row">
+          <ReviewList />
+        </div>
       </div>
     </>
   );

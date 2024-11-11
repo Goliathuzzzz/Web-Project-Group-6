@@ -8,7 +8,7 @@ function Review({ img, name, text, stars }) {
         <img src={img} alt={name} className="w-40 rounded-full" />
       </div>
       <div className="flex flex-col ml-4">
-        <p className="text-white font-Roboto text-md">
+        <p className="text-white font-Roboto text-xs">
           {text} - {name}
         </p>
         <div className="flex mt-2 justify-end">
