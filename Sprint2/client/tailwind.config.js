@@ -13,9 +13,11 @@ export default {
         darkerBlue: '#1E1F26',
         darkBlue: '#1F223D',
         mediumBlue: '#292C4B',
+        lightGreen: '#283641',
       },
       backgroundImage: {
-        'herocar': "url('./src/assets/images/hero_section.png')"
+        'herocar': "url('./src/assets/images/hero_section.png')",
+        'appBg': "url('./src/assets/images/bg_homepage.png')"
       },
       fontFamily: {
         Orbitron: ['Orbitron', 'sans-serif'],

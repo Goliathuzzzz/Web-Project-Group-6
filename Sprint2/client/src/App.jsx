@@ -7,7 +7,7 @@ import ReviewList from "./components/ReviewComponents/ReviewList";
 function App() {
   return (
     <>
-      <div className="max-w-screen-2xl m-auto bg-darkerBlue">
+      <div className="max-w-screen-2xl m-auto bg-darkerBlue mix-blend-normal">
         <Hero />
         <ProcessList />
         <div className="flex flex-col md:flex-row">
