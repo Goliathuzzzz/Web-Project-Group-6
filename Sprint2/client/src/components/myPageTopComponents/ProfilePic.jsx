@@ -6,7 +6,7 @@ function ProfilePic() {
   const name = "Jonne Roponen";
   const image = jonne;
   return (
-    <div className="flex bg-gradient-to-b from-darkerBlue to-darkBlue md:max-w-md justify-between rounded-lg shadow-lg shadow-black">
+    <div className="flex bg-gradient-to-b from-darkerBlue to-mediumBlue md:max-w-md justify-between rounded-lg shadow-lg shadow-black">
       {/* Invisible container for layout */}
       <div className="w-11"></div>
       <div className="flex flex-col items-center text-white font-Orbitron tracking-wider text-xl mb-3">

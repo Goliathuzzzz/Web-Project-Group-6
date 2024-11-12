@@ -7,6 +7,7 @@ import Calculator from "./components/CalculatorComponents/Calculator";
 import PowerUp from "./components/poweredUpComponent/PoweredUp";
 import CallToAction from "./components/callToActionComponent/CallToAction";
 import ProfilePic from "./components/myPageTopComponents/ProfilePic";
+import SavedStations from "./components/myPageTopComponents/SavedStations";
 
 /* Placeholder code for testing */
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <PowerUp />
         <CallToAction /> */}
         <ProfilePic />
+        <SavedStations />
       </div>
     </>
   );
