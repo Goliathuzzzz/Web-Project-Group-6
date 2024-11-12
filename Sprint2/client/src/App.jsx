@@ -4,6 +4,7 @@ import ProcessList from "./components/processComponents/ProcessList";
 import ReviewList from "./components/ReviewComponents/ReviewList";
 import Calculator from "./components/CalculatorComponents/Calculator";
 import PowerUp from "./components/poweredUpComponent/PoweredUp";
+import CallToAction from "./components/callToActionComponent/CallToAction";
 
 /* Placeholder code for testing */
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Calculator />
         </div>
         <PowerUp />
+        <CallToAction />
       </div>
     </>
   );
