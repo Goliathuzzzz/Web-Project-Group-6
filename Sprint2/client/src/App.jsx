@@ -3,6 +3,7 @@ import Hero from "./components/heroComponents/Hero";
 import ProcessList from "./components/processComponents/ProcessList";
 import ReviewList from "./components/ReviewComponents/ReviewList";
 import Calculator from "./components/CalculatorComponents/Calculator";
+import PowerUp from "./components/poweredUpComponent/PoweredUp";
 
 /* Placeholder code for testing */
 function App() {
@@ -15,6 +16,7 @@ function App() {
           <ReviewList />
           <Calculator />
         </div>
+        <PowerUp />
       </div>
     </>
   );

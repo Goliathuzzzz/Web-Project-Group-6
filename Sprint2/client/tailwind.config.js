@@ -9,6 +9,8 @@ export default {
         eGreen: '#32FF7E',
         heroTitleBg: '#1B1C22',
         darkGreen: '#076229',
+        mediumGreen: '#234D3A',
+        purplish: '#2E3048',
         bodyBg: '#242633',
         darkerBlue: '#1E1F26',
         darkBlue: '#1F223D',
