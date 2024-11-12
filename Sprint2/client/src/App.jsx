@@ -6,13 +6,14 @@ import ReviewList from "./components/ReviewComponents/ReviewList";
 import Calculator from "./components/CalculatorComponents/Calculator";
 import PowerUp from "./components/poweredUpComponent/PoweredUp";
 import CallToAction from "./components/callToActionComponent/CallToAction";
+import ProfilePic from "./components/myPageTopComponents/ProfilePic";
 
 /* Placeholder code for testing */
 function App() {
   return (
     <>
       <div className="max-w-screen-2xl m-auto bg-darkerBlue mix-blend-normal">
-        <Login />
+        {/* <Login />
         <Hero />
         <ProcessList />
         <div className="flex flex-col md:flex-row md:justify-between">
@@ -20,7 +21,8 @@ function App() {
           <Calculator />
         </div>
         <PowerUp />
-        <CallToAction />
+        <CallToAction /> */}
+        <ProfilePic />
       </div>
     </>
   );
