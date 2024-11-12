@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
-import google from '../assets/images/google_logo.png';
-import image from '../assets/images/login_page.png';
+import google from '../../assets/images/google_logo.png';
+import image from '../../assets/images/login_page.png';
 
 function Login() {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
 
   //google login
 
   const handleLogin = () => {
-    if (username && password) {
-      console.log('Logging in:', { username, password, rememberMe });
+    if (email && password) {
+      console.log('Logging in:', { email, password, rememberMe });
       //login logic here
     } else {
-      alert('Please enter both username and password.');
+      alert('Please enter both email and password.');
     }
   };
 
@@ -34,8 +34,8 @@ function Login() {
         >
           <input
             className="flex w-3/4 border mb-2 rounded-sm bg-inputGrey text-xs p-1 border-borderBlue pl-2"
-            placeholder="Username"
-            onChange={(e) => setUsername(e.target.value)}
+            placeholder="email"
+            onChange={(e) => setEmail(e.target.value)}
           ></input>
           <input
             className="flex w-3/4 border mb-2 rounded-sm bg-inputGrey text-xs p-1 border-borderBlue "
@@ -63,7 +63,7 @@ function Login() {
           </button>
         </form>
       </div>
-      <div className="h-screen flex items-center justify-center sm:">
+      <div className="h-screen flex items-center justify-center">
         <img src={image} alt="placeholder" className="h-1/2 sm:block hidden" />
       </div>
     </div>

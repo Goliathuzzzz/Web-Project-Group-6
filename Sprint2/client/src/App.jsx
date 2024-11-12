@@ -1,13 +1,12 @@
-import React from "react";
-import Hero from "./components/Hero";
-import Login from "./components/Login";
+import React from 'react';
+import Register from './components/register/Register';
 
 /* Placeholder code for testing */
 function App() {
   return (
     <>
       <div className="max-w-screen-2xl m-auto">
-        <Login />
+        <Register />
       </div>
     </>
   );
