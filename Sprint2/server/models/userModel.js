@@ -34,7 +34,7 @@ function findById(id) {
   return item || false;
 }
 
-function UpdateOneById(id, updatedData) {
+function updateOneById(id, updatedData) {
   const user = findById(id);
   if (user) {
     Object.assign(user, updatedData);
@@ -47,7 +47,7 @@ function deleteOneById(id) {
   const user = findById(id);
   if (user) {
     const initialLength = userArray.length;
-    userArray = userArray.filter((user) => user.id !== ParseInt(id));
+    userArray = userArray.filter((user) => user.id !== Number(id));
     return userArray.length < initialLength;
   }
   return false;
@@ -57,7 +57,7 @@ const User = {
     getAll,
     addOne,
     findById,
-    UpdateOneById,
+    updateOneById,
     deleteOneById,
 };
 
