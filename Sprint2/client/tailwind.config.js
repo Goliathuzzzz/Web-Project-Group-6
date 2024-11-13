@@ -26,7 +26,12 @@ export default {
       boxShadow: {
         'inner-lg': 'inset 0 4px 6px rgba(0, 0, 0, 0.5)',
         'inner-xl': 'inset 0 6px 10px rgba(0, 0, 0, 0.6)',
-      }
+      },
+      screens: {
+        'custom': '1410px',
+        'search-bar-bp': '975px',
+        'nav-phone': '440px'
+      },
     },
   },
   plugins: [],

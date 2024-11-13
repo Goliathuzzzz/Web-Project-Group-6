@@ -18,14 +18,14 @@ function NavBar({ profilePicture }) {
   };
 
   return (
-    <div className="relative flex items-center justify-between px-12 py-2 bg-gradient-to-b from-darkSlate to-customBlue mb-10">
+    <div className="relative flex items-center justify-between px-4 py-2 bg-gradient-to-b from-darkSlate to-customBlue mb-10 nav-phone:px-12">
       {/* Logo on the left */}
       <div className="flex items-center">
         <img src={logo} alt="Plug It company logo" className="h-10 w-auto" />
       </div>
 
-      {/* Search Bar: Visible only on medium and larger screens */}
-      {/*<div className="relative flex items-center w-1/4 mx-6 ml-20 hidden md:flex">
+      {/* Search bar visible only on medium and larger screens */}
+      <div className="relative items-center w-1/4 mx-6 ml-20 hidden search-bar-bp:flex">
         <input
           type="text"
           name="query"
@@ -38,7 +38,6 @@ function NavBar({ profilePicture }) {
           className="absolute left-3 h-5 w-5 text-gray-400 font-Roboto"
         />
       </div>
-      */}
 
       {/* Page links visible on medium and larger screens */}
       <div className="hidden md:flex items-center space-x-6 ml-auto">
@@ -68,7 +67,7 @@ function NavBar({ profilePicture }) {
         <button onClick={toggleMenu} className="md:hidden">
           <img src={menuIcon} alt="Menu icon" className="h-8 w-auto" />
         </button>
-        <button className="bg-gradient-to-r from-eGreen to-darkGreen py-2 px-12 rounded-full hover:bg-darkGreen hover:text-white transition-all duration-500 font-bold text-1xl font-Roboto">
+        <button className="bg-gradient-to-r from-eGreen to-darkGreen py-2 px-6 nav-phone:px-12 rounded-full hover:bg-darkGreen hover:text-white transition-all duration-500 font-bold text-1xl font-Roboto">
           Log In
         </button>
       </div>
