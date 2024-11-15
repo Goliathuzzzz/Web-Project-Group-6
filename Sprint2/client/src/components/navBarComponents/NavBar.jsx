@@ -19,7 +19,7 @@ function NavBar({ profilePicture }) {
   };
 
   return (
-    <div className="relative flex items-center justify-between px-4 py-2 bg-gradient-to-b from-darkSlate to-customBlue mb-10 nav-phone:px-12">
+    <div className="relative flex items-center justify-between px-4 py-2 bg-gradient-to-b from-darkerBlue to-darkBlue mb-10 nav-phone:px-12">
       {/* Logo on the left */}
       <div className="flex items-center">
         <Link to={"/"}>
@@ -77,7 +77,7 @@ function NavBar({ profilePicture }) {
 
       {/* Conditional rendering of search bar */}
       {searchOpen && (
-        <div className="absolute top-full left-0 w-full bg-gradient-to-b from-darkSlate to-customBlue p-4 md:hidden">
+        <div className="absolute top-full left-0 w-full bg-gradient-to-b from-darkerBlue to-darkBlue p-4 md:hidden">
           <input
             type="text"
             name="query"
@@ -89,7 +89,7 @@ function NavBar({ profilePicture }) {
 
       {/* Conditional rendering of PageLinks for smaller screens */}
       {menuOpen && (
-        <div className="absolute top-14 left-0 w-full bg-gradient-to-b from-darkSlate to-customBlue md:hidden">
+        <div className="absolute top-14 left-0 w-full bg-gradient-to-b from-darkerBlue to-darkBlue md:hidden">
           <nav className="flex flex-col space-y-4 p-4">
             <PageLinks
               parentClass="flex flex-col space-y-4"
