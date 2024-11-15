@@ -22,21 +22,12 @@ export default {
         ctaYellow: '#FFC300',
         borderBlue: '#4CAFB7',
         inputGrey: '#E8E8E8',
-        darkSlate: '#1E1F26',
-        customBlue: '#1E2139',
         searchBarBg: '#4C4CAA',
         searchBarSelected: '#304B7D',
         myPageBlue: '#292C4B',
         salmonRed: '#FF6B6B',
-        darkerBlue: '#1E1F26',
-        darkBlue: '#1F223D',
-        mediumBlue: '#292C4B',
-        lightGreen: '#283641',
-        electricBlue: '#2B7FE5',
-        lilac: '#6A6DCD',
-        ctaYellow: '#FFC300',
         borderBlue: '#4CAFB7',
-        inputGrey: '#E8E8E8',
+        customBlue: '#1E2139',
       },
       backgroundImage: {
         'herocar': "url('./src/assets/images/hero_section.png')",
@@ -55,10 +46,15 @@ export default {
       screens: {
         'custom': '1410px',
         'search-bar-bp': '975px',
-        'nav-phone': '440px'
+        'nav-phone': '440px',
+        'calc-size': '1024px',
+        'map-buttons-size': '1200px'
       },
       backgroundPosition: {
         'custom': 'right 35% bottom 45%',
+      },
+      width: {
+        'calculatorWidth': '795px',
       },
     },
   },
