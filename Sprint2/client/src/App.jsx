@@ -1,8 +1,6 @@
 import React from "react";
 import Hero from "./components/heroComponents/Hero";
-import NavBar from "./components/navBarComponents/NavBar";
 import Footer from "./components/footerComponents/Footer";
-import ProfilePic from "./assets/images/reviewer_2.png";
 import Specifications from "./components/myPageBottomComponents/Specifications";
 import Login from "./components/Login";
 import ProcessList from "./components/processComponents/ProcessList";
@@ -12,6 +10,8 @@ import PowerUp from "./components/poweredUpComponent/PoweredUp";
 import CallToAction from "./components/callToActionComponent/CallToAction";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
+import ProfilePic from "./components/myPageTopComponents/ProfilePic";
+import SavedStations from "./components/myPageTopComponents/SavedStations";
 
 /* Placeholder code for testing */
 function App() {
@@ -36,7 +36,18 @@ function App() {
               }
             />
             <Route path="login" element={<Login />} />
-            <Route path="dashboard" element={<Specifications />} />
+            <Route
+              path="dashboard"
+              element={
+                <>
+                  <div className="flex flex-col md:flex-row md:justify-center md:gap-7">
+                    <ProfilePic />
+                    <SavedStations />
+                  </div>
+                  <Specifications />
+                </>
+              }
+            />
             <Route path="about" element={<></>} /> {/* Placeholder element */}
             <Route path="map" element={<></>} /> {/* Placeholder element */}
             <Route path="registration" element={<></>} />{" "}
