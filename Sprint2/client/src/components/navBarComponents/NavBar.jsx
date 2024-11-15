@@ -4,6 +4,7 @@ import userCircle from "../../assets/images/user.png";
 import menuIcon from "../../assets/images/menu.png";
 import PageLinks from "../PageLinks";
 import Search from "../../assets/images/search.png";
+import { Link } from "react-router-dom";
 
 function NavBar({ profilePicture }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -21,7 +22,9 @@ function NavBar({ profilePicture }) {
     <div className="relative flex items-center justify-between px-4 py-2 bg-gradient-to-b from-darkSlate to-customBlue mb-10 nav-phone:px-12">
       {/* Logo on the left */}
       <div className="flex items-center">
-        <img src={logo} alt="Plug It company logo" className="h-10 w-auto" />
+        <Link to={"/"}>
+          <img src={logo} alt="Plug It company logo" className="h-10 w-auto" />
+        </Link>
       </div>
 
       {/* Search bar visible only on medium and larger screens */}
