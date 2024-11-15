@@ -1,5 +1,5 @@
 import React from "react";
-import Hero from "./components/heroComponents/heroComponents/Hero";
+import Hero from "./components/heroComponents/Hero";
 import NavBar from "./components/navBarComponents/NavBar";
 import Footer from "./components/footerComponents/Footer";
 import ProfilePic from "./assets/images/reviewer_2.png";
