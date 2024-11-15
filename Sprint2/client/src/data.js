@@ -6,7 +6,7 @@ import youtube from "./assets/images/yt.png";
 export const pageLinks = [
   { id: 1, href: "/", text:"Home" },
   { id: 2, href: "/map", text: "Map" },
-  { id: 3, href: "/about", text: "About" },
+  // { id: 3, href: "/about", text: "About" },
   { id: 4, href: "/dashboard", text: "Dashboard" },
 ];
 
