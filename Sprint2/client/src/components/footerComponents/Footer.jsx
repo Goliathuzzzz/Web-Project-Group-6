@@ -13,7 +13,7 @@ export default function Footer() {
 
   return (
     <>
-      <div className="relative flex flex-col md:flex-row justify-between px-12 py-6 pb-4 md:pb-2 bg-gradient-to-b from-darkSlate to-customBlue">
+      <div className="relative flex flex-col md:flex-row justify-between px-12 py-6 pb-4 md:pb-2 bg-gradient-to-b from-darkerBlue to-darkBlue">
         {/* Logo and links */}
         <div className="flex md:flex-row flex-1 justify-start space-x-8">
           {/* Logo and description */}
