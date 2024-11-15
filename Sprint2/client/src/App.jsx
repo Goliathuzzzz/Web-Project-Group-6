@@ -39,6 +39,8 @@ function App() {
             <Route path="dashboard" element={<Specifications />} />
             <Route path="about" element={<></>} /> {/* Placeholder element */}
             <Route path="map" element={<></>} /> {/* Placeholder element */}
+            <Route path="registration" element={<></>} />{" "}
+            {/* Placeholder element */}
           </Route>
         </Routes>
         <Footer />
