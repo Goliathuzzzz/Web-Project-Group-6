@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const auth = require('../middleware/auth');
 const {
   getAllStations,
   getStationById,
@@ -10,6 +11,9 @@ const {
 
 // GET /stations
 router.get('/', getAllStations);
+
+//custom middleware for authentication
+router.use(auth);
 
 // POST /stations
 router.post('/', createStation);
