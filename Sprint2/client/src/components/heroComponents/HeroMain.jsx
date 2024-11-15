@@ -4,7 +4,7 @@ function HeroMain() {
   return (
     <>
       {/* Main hero component */}
-      <div className="flex flex-col bg-herocar bg-cover h-80 md:w-[60%]">
+      <div className="flex flex-col bg-herocar bg-[right_15%_center]  bg-cover h-80 md:w-[60%]">
         {/* Main title container */}
         <div className="flex bg-opacity-70 py-4 bg-heroTitleBg text-center md:text-left">
           <h2 className="text-4xl md:ml-24 font-medium font-Orbitron tracking-wider w-full">

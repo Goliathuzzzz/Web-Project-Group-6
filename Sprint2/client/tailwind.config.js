@@ -14,6 +14,8 @@ export default {
         customBlue: '#1E2139',
         searchBarBg: '#4C4CAA',
         searchBarSelected: '#304B7D',
+        myPageBlue: '#292C4B',
+        salmonRed: '#FF6B6B',
       },
       backgroundImage: {
         'herocar': "url('./src/assets/images/hero_section.png')",
@@ -31,6 +33,9 @@ export default {
         'custom': '1410px',
         'search-bar-bp': '975px',
         'nav-phone': '440px'
+      },
+      backgroundPosition: {
+        'custom': 'right 35% bottom 45%',
       },
     },
   },
