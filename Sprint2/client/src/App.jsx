@@ -1,5 +1,9 @@
 import React from "react";
-import Hero from "./components/heroComponents/Hero";
+import Hero from "./components/heroComponents/heroComponents/Hero";
+import NavBar from "./components/navBarComponents/NavBar";
+import Footer from "./components/footerComponents/Footer";
+import ProfilePic from "./assets/images/reviewer_2.png";
+import Specifications from "./components/myPageBottomComponents/Specifications";
 import Login from "./components/Login";
 import ProcessList from "./components/processComponents/ProcessList";
 import ReviewList from "./components/ReviewComponents/ReviewList";
@@ -11,9 +15,12 @@ import CallToAction from "./components/callToActionComponent/CallToAction";
 function App() {
   return (
     <>
-      <div className="max-w-screen-2xl m-auto bg-darkerBlue mix-blend-normal">
+      <div className="max-w-screen-2xl m-auto bg-homepage bg-cover">
+        <NavBar profilePicture={ProfilePic} />
         <Login />
         <Hero />
+        {/*<Hero />*/}
+        <Specifications />
         <ProcessList />
         <div className="flex flex-col md:flex-row md:justify-between">
           <ReviewList />
@@ -21,6 +28,7 @@ function App() {
         </div>
         <PowerUp />
         <CallToAction />
+        <Footer />
       </div>
     </>
   );
