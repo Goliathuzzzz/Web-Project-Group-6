@@ -8,25 +8,28 @@ import PowerUp from "./components/poweredUpComponent/PoweredUp";
 import CallToAction from "./components/callToActionComponent/CallToAction";
 import ProfilePic from "./components/myPageTopComponents/ProfilePic";
 import SavedStations from "./components/myPageTopComponents/SavedStations";
+import { BrowserRouter } from "react-router-dom";
 
 /* Placeholder code for testing */
 function App() {
   return (
-    <>
-      <div className="max-w-screen-2xl m-auto bg-darkerBlue mix-blend-normal">
-        {/* <Login />
-        <Hero />
-        <ProcessList />
-        <div className="flex flex-col md:flex-row md:justify-between">
-          <ReviewList />
-          <Calculator />
+    <BrowserRouter>
+      <Routes>
+        <div className="max-w-screen-2xl m-auto bg-darkerBlue mix-blend-normal">
+          <Login />
+          <Hero />
+          <ProcessList />
+          <div className="flex flex-col md:flex-row md:justify-between">
+            <ReviewList />
+            <Calculator />
+          </div>
+          <PowerUp />
+          <CallToAction />
+          <ProfilePic />
+          <SavedStations />
         </div>
-        <PowerUp />
-        <CallToAction /> */}
-        <ProfilePic />
-        <SavedStations />
-      </div>
-    </>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
