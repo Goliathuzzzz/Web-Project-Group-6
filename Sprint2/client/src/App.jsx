@@ -10,27 +10,40 @@ import ReviewList from "./components/ReviewComponents/ReviewList";
 import Calculator from "./components/CalculatorComponents/Calculator";
 import PowerUp from "./components/poweredUpComponent/PoweredUp";
 import CallToAction from "./components/callToActionComponent/CallToAction";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Layout from "./components/Layout";
 
 /* Placeholder code for testing */
 function App() {
   return (
-    <>
-      <div className="max-w-screen-2xl m-auto bg-homepage bg-cover">
-        <NavBar profilePicture={ProfilePic} />
-        <Login />
-        <Hero />
-        {/*<Hero />*/}
-        <Specifications />
-        <ProcessList />
-        <div className="flex flex-col md:flex-row md:justify-between">
-          <ReviewList />
-          <Calculator />
-        </div>
-        <PowerUp />
-        <CallToAction />
+    <div className="max-w-screen-2xl m-auto bg-homepage bg-cover">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route
+              index
+              element={
+                <>
+                  <Hero />
+                  <ProcessList />
+                  <div className="flex flex-col md:flex-row md:justify-between">
+                    <ReviewList />
+                    <Calculator />
+                  </div>
+                  <PowerUp />
+                  <CallToAction />
+                </>
+              }
+            />
+            <Route path="login" element={<Login />} />
+            <Route path="dashboard" element={<Specifications />} />
+            <Route path="about" element={<></>} /> {/* Placeholder element */}
+            <Route path="map" element={<></>} /> {/* Placeholder element */}
+          </Route>
+        </Routes>
         <Footer />
-      </div>
-    </>
+      </BrowserRouter>
+    </div>
   );
 }
 
