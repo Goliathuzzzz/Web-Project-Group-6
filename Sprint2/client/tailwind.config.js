@@ -19,6 +19,7 @@ export default {
         lightGreen: '#283641',
         electricBlue: '#2B7FE5',
         lilac: '#6A6DCD',
+        darkLilac: '#474bc1',
         ctaYellow: '#FFC300',
         borderBlue: '#4CAFB7',
         inputGrey: '#E8E8E8',
@@ -34,6 +35,7 @@ export default {
         'homepage': "url('./src/assets/images/bg_homepage.png')",
         'appBg': "url('./src/assets/images/bg_homepage.png')",
         'ctaBg': "url('./src/assets/images/call_to_action.png')",
+        'dropdownArrow': "url('./src/assets/images/dropdown_arrow.png')",
       },
       fontFamily: {
         Orbitron: ['Orbitron', 'sans-serif'],
@@ -48,7 +50,8 @@ export default {
         'search-bar-bp': '975px',
         'nav-phone': '440px',
         'calc-size': '1024px',
-        'map-buttons-size': '1200px'
+        'map-buttons-size': '1200px',
+        'footer-tiny': '362px'
       },
       backgroundPosition: {
         'custom': 'right 35% bottom 45%',
