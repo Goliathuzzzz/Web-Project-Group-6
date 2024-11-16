@@ -70,9 +70,11 @@ function NavBar({ profilePicture }) {
         <button onClick={toggleMenu} className="md:hidden">
           <img src={menuIcon} alt="Menu icon" className="h-8 w-auto" />
         </button>
-        <button className="bg-gradient-to-r from-eGreen to-darkGreen py-2 px-6 nav-phone:px-12 rounded-full hover:bg-darkGreen hover:text-white transition-all duration-500 font-bold text-1xl font-Roboto">
-          Log In
-        </button>
+        <Link to="/login">
+          <button className="bg-gradient-to-r from-eGreen to-darkGreen py-2 px-6 nav-phone:px-12 rounded-full hover:bg-darkGreen hover:text-white transition-all duration-500 font-bold text-1xl font-Roboto">
+            Log In
+          </button>
+        </Link>
       </div>
 
       {/* Conditional rendering of search bar */}

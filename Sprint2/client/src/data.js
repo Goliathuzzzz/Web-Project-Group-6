@@ -8,6 +8,7 @@ export const pageLinks = [
   { id: 2, href: "/map", text: "Map" },
   // { id: 3, href: "/about", text: "About" },
   { id: 4, href: "/dashboard", text: "Dashboard" },
+  { id: 4, href: "/registration", text: "Sign up" },
 ];
 
 export const aboutLinks = [
