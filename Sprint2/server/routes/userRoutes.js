@@ -5,6 +5,7 @@ const {
   getAllUsers,
   getUserById,
   createUser,
+  replaceUser,
   updateUser,
   deleteUser,
 } = require('../controllers/userController');
@@ -23,6 +24,9 @@ router.get('/:userId', getUserById);
 
 // PUT /users/:stationId
 router.put('/:userId', updateUser);
+
+// PATCH /users/:stationId
+router.patch('/:userId', replaceUser);
 
 // DELETE /users/:stationId
 router.delete('/:userId', deleteUser);
