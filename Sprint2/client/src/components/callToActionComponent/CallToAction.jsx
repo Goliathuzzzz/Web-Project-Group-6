@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 
 function CallToAction() {
   return (
@@ -15,9 +16,12 @@ function CallToAction() {
           </p>
         </div>
 
-        <button className="bg-ctaYellow py-3 mt-4 mb-10 px-5 font-Roboto font-bold rounded-xl">
+        <Link
+          to="/map"
+          className="bg-ctaYellow py-3 mt-4 mb-10 px-5 font-Roboto font-bold rounded-xl text-center hover:bg-yellow-600"
+        >
           Open the Map
-        </button>
+        </Link>
       </div>
     </div>
   );
