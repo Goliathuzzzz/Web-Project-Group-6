@@ -14,7 +14,6 @@ function CallToAction() {
             <span className="text-eGreen italic">confidence.</span>
           </p>
         </div>
-
         <button className="bg-ctaYellow py-3 mt-4 mb-10 px-5 font-Roboto font-bold rounded-xl">
           Open the Map
         </button>
