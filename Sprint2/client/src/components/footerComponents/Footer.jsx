@@ -93,7 +93,7 @@ export default function Footer() {
           {/* Social links section */}
           <div className="flex space-x-4 my-4 mt-6">
             <SocialLinks
-              parentClass="flex space-x-6"
+              parentClass="flex space-x-3 footer-tiny:space-x-6"
               itemClass="w-8 h-8 hover:opacity-80 transition duration-300"
             />
           </div>
@@ -117,16 +117,29 @@ export default function Footer() {
               Download Our App
             </h4>
             <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4">
-              <img
-                src={appStore}
-                alt="Download on the App Store"
-                className="h-10"
-              />
-              <img
-                src={playStore}
-                alt="Get it on Google Play"
-                className="h-10"
-              />
+              <a
+                href="https://www.apple.com/app-store/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <img
+                  src={appStore}
+                  alt="Download on the App Store"
+                  href="https://www.apple.com/app-store/"
+                  className="h-10"
+                />
+              </a>
+              <a
+                href="https://play.google.com/store/games?hl=en"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <img
+                  src={playStore}
+                  alt="Get it on Google Play"
+                  className="h-10"
+                />
+              </a>
             </div>
           </div>
 
