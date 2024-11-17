@@ -12,54 +12,55 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import ProfilePic from "./components/myPageTopComponents/ProfilePic";
 import SavedStations from "./components/myPageTopComponents/SavedStations";
-import GLogin from "./components/loginComponents/GoogleLogin";
+import { ProfileProvider } from "./ProfileContext";
 
 /* Placeholder code for testing */
 function App() {
   return (
     <div className="max-w-screen-2xl m-auto bg-homepage bg-cover">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route
-              index
-              element={
-                <>
-                  <Hero />
-                  <ProcessList />
-                  <div className="flex flex-col md:flex-row md:justify-between">
-                    <ReviewList />
-                    <Calculator />
-                  </div>
-                  <PowerUp />
-                  <CallToAction />
-                </>
-              }
-            />
-            <Route path="login" element={<Login />} />
-            <Route
-              path="dashboard"
-              element={
-                <>
-                  <div className="flex flex-col md:flex-row md:justify-center md:gap-7">
-                    <ProfilePic />
-                    <SavedStations />
-                  </div>
-                  <Specifications />
-                </>
-              }
-            />
-            <Route path="about" element={<>{/* Placeholder element */}</>} />
-            <Route path="map" element={<>{/* Placeholder element */}</>} />
-            <Route
-              path="registration"
-              element={<>{/* Placeholder element */}</>}
-            />{" "}
-            <Route path="googlelogin" element={<GLogin />} />
-          </Route>
-        </Routes>
-        <Footer />
-      </BrowserRouter>
+      <ProfileProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route
+                index
+                element={
+                  <>
+                    <Hero />
+                    <ProcessList />
+                    <div className="flex flex-col md:flex-row md:justify-between">
+                      <ReviewList />
+                      <Calculator />
+                    </div>
+                    <PowerUp />
+                    <CallToAction />
+                  </>
+                }
+              />
+              <Route path="login" element={<Login />} />
+              <Route
+                path="dashboard"
+                element={
+                  <>
+                    <div className="flex flex-col md:flex-row md:justify-center md:gap-7">
+                      <ProfilePic />
+                      <SavedStations />
+                    </div>
+                    <Specifications />
+                  </>
+                }
+              />
+              <Route path="about" element={<>{/* Placeholder element */}</>} />
+              <Route path="map" element={<>{/* Placeholder element */}</>} />
+              <Route
+                path="registration"
+                element={<>{/* Placeholder element */}</>}
+              />{" "}
+            </Route>
+          </Routes>
+          <Footer />
+        </BrowserRouter>
+      </ProfileProvider>
     </div>
   );
 }
