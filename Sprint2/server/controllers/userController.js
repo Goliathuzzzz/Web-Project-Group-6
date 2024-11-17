@@ -1,56 +1,116 @@
 const User = require('../models/userModel');
+const mongoose = require('mongoose');
 
-const getAllUsers = (req, res) => {
-    const users = User.getAll();
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find({}).sort({ createdAt: -1 });
     res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to get users' });
+  }
 };
 
-const createUser = (req, res) => {
-    const newUser = User.addOne({ ...req.body });
-
-    if (newUser) {
-        res.status(201).json(newUser);
-    } else {
-        res.status(500).json({ message: 'Failed to create user' });
-    }
+const createUser = async (req, res) => {
+  try {
+    const newUser = await User.create({ ...req.body });
+    res.status(201).json(newUser);
+  } catch (error) {
+    res
+      .status(400)
+      .json({ message: 'Failed to create user', error: error.message });
+  }
 };
 
-const getUserById = (req, res) => {
-    const userId = req.params.userId;
-    const user = User.findById(userId);
+const getUserById = async (req, res) => {
+  const { userId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(400).json({ message: 'Invalid user ID' });
+  }
+
+  try {
+    const user = await User.findById(userId);
     if (user) {
-        res.status(200).json(user);
+      res.status(200).json(user);
     } else {
-        res.status(404).json({ message: 'User not found' });
+      res.status(404).json({ message: 'User not found' });
     }
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to retrieve user' });
+  }
 };
 
-const updateUser = (req, res) => {
-    const userId = req.params.userId;
-    const updatedUser = User.updateOneById(userId, { ...req.body });
+//find user by id and replace it with new user data
+const replaceUser = async (req, res) => {
+  const { userId } = req.params;
 
-    if (updatedUser) {
-        res.status(200).json(updatedUser);
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(400).json({ message: 'Invalid user ID' });
+  }
+
+  try {
+    const updateUser = await User.findOneAndReplace(
+      { _id: userId },
+      { ...req.body },
+      { new: true }
+    );
+    if (updateUser) {
+      res.status(200).json(updateUser);
     } else {
-        res.status(404).json({ message: 'User not found' });
+      res.status(404).json({ message: 'User not found' });
     }
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to update user' });
+  }
 };
 
-const deleteUser = (req, res) => {
-    const userId = req.params.userId;
-    const isDeleted = User.deleteOneById(userId);
+//find user by id and update it with new user data
+const updateUser = async (req, res) => {
+  const { userId } = req.params;
 
-    if (isDeleted) {
-        res.status(204).json({ message: 'User deleted successfully' });
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(400).json({ message: 'Invalid user ID' });
+  }
+
+  try {
+    const updateUser = await User.findOneAndUpdate(
+      { _id: userId },
+      { ...req.body },
+      { new: true }
+    );
+    if (updateUser) {
+      res.status(200).json(updateUser);
     } else {
-        res.status(404).json({ message: 'User not found' });
+      res.status(404).json({ message: 'User not found' });
     }
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to update user' });
+  }
+};
+
+const deleteUser = async (req, res) => {
+  const { userId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(400).json({ message: 'Invalid user ID' });
+  }
+  try {
+    const deletedUser = await User.findOneAndDelete({ _id: userId });
+    if (deletedUser) {
+      res.status(200).json({ message: 'User deleted successfully' });
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to user station' });
+  }
 };
 
 module.exports = {
-    getAllUsers,
-    getUserById,
-    createUser,
-    updateUser,
-    deleteUser,
+  getAllUsers,
+  getUserById,
+  createUser,
+  replaceUser,
+  updateUser,
+  deleteUser,
 };
