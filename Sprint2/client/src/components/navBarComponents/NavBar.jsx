@@ -7,7 +7,7 @@ import Search from "../../assets/images/search.png";
 import { Link } from "react-router-dom";
 import { googleLogout } from "@react-oauth/google";
 
-function NavBar({ profilePicture }) {
+function NavBar() {
   const loginButton = (
     <Link to="/login">
       <button className="bg-gradient-to-r from-eGreen to-darkGreen py-2 px-6 nav-phone:px-12 rounded-full hover:bg-darkGreen hover:text-white transition-all duration-500 font-bold text-1xl font-Roboto">
@@ -18,20 +18,24 @@ function NavBar({ profilePicture }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [logButton, setLogButton] = useState(loginButton);
+  const [profilePic, setProfilePic] = useState(userCircle);
 
   // log out function to log the user out of google and set the profile array to null
   const logOut = () => {
     googleLogout();
     localStorage.removeItem("googleProfile");
-    setLogButton(loginButton);
+    window.location.reload();
   };
 
   useEffect(() => {
     const storedProfile = localStorage.getItem("googleProfile");
     if (storedProfile) {
+      const profile = JSON.parse(storedProfile);
       setLogButton(logoutButton);
+      setProfilePic(profile.picture);
     } else {
       setLogButton(loginButton);
+      setProfilePic(userCircle);
     }
   }, []);
 
@@ -84,7 +88,7 @@ function NavBar({ profilePicture }) {
         />
         <a href="#user-profile">
           <img
-            src={profilePicture || userCircle}
+            src={profilePic}
             alt="User profile"
             className="h-8 w-auto rounded-full"
           />

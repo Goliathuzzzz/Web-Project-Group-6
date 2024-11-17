@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import google from "../../assets/images/google_logo.png";
 import image from "../../assets/images/login_page.png";
 import { useGoogleLogin } from "@react-oauth/google";
@@ -9,6 +10,7 @@ function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const navigate = useNavigate();
 
   const gLogin = useGoogleLogin({
     onSuccess: (codeResponse) => setUser(codeResponse),
@@ -31,6 +33,8 @@ function Login() {
         .then((res) => {
           console.log("User info fetched:", res.data);
           localStorage.setItem("googleProfile", JSON.stringify(res.data));
+          navigate("/");
+          window.location.reload();
         })
         .catch((err) => console.log("Error fetching user info:", err));
     }
