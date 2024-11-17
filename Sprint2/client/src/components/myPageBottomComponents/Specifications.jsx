@@ -6,17 +6,15 @@ import { useProfile } from "../../ProfileContext";
 function Specifications() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const { setProfile } = useProfile();
   useEffect(() => {
     const storedProfile = localStorage.getItem("profile");
     if (storedProfile) {
       const profile = JSON.parse(storedProfile);
-      setProfile(profile);
       console.log(profile);
       setName(profile.name);
       setEmail(profile.email);
     }
-  }, [setProfile]);
+  });
 
   return (
     <div className="flex flex-col lg:flex-row justify-center gap-8 p-4">
