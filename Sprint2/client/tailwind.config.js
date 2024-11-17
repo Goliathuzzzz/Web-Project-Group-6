@@ -32,6 +32,9 @@ export default {
       },
       backgroundImage: {
         'herocar': "url('./src/assets/images/hero_section.png')",
+        'herocharge': "url('./src/assets/images/hero_charge.png')",
+        'herofind': "url('./src/assets/images/hero_locate.png')",
+        'herogreen': "url('./src/assets/images/hero_green.png')",
         'homepage': "url('./src/assets/images/bg_homepage.png')",
         'appBg': "url('./src/assets/images/bg_homepage.png')",
         'ctaBg': "url('./src/assets/images/call_to_action.png')",
