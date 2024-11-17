@@ -1,30 +1,64 @@
-import React, { useState } from 'react';
-import google from '../../assets/images/google_logo.png';
-import image from '../../assets/images/login_page.png';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import google from "../../assets/images/google_logo.png";
+import image from "../../assets/images/login_page.png";
+import { useGoogleLogin } from "@react-oauth/google";
+import axios from "axios";
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [user, setUser] = useState([]);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const navigate = useNavigate();
 
-  //google login
+  const gLogin = useGoogleLogin({
+    onSuccess: (codeResponse) => setUser(codeResponse),
+    onError: (error) => console.log("Login Failed:", error),
+  });
+
+  useEffect(() => {
+    if (user && user.access_token) {
+      console.log("Fetching user info with access token:", user.access_token);
+      axios
+        .get(
+          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`,
+          {
+            headers: {
+              Authorization: `Bearer ${user.access_token}`,
+              Accept: "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          console.log("User info fetched:", res.data);
+          localStorage.setItem("googleProfile", JSON.stringify(res.data));
+          navigate("/");
+          window.location.reload();
+        })
+        .catch((err) => console.log("Error fetching user info:", err));
+    }
+  }, [user]);
 
   const handleLogin = () => {
     if (email && password) {
-      console.log('Logging in:', { email, password, rememberMe });
+      console.log("Logging in:", { email, password, rememberMe });
       //login logic here
     } else {
-      alert('Please enter both email and password.');
+      alert("Please enter both email and password.");
     }
   };
 
   return (
     <div className="flex items-center justify-center h-screen w-screen">
       <div className="flex flex-col bg-white max-w-[450px] min-w-[300px] lg:w-1/2 xl:w-1/2 sm:w-1/2 justify-center items-center h-1/2 w-1/4 font-Roboto">
-        <button className="flex items-center justify-center border p-2 mb-2 w-3/4 rounded-sm border-borderBlue">
+        <button
+          onClick={gLogin}
+          className="flex items-center justify-center border p-2 mb-2 w-3/4 rounded-sm border-borderBlue"
+        >
           <img src={google} alt="Google Logo" className="w-6 h-6 mr-2" />
           <span className="text-gray-700 font-medium text-xs">
-            Continue with Google
+            Sign in with Google 🚀
           </span>
         </button>
         <p className="flex mb-2 font-bold">Or</p>
@@ -69,4 +103,5 @@ function Login() {
     </div>
   );
 }
+
 export default Login;

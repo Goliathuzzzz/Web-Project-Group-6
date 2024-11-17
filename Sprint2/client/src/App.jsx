@@ -2,7 +2,7 @@ import React from "react";
 import Hero from "./components/heroComponents/Hero";
 import Footer from "./components/footerComponents/Footer";
 import Specifications from "./components/myPageBottomComponents/Specifications";
-import Login from "./components/loginComponents/Login";
+import Login from "./components/Login";
 import Register from "./components/registerComponents/Register";
 import ProcessList from "./components/processComponents/ProcessList";
 import ReviewList from "./components/ReviewComponents/ReviewList";
@@ -49,10 +49,12 @@ function App() {
                 </>
               }
             />
-            <Route path="about" element={<></>} /> {/* Placeholder element */}
-            <Route path="map" element={<></>} /> {/* Placeholder element */}
-            <Route path="registration" element={<></>} />{" "}
-            {/* Placeholder element */}
+            <Route path="about" element={<>{/* Placeholder element */}</>} />
+            <Route path="map" element={<>{/* Placeholder element */}</>} />
+            <Route
+              path="registration"
+              element={<>{/* Placeholder element */}</>}
+            />{" "}
           </Route>
         </Routes>
         <Footer />

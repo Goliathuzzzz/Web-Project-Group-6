@@ -1,8 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import Car from "../../assets/images/tesla_car.png";
 import Charger from "../../assets/images/Tesla.png";
 
 function Specifications() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  useEffect(() => {
+    const storedProfile = localStorage.getItem("googleProfile");
+    if (storedProfile) {
+      const profile = JSON.parse(storedProfile);
+      console.log(profile);
+      setName(profile.name);
+      setEmail(profile.email);
+    }
+  }, []);
+
   return (
     <div className="flex flex-col lg:flex-row justify-center gap-8 p-4">
       {/* Main specifications section */}
@@ -60,11 +72,7 @@ function Specifications() {
 
         {/* Right side car image */}
         <div className="bg-myPageBlue pb-20 flex justify-center">
-          <img
-            src={Car}
-            alt="Tesla Model X"
-            className="h-auto w-60"
-          />
+          <img src={Car} alt="Tesla Model X" className="h-auto w-60" />
         </div>
       </div>
 
@@ -106,14 +114,16 @@ function Specifications() {
           </h3>
           <div className="space-y-2">
             <div>
-              <span className="font-bold">Name: </span>Jonne Roponen
+              <span className="font-bold">Name: </span>
+              {name}
             </div>
             <div>
               <span className="font-bold">Email: </span>
-              jonneroponen@example.com
+              {email}
             </div>
             <div>
-              <span className="font-bold">Location: </span>Helsinki
+              <span className="font-bold">Location: </span>
+              {""}
             </div>
           </div>
         </div>
