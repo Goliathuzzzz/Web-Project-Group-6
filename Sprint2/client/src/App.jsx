@@ -12,7 +12,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import ProfilePic from "./components/myPageTopComponents/ProfilePic";
 import SavedStations from "./components/myPageTopComponents/SavedStations";
-import { GoogleLogin } from "@react-oauth/google";
+import GLogin from "./components/loginComponents/GoogleLogin";
 
 /* Placeholder code for testing */
 function App() {
@@ -55,7 +55,7 @@ function App() {
               path="registration"
               element={<>{/* Placeholder element */}</>}
             />{" "}
-            <Route path="googlelogin" element={<GoogleLogin />} />
+            <Route path="googlelogin" element={<GLogin />} />
           </Route>
         </Routes>
         <Footer />
