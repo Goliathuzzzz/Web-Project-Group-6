@@ -4,8 +4,8 @@ import Station from "./Station";
 
 function SavedStations() {
   return (
-    <div className="flex justify-center items-center bg-gradient-to-b from-darkerBlue to-mediumBlue rounded-lg shadow-lg shadow-black md:max-w-xl md:min-w-xl">
-      <div className="flex flex-col bg-mediumBlue p-4 m-8 rounded-lg">
+    <div className="flex justify-center items-center mx-4 md:ml-0 bg-gradient-to-b from-darkerBlue to-darkBlue rounded-sm md:max-w-xl md:min-w-xl mt-10">
+      <div className="flex flex-col bg-mediumBlue p-4 m-8 rounded-sm">
         <h2 className="text-xl font-Orbitron text-ctaYellow text-center md:text-left font-medium tracking-wider p-1">
           Saved Stations
         </h2>

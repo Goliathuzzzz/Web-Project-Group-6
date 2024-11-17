@@ -1,12 +1,12 @@
 import React from "react";
-import jonne from "../../assets/images/reviewer_1.png";
+import jonne from "../../assets/images/my-page-img.png";
 import edit from "../../assets/images/edit.png";
 
 function ProfilePic() {
   const name = "Jonne Roponen";
   const image = jonne;
   return (
-    <div className="flex bg-gradient-to-b from-darkerBlue to-mediumBlue md:max-w-md justify-between rounded-lg shadow-lg shadow-black">
+    <div className="flex bg-gradient-to-b mx-4 md:mr-0 from-darkerBlue to-darkBlue md:max-w-md justify-between rounded-sm mt-10">
       {/* Invisible container for layout */}
       <div className="w-11"></div>
       <div className="flex flex-col items-center text-white font-Orbitron tracking-wider text-xl mb-3">
