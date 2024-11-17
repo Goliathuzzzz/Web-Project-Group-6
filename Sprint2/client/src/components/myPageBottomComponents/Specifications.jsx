@@ -4,9 +4,9 @@ import Charger from "../../assets/images/Tesla.png";
 
 function Specifications() {
   return (
-    <div className="flex flex-col lg:flex-row justify-center gap-8 p-4">
+    <div className="flex flex-col lg:flex-row justify-center gap-8 p-4 mb-10">
       {/* Main specifications section */}
-      <div className="flex bg-gradient-to-b from-darkerBlue to-darkBlue rounded-sm gap-4 p-4 w-fit">
+      <div className="flex flex-col md:flex-row bg-gradient-to-b from-darkerBlue to-darkBlue rounded-sm gap-4 p-4 w-fit mx-auto lg:mx-0">
         {/* Left side car spec and filters */}
         <div className="flex flex-col space-y-4">
           <div className="car-spec-container p-5 text-left text-white bg-mediumBlue rounded-sm">
@@ -20,12 +20,12 @@ function Specifications() {
           </div>
 
           {/* Map filters section */}
-          <div className="text-base font-Orbitron text-white bg-mediumBlue p-4 rounded-sm">
+          <div className="text-base font-Orbitron text-white bg-mediumBlue p-4 rounded-sm pb-24">
             <h3 className="mb-2 text-salmonRed">Map Filters</h3>
 
             <div className="mb-4">
               <label className="block mb-1">Charger Type</label>
-              <select className="w-full p-2 bg-darkSlate text-white rounded-sm">
+              <select className="w-full p-2 bg-mediumBlue bg-no-repeat bg-[calc(100%-0.5rem)_center] bg-[length:1.25rem_1.25rem] bg-dropdownArrow appearance-none hover:bg-gray-300 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white rounded-sm ">
                 <option>Type 1</option>
                 <option>Type 2</option>
                 <option>Type 3</option>
@@ -36,7 +36,7 @@ function Specifications() {
 
             <div className="mb-4">
               <label className="block mb-1">Charger Power (kW)</label>
-              <select className="w-full p-2 bg-darkSlate text-white rounded-sm">
+              <select className="w-full p-2 bg-mediumBlue bg-no-repeat bg-[calc(100%-0.5rem)_center] bg-[length:1.25rem_1.25rem] bg-dropdownArrow appearance-none hover:bg-gray-300 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white rounded-sm">
                 <option>0-50 kW</option>
                 <option>50-100 kW</option>
                 <option>100-150 kW</option>
@@ -47,7 +47,7 @@ function Specifications() {
 
             <div>
               <label className="block mb-1">Service Provider</label>
-              <select className="w-full p-2 bg-darkSlate text-white rounded-sm">
+              <select className="w-full p-2 bg-mediumBlue bg-no-repeat bg-[calc(100%-0.5rem)_center] bg-[length:1.25rem_1.25rem] bg-dropdownArrow appearance-none hover:bg-gray-300 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white rounded-sm">
                 <option>Provider 1</option>
                 <option>Provider 2</option>
                 <option>Provider 3</option>
@@ -100,7 +100,7 @@ function Specifications() {
         </div>
 
         {/* Profile section */}
-        <div className="bg-gradient-to-b from-darkerBlue to-darkBlue text-white rounded-sm p-4 w-80">
+        <div className="bg-gradient-to-b from-darkerBlue to-darkBlue text-white rounded-sm p-5 w-80">
           <h3 className="text-base font-Orbitron mb-2 font-bold">
             Profile Information
           </h3>
