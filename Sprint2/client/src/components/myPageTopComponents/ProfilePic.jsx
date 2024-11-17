@@ -5,7 +5,7 @@ function ProfilePic() {
   const [name, setName] = useState("");
   const [pic, setPic] = useState(null);
   useEffect(() => {
-    const storedProfile = localStorage.getItem("googleProfile");
+    const storedProfile = localStorage.getItem("profile");
     if (storedProfile) {
       const profile = JSON.parse(storedProfile);
       console.log(profile);

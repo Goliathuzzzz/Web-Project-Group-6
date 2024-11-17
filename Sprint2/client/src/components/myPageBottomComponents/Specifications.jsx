@@ -6,7 +6,7 @@ function Specifications() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   useEffect(() => {
-    const storedProfile = localStorage.getItem("googleProfile");
+    const storedProfile = localStorage.getItem("profile");
     if (storedProfile) {
       const profile = JSON.parse(storedProfile);
       console.log(profile);

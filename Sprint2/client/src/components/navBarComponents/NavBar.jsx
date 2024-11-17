@@ -23,12 +23,12 @@ function NavBar() {
   // log out function to log the user out of google and set the profile array to null
   const logOut = () => {
     googleLogout();
-    localStorage.removeItem("googleProfile");
+    localStorage.removeItem("profile");
     window.location.reload();
   };
 
   useEffect(() => {
-    const storedProfile = localStorage.getItem("googleProfile");
+    const storedProfile = localStorage.getItem("profile");
     if (storedProfile) {
       const profile = JSON.parse(storedProfile);
       setLogButton(logoutButton);

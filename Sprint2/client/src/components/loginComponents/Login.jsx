@@ -32,7 +32,7 @@ function Login() {
         )
         .then((res) => {
           console.log("User info fetched:", res.data);
-          localStorage.setItem("googleProfile", JSON.stringify(res.data));
+          localStorage.setItem("profile", JSON.stringify(res.data));
           navigate("/");
           window.location.reload();
         })
