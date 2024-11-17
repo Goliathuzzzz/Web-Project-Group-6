@@ -1,67 +1,60 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import * as maptilersdk from '@maptiler/sdk';
 import "@maptiler/sdk/dist/maptiler-sdk.css";
 import stations from '../../../../server/mock-data/ev_stations_mock_data.json';
-import './map.css';
+import InfoBox from './InfoBox';
+import CustomMarker from './Marker';
+import ReactDOM from 'react-dom';
 
-export default function Map() {
+function Map() {
     const mapContainer = useRef(null);
     const map = useRef(null);
+    const [activeStation, setActiveStation] = useState(null);
+    const [markers, setMarkers] = useState([]); // State for storing markers
 
-    const position = { lng: 25.3824874, lat: 64.4191221 }; // initial map position
-    const zoom = 5;
+    const position = { lng: 25.3824874, lat: 64.4191221 }; // Initial map position
+    const zoom = 3;
 
     maptilersdk.config.apiKey = 'n0VzL3XOSQc7wKmZ93RG';
 
     useEffect(() => {
         if (map.current) return; // Prevent re-initializing the map
-        
-        /*
-        const bounds = [
-            [59.4, 20.7], // Southwest corner (Finland)
-            [70.1, 31.6], // Northeast corner (Finland)
-        ];
-        */
 
         // Initialize the map
         map.current = new maptilersdk.Map({
             container: mapContainer.current,
-            style: "https://api.maptiler.com/maps/e44b03e8-e159-489f-9e95-78adfed9c239/style.json?key=n0VzL3XOSQc7wKmZ93RG",
+            style: `https://api.maptiler.com/maps/e44b03e8-e159-489f-9e95-78adfed9c239/style.json?key=${maptilersdk.config.apiKey}`,
             center: [position.lng, position.lat],
             zoom: zoom,
-            minZoom: 4,
-            //maxBounds: bounds,
+            minZoom: zoom,
+            maxBounds: [
+                [18.7, 57.4],
+                [33.6, 71.1],
+            ],
         });
 
-        // Check if stations data exists and add markers
-        if (stations && stations.length > 0) {
-            stations.forEach((station) => {
-                const { latitude, longitude } = station.coordinates;
+        const newMarkers = stations.map(station => {
+            const markerElement = document.createElement('div');
+            ReactDOM.render(
+                <CustomMarker
+                    connector={station.connectors[0]}
+                    size="32px"
+                    onClick={() => setActiveStation(station)}
+                />,
+                markerElement
+            )
 
-                // Check if the coordinates are valid before adding markers
-                if (latitude && longitude) {
-                    const marker = new maptilersdk.Marker()
-                        .setLngLat([longitude, latitude])
-                        .addTo(map.current);
+            const marker = new maptilersdk.Marker({ element: markerElement })
+                .setLngLat([station.coordinates.longitude, station.coordinates.latitude])
+                .addTo(map.current)
+            return marker;
+        }).filter(marker => marker !== null);
+        
+        setMarkers(newMarkers);
 
-                    // Popup content with station information
-                    const popupContent = `
-                        <strong>${station.name}</strong><br />
-                        Location: ${station.location}<br />
-                        Connectors: ${station.connectors.join(', ')}<br />
-                        Availability: ${station.availability}<br />
-                        Provider: ${station.provider}
-                    `;
-
-                    // Set popup on the marker
-                    marker.setPopup(new maptilersdk.Popup().setHTML(popupContent));
-                } else {
-                    console.error("Invalid coordinates for station: ", station);
-                }
-            });
-        } else {
-            console.error("No station data available");
-        }
+        map.current.on('click', () => {
+            setActiveStation(null);
+        });
 
         // Clean up on unmount
         return () => {
@@ -70,11 +63,14 @@ export default function Map() {
                 map.current = null;
             }
         };
-    }, []);  // Empty dependency array ensures the effect runs only once
+    }, [activeStation]);  // Empty dependency array ensures the effect runs only once
 
     return (
-        <div className="map-wrap">
-            <div ref={mapContainer} className="map" />
+        <div className="relative w-full h-screen">
+            <div ref={mapContainer} className="absolute w-full h-full" />
+            {activeStation && <InfoBox station={activeStation} />}
         </div>
     );
 }
+
+export default Map;

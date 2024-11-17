@@ -19,7 +19,7 @@ function NavBar({ profilePicture }) {
   };
 
   return (
-    <div className="relative flex items-center justify-between px-4 py-2 bg-gradient-to-b from-darkSlate to-customBlue mb-10 nav-phone:px-12">
+    <div className="relative flex items-center justify-between px-4 py-2 bg-gradient-to-b from-darkSlate to-customBlue nav-phone:px-12">
       {/* Logo on the left */}
       <div className="flex items-center">
         <Link to={"/"}>
