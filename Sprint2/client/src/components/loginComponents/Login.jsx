@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import google from "../assets/images/google_logo.png";
-import image from "../assets/images/login_page.png";
+import google from "../../assets/images/google_logo.png";
+import image from "../../assets/images/login_page.png";
 import { Link } from "react-router-dom";
 
 function Login() {
@@ -21,7 +21,7 @@ function Login() {
 
   return (
     <div className="flex items-center justify-center h-screen w-screen">
-      <div className="flex flex-col bg-white max-w-[450px] min-w-[300px] lg:w-1/2 xl:w-1/2 sm:w-1/2 justify-center items-center h-2/3 w-1/4 font-Roboto mb-36 rounded-tl-sm rounded-bl-sm">
+      <div className="flex flex-col bg-white max-w-[450px] min-w-[300px] lg:w-1/2 xl:w-1/2 sm:w-1/2 justify-center items-center h-2/3 w-1/4 font-Roboto mb-24 rounded-tl-sm rounded-bl-sm">
         <button className="flex items-center justify-center border p-2 mb-2.5 w-3/4 rounded-sm border-borderBlue">
           <img src={google} alt="Google Logo" className="w-6 h-6 mr-2" />
           <span className="text-gray-700 font-medium text-xs">
@@ -35,7 +35,7 @@ function Login() {
         >
           <input
             className="flex w-3/4 border mb-2.5 rounded-sm bg-inputGrey text-xs p-1 border-borderBlue pl-2 pt-2 pb-2"
-            placeholder="email"
+            placeholder="Email"
             onChange={(e) => setEmail(e.target.value)}
           ></input>
           <input
@@ -67,14 +67,14 @@ function Login() {
         <p className="mt-4 text-xs">
           Don't have an account?{" "}
           <Link
-            to="/register"
+            to="/registration"
             className="text-blue-500 font-bold hover:text-blue-900"
           >
             Sign up
           </Link>
         </p>
       </div>
-      <div className="h-screen flex items-center justify-center mb-36">
+      <div className="h-screen flex items-center justify-center mb-24">
         <img
           src={image}
           alt="placeholder"
