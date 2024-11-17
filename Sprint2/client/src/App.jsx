@@ -9,8 +9,7 @@ import ReviewList from "./components/ReviewComponents/ReviewList";
 import Calculator from "./components/CalculatorComponents/Calculator";
 import PowerUp from "./components/poweredUpComponent/PoweredUp";
 import CallToAction from "./components/callToActionComponent/CallToAction";
-import Map from "./components/Map";
-import stations from "../../server/mock-data/ev_stations_mock_data.json";
+import Map from "./components/mapComponents/Map";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import ProfilePic from "./components/myPageTopComponents/ProfilePic";
@@ -52,7 +51,7 @@ function App() {
               }
             />
             <Route path="about" element={<></>} /> {/* Placeholder element */}
-            <Route path="map" element={<></>} /> {/* Placeholder element */}
+            <Route path="map" element={<Map/>} /> {/* Placeholder element */}
             <Route path="registration" element={<></>} />{" "}
             {/* Placeholder element */}
           </Route>
