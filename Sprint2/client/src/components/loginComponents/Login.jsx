@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import google from "../../assets/images/google_logo.png";
 import image from "../../assets/images/login_page.png";
-import { googleLogout, useGoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 
 function Login() {
@@ -30,17 +30,11 @@ function Login() {
         )
         .then((res) => {
           console.log("User info fetched:", res.data);
-          localStorage.setItem("profile", JSON.stringify(res.data));
+          localStorage.setItem("googleProfile", JSON.stringify(res.data));
         })
         .catch((err) => console.log("Error fetching user info:", err));
     }
   }, [user]);
-
-  // log out function to log the user out of google and set the profile array to null
-  const gLogOut = () => {
-    googleLogout();
-    localStorage.removeItem("profile");
-  };
 
   const handleLogin = () => {
     if (username && password) {

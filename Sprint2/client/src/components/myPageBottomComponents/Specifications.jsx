@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from "react";
 import Car from "../../assets/images/tesla_car.png";
 import Charger from "../../assets/images/Tesla.png";
-import { useProfile } from "../../ProfileContext";
 
 function Specifications() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   useEffect(() => {
-    const storedProfile = localStorage.getItem("profile");
+    const storedProfile = localStorage.getItem("googleProfile");
     if (storedProfile) {
       const profile = JSON.parse(storedProfile);
       console.log(profile);
       setName(profile.name);
       setEmail(profile.email);
     }
-  });
+  }, []);
 
   return (
     <div className="flex flex-col lg:flex-row justify-center gap-8 p-4">

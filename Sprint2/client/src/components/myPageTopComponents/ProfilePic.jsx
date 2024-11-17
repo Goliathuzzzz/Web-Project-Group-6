@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from "react";
 import edit from "../../assets/images/edit.png";
-import { useProfile } from "../../ProfileContext";
 
 function ProfilePic() {
   const [name, setName] = useState("");
   const [pic, setPic] = useState(null);
-  const { setProfile } = useProfile();
   useEffect(() => {
-    const storedProfile = localStorage.getItem("profile");
+    const storedProfile = localStorage.getItem("googleProfile");
     if (storedProfile) {
       const profile = JSON.parse(storedProfile);
-      setProfile(profile);
       console.log(profile);
       setName(profile.name);
       setPic(profile.picture);
     }
-  }, [setProfile]);
+  }, []);
 
   return (
     <div className="flex bg-gradient-to-b from-darkerBlue to-mediumBlue md:max-w-md justify-between rounded-lg shadow-lg shadow-black">
