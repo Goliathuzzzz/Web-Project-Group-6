@@ -3,7 +3,7 @@ import Search from "../../assets/images/search.png";
 export default function SearchBar() {
   return (
     <>
-      {/* Search Bar: Visible only on medium and larger screens */}
+      {/* Search bar visible only on medium and larger screens */}
       <div className="relative items-center w-1/4 mx-6 ml-20 hidden md:flex">
         <input
           type="text"
@@ -18,7 +18,7 @@ export default function SearchBar() {
         />
       </div>
 
-      {/* Replacement Image: Visible only on smaller screens */}
+      {/* Replacement image visible only on smaller screens */}
       <div className="md:hidden flex items-center mx-6">
         <img
           src={Search}
