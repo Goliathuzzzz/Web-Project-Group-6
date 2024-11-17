@@ -51,10 +51,7 @@ function App() {
             />
             <Route path="about" element={<>{/* Placeholder element */}</>} />
             <Route path="map" element={<>{/* Placeholder element */}</>} />
-            <Route
-              path="registration"
-              element={<>{/* Placeholder element */}</>}
-            />{" "}
+            <Route path="registration" element={<Register />} />{" "}
           </Route>
         </Routes>
         <Footer />
