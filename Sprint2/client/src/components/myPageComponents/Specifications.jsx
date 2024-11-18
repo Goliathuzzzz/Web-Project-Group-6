@@ -1,27 +1,30 @@
 import React, { useEffect, useState } from "react";
 import Car from "../../assets/images/tesla_car.png";
 import Charger from "../../assets/images/Tesla.png";
+import { chargerTypes, chargerPowers, serviceProviders } from "./selectOptions";
+import { reviews } from "./reviews";
 
 function Specifications() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [name, setName] = useState("Jonne Roponen");
+  const [email, setEmail] = useState("jonneroponen@example.com");
+  const [location, setLocation] = useState("Helsinki");
+
   useEffect(() => {
     const storedProfile = localStorage.getItem("profile");
     if (storedProfile) {
       const profile = JSON.parse(storedProfile);
-      console.log(profile);
       setName(profile.name);
       setEmail(profile.email);
     }
   }, []);
 
   return (
-    <div className="flex flex-col lg:flex-row justify-center gap-8 p-4">
+    <div className="flex flex-col lg:flex-row justify-center gap-4 lg:gap-7 p-4">
       {/* Main specifications section */}
-      <div className="flex bg-gradient-to-b from-darkSlate to-customBlue rounded-sm gap-4 p-4 w-fit">
+      <div className="flex flex-col main-spec:flex-row bg-gradient-to-b from-darkerBlue to-darkBlue rounded-sm gap-4 p-4 w-fit mx-auto lg:mx-0">
         {/* Left side car spec and filters */}
         <div className="flex flex-col space-y-4">
-          <div className="car-spec-container p-5 text-left text-white bg-myPageBlue rounded-sm">
+          <div className="p-5 text-left text-white bg-myPageBlue rounded-sm">
             <h1 className="text-base font-Orbitron">Tesla</h1>
             <h2 className="text-base font-Orbitron">Model X</h2>
             <img
@@ -32,39 +35,33 @@ function Specifications() {
           </div>
 
           {/* Map filters section */}
-          <div className="text-base font-Orbitron text-white bg-myPageBlue p-4 rounded-sm">
+          <div className="text-base font-Orbitron text-white bg-myPageBlue p-4 pb-20 rounded-sm h-full">
             <h3 className="mb-2 text-salmonRed">Map Filters</h3>
 
             <div className="mb-4">
               <label className="block mb-1">Charger Type</label>
-              <select className="w-full p-2 bg-darkSlate text-white rounded-sm">
-                <option>Type 1</option>
-                <option>Type 2</option>
-                <option>Type 3</option>
-                <option>Type 4</option>
-                <option>Type 5</option>
+              <select className="w-full p-2 bg-mediumBlue text-white rounded-sm bg-no-repeat bg-[calc(100%-1rem)_center] bg-[length:1.25rem_1.25rem] bg-dropdownArrow appearance-none hover:bg-myPageBlue hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                {chargerTypes.map((type, index) => (
+                  <option key={index}>{type}</option>
+                ))}
               </select>
             </div>
 
             <div className="mb-4">
               <label className="block mb-1">Charger Power (kW)</label>
-              <select className="w-full p-2 bg-darkSlate text-white rounded-sm">
-                <option>0-50 kW</option>
-                <option>50-100 kW</option>
-                <option>100-150 kW</option>
-                <option>150-250 kW</option>
-                <option>250-350 kW</option>
+              <select className="w-full p-2 bg-mediumBlue text-white rounded-sm bg-no-repeat bg-[calc(100%-1rem)_center] bg-[length:1.25rem_1.25rem] bg-dropdownArrow appearance-none hover:bg-myPageBlue hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                {chargerPowers.map((power, index) => (
+                  <option key={index}>{power}</option>
+                ))}
               </select>
             </div>
 
             <div>
               <label className="block mb-1">Service Provider</label>
-              <select className="w-full p-2 bg-darkSlate text-white rounded-sm">
-                <option>Provider 1</option>
-                <option>Provider 2</option>
-                <option>Provider 3</option>
-                <option>Provider 4</option>
-                <option>Provider 5</option>
+              <select className="w-full p-2 bg-mediumBlue text-white rounded-sm bg-no-repeat bg-[calc(100%-1rem)_center] bg-[length:1.25rem_1.25rem] bg-dropdownArrow appearance-none hover:bg-myPageBlue hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                {serviceProviders.map((provider, index) => (
+                  <option key={index}>{provider}</option>
+                ))}
               </select>
             </div>
           </div>
@@ -79,51 +76,40 @@ function Specifications() {
       {/* Reviews and profile Section */}
       <div className="flex flex-col gap-4 lg:items-start items-center">
         {/* Reviews section */}
-        <div className="bg-gradient-to-b from-darkSlate to-customBlue text-white rounded-sm p-4 w-80 h-96 overflow-y-scroll">
-          <h2 className="p-3 text-lg font-Orbitron mb-4 bg-myPageBlue text-eGreen rounded-sm">
+        <div className="bg-gradient-to-b from-darkerBlue to-darkBlue text-white rounded-sm p-4 w-80 h-96 overflow-y-scroll">
+          <h2 className="p-3 text-lg font-Orbitron mb-4 bg-myPageBlue text-eGreen rounded-sm pl-4">
             My Reviews
           </h2>
           <div className="space-y-4">
-            <div className="p-3 bg-myPageBlue rounded-sm">
-              <p>"Review 1."</p>
-              <span>- Reviewer 1</span>
-            </div>
-            <div className="p-3 bg-myPageBlue rounded-sm">
-              <p>"Review 2."</p>
-              <span>- Reviewer 2</span>
-            </div>
-            <div className="p-3 bg-myPageBlue rounded-sm">
-              <p>"Review 3."</p>
-              <span>- Reviewer 3</span>
-            </div>
-            <div className="p-3 bg-myPageBlue rounded-sm">
-              <p>"Review 4."</p>
-              <span>- Reviewer 4</span>
-            </div>
-            <div className="p-3 bg-myPageBlue rounded-sm">
-              <p>"Review 5."</p>
-              <span>- Reviewer 5</span>
-            </div>
+            {reviews.map((review, index) => (
+              <div
+                key={index}
+                className="p-3 pl-4 bg-myPageBlue rounded-sm h-24 overflow-y-scroll scrollbar-thin scrollbar-thumb-darkBlue scrollbar-track-mediumBlue"
+              >
+                <p className="text-sm">"{review.text}"</p>
+                <span className="text-xs">- {review.reviewer}</span>
+              </div>
+            ))}
           </div>
         </div>
 
         {/* Profile section */}
-        <div className="bg-gradient-to-b from-darkSlate to-customBlue text-white rounded-sm p-4 w-80">
-          <h3 className="text-base font-Orbitron mb-2 font-bold">
+        <div className="bg-gradient-to-b from-darkerBlue to-darkBlue text-white rounded-sm px-4 py-3 w-80">
+          <h3 className="text-base font-Orbitron mb-1 font-bold pl-1">
             Profile Information
           </h3>
-          <div className="space-y-2">
+          <div className="space-y-0.5 bg-myPageBlue p-3 rounded-sm">
             <div>
-              <span className="font-bold">Name: </span>
-              {name}
+              <span className="font-bold text-base font-Roboto">Name </span>
+              <span className="ml-3 text-xs font-Roboto">{name}</span>
             </div>
             <div>
-              <span className="font-bold">Email: </span>
-              {email}
+              <span className="font-bold font-Roboto">Email </span>
+              <span className="ml-3 text-xs">{email}</span>
             </div>
             <div>
-              <span className="font-bold">Location: </span>
-              {""}
+              <span className="font-bold font-Roboto">Location </span>
+              <span className="ml-3 text-xs ">{location}</span>
             </div>
           </div>
         </div>
