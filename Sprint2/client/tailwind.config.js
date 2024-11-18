@@ -54,7 +54,9 @@ export default {
         'nav-phone': '440px',
         'calc-size': '1024px',
         'map-buttons-size': '1200px',
-        'footer-tiny': '362px'
+        'footer-tiny': '362px',
+        'main-spec': '538px',
+        'my-page': '915px',
       },
       backgroundPosition: {
         'custom': 'right 35% bottom 45%',
