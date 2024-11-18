@@ -42,7 +42,7 @@ function App() {
               path="dashboard"
               element={
                 <>
-                  <div className="flex flex-col md:flex-row md:justify-center md:gap-7">
+                  <div className="flex flex-col my-page:flex-row justify-center my-page:gap-5">
                     <ProfilePic />
                     <SavedStations />
                   </div>
