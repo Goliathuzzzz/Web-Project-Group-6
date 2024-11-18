@@ -1,7 +1,7 @@
 import React from "react";
 import Hero from "./components/heroComponents/Hero";
 import Footer from "./components/footerComponents/Footer";
-import Specifications from "./components/myPageBottomComponents/Specifications";
+import Specifications from "./components/myPageComponents/Specifications";
 import Login from "./components/loginComponents/Login";
 import Register from "./components/registerComponents/Register";
 import ProcessList from "./components/processComponents/ProcessList";
@@ -12,8 +12,8 @@ import CallToAction from "./components/callToActionComponent/CallToAction";
 import Map from "./components/mapComponents/Map";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
-import ProfilePic from "./components/myPageTopComponents/ProfilePic";
-import SavedStations from "./components/myPageTopComponents/SavedStations";
+import ProfilePic from "./components/myPageComponents/ProfilePic";
+import SavedStations from "./components/myPageComponents/SavedStations";
 
 /* Placeholder code for testing */
 function App() {
@@ -50,10 +50,9 @@ function App() {
                 </>
               }
             />
-            <Route path="about" element={<></>} /> {/* Placeholder element */}
+            <Route path="about" element={<>{/* Placeholder element */}</>} />
             <Route path="map" element={<Map/>} /> {/* Placeholder element */}
-            <Route path="registration" element={<></>} />{" "}
-            {/* Placeholder element */}
+            <Route path="registration" element={<Register />} />{" "}
           </Route>
         </Routes>
         <Footer />
