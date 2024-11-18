@@ -5,6 +5,7 @@ const {
   getAllStations,
   getStationById,
   createStation,
+  replaceStation,
   updateStation,
   deleteStation,
 } = require('../controllers/stationController');
@@ -23,6 +24,9 @@ router.get('/:stationId', getStationById);
 
 // PUT /stations/:stationId
 router.put('/:stationId', updateStation);
+
+// PATCH /stations/:stationId
+router.patch('/:stationId', replaceStation);
 
 // DELETE /stations/:stationId
 router.delete('/:stationId', deleteStation);

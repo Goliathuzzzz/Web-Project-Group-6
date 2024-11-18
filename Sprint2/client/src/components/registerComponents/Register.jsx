@@ -1,31 +1,31 @@
-import React, { useState } from 'react';
-import google from '../../assets/images/google_logo.png';
-import register from '../../assets/images/registration_page.png';
+import React, { useState } from "react";
+import google from "../../assets/images/google_logo.png";
+import register from "../../assets/images/registration_page.png";
 
 function Register() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [confirmEmail, setConfirmEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [confirmEmail, setConfirmEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleRegistration = () => {
     if (!name || !email || !confirmEmail || !password || !confirmPassword) {
-      alert('Please fill in all fields.');
+      alert("Please fill in all fields.");
       return;
     }
     if (email !== confirmEmail) {
-      alert('Please provide the correct email.');
+      alert("Please provide the correct email.");
       return;
     }
     if (password !== confirmPassword) {
-      alert('Please provide the correct password.');
+      alert("Please provide the correct password.");
       return;
     }
 
     //simu successful registration
-    console.log('Registered successfully:', { name, email });
-    alert('Registration successful!');
+    console.log("Registered successfully:", { name, email });
+    alert("Registration successful!");
   };
 
   return (
@@ -38,11 +38,13 @@ function Register() {
           </span>
         </button>
         <p className="flex mb-2.5 font-bold">Or</p>
-        <form className="w-full flex flex-col items-center"
-        onSubmit={(e) => {
+        <form
+          className="w-full flex flex-col items-center"
+          onSubmit={(e) => {
             e.preventDefault();
             handleRegistration();
-          }}>
+          }}
+        >
           <input
             className="flex w-3/4 border mb-3 rounded-sm bg-inputGrey text-xs p-1 border-borderBlue pl-2 pt-2 pb-2"
             placeholder="Name"

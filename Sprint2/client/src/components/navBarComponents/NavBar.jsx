@@ -1,14 +1,43 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import logo from "../../assets/images/logo.png";
 import userCircle from "../../assets/images/user.png";
 import menuIcon from "../../assets/images/menu.png";
 import PageLinks from "../PageLinks";
 import Search from "../../assets/images/search.png";
 import { Link } from "react-router-dom";
+import { googleLogout } from "@react-oauth/google";
 
-function NavBar({ profilePicture }) {
+function NavBar() {
+  const loginButton = (
+    <Link to="/login">
+      <button className="bg-gradient-to-r from-eGreen to-darkGreen py-2 px-6 nav-phone:px-12 rounded-full hover:bg-darkGreen hover:text-white transition-all duration-500 font-bold text-1xl font-Roboto">
+        Log In
+      </button>
+    </Link>
+  );
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [logButton, setLogButton] = useState(loginButton);
+  const [profilePic, setProfilePic] = useState(userCircle);
+
+  // log out function to log the user out of google and set the profile array to null
+  const logOut = () => {
+    googleLogout();
+    localStorage.removeItem("profile");
+    window.location.reload();
+  };
+
+  useEffect(() => {
+    const storedProfile = localStorage.getItem("profile");
+    if (storedProfile) {
+      const profile = JSON.parse(storedProfile);
+      setLogButton(logoutButton);
+      setProfilePic(profile.picture);
+    } else {
+      setLogButton(loginButton);
+      setProfilePic(userCircle);
+    }
+  }, []);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -17,6 +46,15 @@ function NavBar({ profilePicture }) {
   const toggleSearch = () => {
     setSearchOpen(!searchOpen);
   };
+
+  const logoutButton = (
+    <button
+      onClick={logOut}
+      className="bg-gradient-to-r from-eGreen to-darkGreen py-2 px-6 nav-phone:px-12 rounded-full hover:bg-darkGreen hover:text-white transition-all duration-500 font-bold text-1xl font-Roboto"
+    >
+      Log Out
+    </button>
+  );
 
   return (
     <div className="relative flex items-center justify-between px-4 py-2 bg-gradient-to-b from-darkerBlue to-darkBlue nav-phone:px-12">
@@ -50,7 +88,7 @@ function NavBar({ profilePicture }) {
         />
         <a href="#user-profile">
           <img
-            src={profilePicture || userCircle}
+            src={profilePic}
             alt="User profile"
             className="h-8 w-auto rounded-full"
           />
@@ -70,11 +108,7 @@ function NavBar({ profilePicture }) {
         <button onClick={toggleMenu} className="md:hidden">
           <img src={menuIcon} alt="Menu icon" className="h-8 w-auto" />
         </button>
-        <Link to="/login">
-          <button className="bg-gradient-to-r from-eGreen to-darkGreen py-2 px-6 nav-phone:px-12 rounded-full hover:bg-darkGreen hover:text-white transition-all duration-500 font-bold text-1xl font-Roboto">
-            Log In
-          </button>
-        </Link>
+        {logButton}
       </div>
 
       {/* Conditional rendering of search bar */}

@@ -1,49 +1,108 @@
 const Station = require('../models/stationModel');
+const mongoose = require('mongoose');
 
-const getAllStations = (req, res) => {
-  const stations = Station.getAll();
-  res.status(200).json(stations);
+const getAllStations = async (req, res) => {
+  try {
+    const stations = await Station.find({}).sort({ createdAt: -1 });
+    res.status(200).json(stations);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to get stations' });
+  }
 };
 
-const createStation = (req, res) => {
-  const newStation = Station.addOne({ ...req.body });
-
-  if (newStation) {
+const createStation = async (req, res) => {
+  try {
+    const newStation = await Station.create({ ...req.body });
     res.status(201).json(newStation);
-  } else {
-    res.status(500).json({ message: 'Failed to create station' });
+  } catch (error) {
+    res
+      .status(400)
+      .json({ message: 'Failed to create station', error: error.message });
   }
 };
 
-const getStationById = (req, res) => {
-  const stationId = req.params.stationId;
-  const station = Station.findById(stationId);
-  if (station) {
-    res.status(200).json(station);
-  } else {
-    res.status(404).json({ message: 'Station not found' });
+const getStationById = async (req, res) => {
+  const { stationId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(stationId)) {
+    return res.status(400).json({ message: 'Invalid station ID' });
+  }
+
+  try {
+    const station = await Station.findById(stationId);
+    if (station) {
+      res.status(200).json(station);
+    } else {
+      res.status(404).json({ message: 'Station not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to retrieve station' });
   }
 };
 
-const updateStation = (req, res) => {
-  const stationId = req.params.stationId;
-  const updatedStation = Station.updateOneById(stationId, { ...req.body });
+//find station by id and replace it with new station data
+const replaceStation = async (req, res) => {
+  const { stationId } = req.params;
 
-  if (updatedStation) {
-    res.status(200).json(updatedStation);
-  } else {
-    res.status(404).json({ message: 'Station not found' });
+  if (!mongoose.Types.ObjectId.isValid(stationId)) {
+    return res.status(400).json({ message: 'Invalid station ID' });
+  }
+
+  try {
+    const replaceStation = await Station.findOneAndReplace(
+      { _id: stationId },
+      { ...req.body },
+      { new: true }
+    );
+    if (replaceStation) {
+      res.status(200).json(replaceStation);
+    } else {
+      res.status(404).json({ message: 'Station not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to update station' });
   }
 };
 
-const deleteStation = (req, res) => {
-  const stationId = req.params.stationId;
-  const isDeleted = Station.deleteOneById(stationId);
+//find station by id and update it with new station data
+const updateStation = async (req, res) => {
+  const { stationId } = req.params;
 
-  if (isDeleted) {
-    res.status(200).json({ message: 'Station deleted successfully' });
-  } else {
-    res.status(404).json({ message: 'Station not found' });
+  if (!mongoose.Types.ObjectId.isValid(stationId)) {
+    return res.status(400).json({ message: 'Invalid station ID' });
+  }
+
+  try {
+    const replaceStation = await Station.findOneAndUpdate(
+      { _id: stationId },
+      { ...req.body },
+      { new: true }
+    );
+    if (replaceStation) {
+      res.status(200).json(replaceStation);
+    } else {
+      res.status(404).json({ message: 'Station not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to update station' });
+  }
+};
+
+const deleteStation = async (req, res) => {
+  const { stationId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(stationId)) {
+    return res.status(400).json({ message: 'Invalid station ID' });
+  }
+  try {
+    const deletedStation = await Station.findOneAndDelete({ _id: stationId });
+    if (deletedStation) {
+      res.status(200).json({ message: 'Station deleted successfully' });
+    } else {
+      res.status(404).json({ message: 'Station not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to delete station' });
   }
 };
 
@@ -51,6 +110,7 @@ module.exports = {
   getAllStations,
   getStationById,
   createStation,
+  replaceStation,
   updateStation,
   deleteStation,
 };
