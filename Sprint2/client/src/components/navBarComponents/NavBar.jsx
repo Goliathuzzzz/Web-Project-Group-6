@@ -113,7 +113,7 @@ function NavBar() {
 
       {/* Conditional rendering of search bar */}
       {searchOpen && (
-        <div className="absolute top-full left-0 w-full bg-gradient-to-b from-darkerBlue to-darkBlue p-4 md:hidden">
+        <div className="absolute top-full left-0 w-full bg-gradient-to-b from-darkerBlue to-darkBlue p-4 md:hidden z-10">
           <input
             type="text"
             name="query"
@@ -125,7 +125,7 @@ function NavBar() {
 
       {/* Conditional rendering of PageLinks for smaller screens */}
       {menuOpen && (
-        <div className="absolute top-14 left-0 w-full bg-gradient-to-b from-darkerBlue to-darkBlue md:hidden">
+        <div className="absolute top-14 left-0 w-full bg-gradient-to-b from-darkerBlue to-darkBlue md:hidden z-10">
           <nav className="flex flex-col space-y-4 p-4">
             <PageLinks
               parentClass="flex flex-col space-y-4"
