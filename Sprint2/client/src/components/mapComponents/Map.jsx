@@ -1,69 +1,93 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { createRoot } from 'react-dom/client';
 import * as maptilersdk from '@maptiler/sdk';
 import "@maptiler/sdk/dist/maptiler-sdk.css";
 import stations from '../../../../server/mock-data/ev_stations_mock_data.json';
 import InfoBox from './InfoBox';
 import CustomMarker from './Marker';
-import ReactDOM from 'react-dom';
+
+const INITIAL_POSITION = { lng: 25.3824874, lat: 64.4191221 };
+const INITIAL_ZOOM = 3;
+const MAPTILER_API_KEY = 'n0VzL3XOSQc7wKmZ93RG';
+
+maptilersdk.config.apiKey = MAPTILER_API_KEY;
 
 function Map() {
     const mapContainer = useRef(null);
     const map = useRef(null);
     const [activeStation, setActiveStation] = useState(null);
-    const [markers, setMarkers] = useState([]); // State for storing markers
+    const [markers, setMarkers] = useState([]);
 
-    const position = { lng: 25.3824874, lat: 64.4191221 }; // Initial map position
-    const zoom = 3;
+    const handleMarkerClick = (e, station) => {
+        e.stopPropagation();
+        setActiveStation(station);
+    };
 
-    maptilersdk.config.apiKey = 'n0VzL3XOSQc7wKmZ93RG';
-
-    useEffect(() => {
-        if (map.current) return; // Prevent re-initializing the map
-
-        // Initialize the map
-        map.current = new maptilersdk.Map({
-            container: mapContainer.current,
-            style: `https://api.maptiler.com/maps/e44b03e8-e159-489f-9e95-78adfed9c239/style.json?key=${maptilersdk.config.apiKey}`,
-            center: [position.lng, position.lat],
-            zoom: zoom,
-            minZoom: zoom,
-            maxBounds: [
-                [18.7, 57.4],
-                [33.6, 71.1],
-            ],
-        });
-
-        const newMarkers = stations.map(station => {
+    // Function to add markers to the map
+    const addMarkers = (mapInstance) => {
+        return stations.map(station => {
             const markerElement = document.createElement('div');
-            ReactDOM.render(
+            const root = createRoot(markerElement);
+
+            root.render(
                 <CustomMarker
+                    key={`${station.coordinates.latitude}-${station.coordinates.longitude}-${station.connectors[0]?.type}`}
                     connector={station.connectors[0]}
                     size="32px"
-                    onClick={() => setActiveStation(station)}
-                />,
-                markerElement
-            )
+                />
+            );
 
             const marker = new maptilersdk.Marker({ element: markerElement })
                 .setLngLat([station.coordinates.longitude, station.coordinates.latitude])
-                .addTo(map.current)
+                .addTo(mapInstance);
+
+            marker.getElement().addEventListener('click', (e) => handleMarkerClick(e, station));
+
             return marker;
-        }).filter(marker => marker !== null);
-        
+        });
+    };
+
+    // Initialize the map
+    const initializeMap = (mapContainerElement) => {
+        return new maptilersdk.Map({
+            container: mapContainerElement,
+            style: `https://api.maptiler.com/maps/e44b03e8-e159-489f-9e95-78adfed9c239/style.json?key=${maptilersdk.config.apiKey}`,
+            center: [INITIAL_POSITION.lng, INITIAL_POSITION.lat],
+            zoom: INITIAL_ZOOM,
+            minZoom: INITIAL_ZOOM,
+            maxBounds: [
+                [18.7, 59.4], 
+                [33.6, 71.1],
+            ],
+            pitch: 0,
+            bearing: 0,
+        });
+    };
+
+    useEffect(() => {
+        if (map.current) return; // Prevent reinitialization if the map is already initialized
+
+        map.current = initializeMap(mapContainer.current);
+
+        // Add markers to the map
+        const newMarkers = addMarkers(map.current);
         setMarkers(newMarkers);
 
-        map.current.on('click', () => {
-            setActiveStation(null);
-        });
+        // Close the info box when the map is clicked
+        const handleMapClick = () => setActiveStation(null);
+        map.current.on('click', handleMapClick);
 
-        // Clean up on unmount
+        // Cleanup on unmount
         return () => {
-            if (map.current) {
-                map.current.remove();
-                map.current = null;
-            }
+            newMarkers.forEach((marker) => {
+                marker.getElement().removeEventListener('click', handleMarkerClick);
+                marker.remove();
+            });
+            map.current.off('click', handleMapClick);
+            map.current.remove();
+            map.current = null;
         };
-    }, [activeStation]);  // Empty dependency array ensures the effect runs only once
+    }, []);
 
     return (
         <div className="relative w-full h-screen">
