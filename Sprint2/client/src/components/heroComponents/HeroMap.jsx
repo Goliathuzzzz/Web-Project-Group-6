@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Map from "../../assets/images/map_mini.png";
 import Search from "../../assets/images/search.png";
 
@@ -23,11 +24,12 @@ function HeroMap() {
               className="absolute left-3 top-1.5 h-5 w-5 text-gray-400 font-Roboto"
             />
           </div>
-          <button
-            className="mt-4 map-buttons-size:mt-0 w-fit py-1.5 px-7 text-sm text-white rounded-full bg-gradient-to-b from-darkerBlue to-darkBlue focus:outline-none focus:ring-2 focus:ring-searchBarSelected font-Roboto whitespace-nowrap"
+          <Link
+            to="/map"
+            className="mt-4 map-buttons-size:mt-0 w-fit py-1.5 px-7 text-sm text-white rounded-full bg-gradient-to-b from-darkerBlue to-darkBlue font-Roboto whitespace-nowrap transform transition-transform duration-200 hover:scale-110 hover:brightness-150"
           >
             Open Map
-          </button>
+          </Link>
         </div>
       </div>
     </>
