@@ -5,8 +5,8 @@ import { chargerTypes, chargerPowers, serviceProviders } from "./selectOptions";
 import { reviews } from "./reviews";
 
 function Specifications() {
-  const [name, setName] = useState("Jonne Roponen");
-  const [email, setEmail] = useState("jonneroponen@example.com");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [location, setLocation] = useState("Helsinki");
 
   useEffect(() => {
