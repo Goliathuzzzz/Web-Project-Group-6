@@ -29,6 +29,7 @@ export default {
         salmonRed: '#FF6B6B',
         borderBlue: '#4CAFB7',
         customBlue: '#1E2139',
+        paleBlue: '#304B7D',
       },
       backgroundImage: {
         'herocar': "url('./src/assets/images/hero_section.png')",
