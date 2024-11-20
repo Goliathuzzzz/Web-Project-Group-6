@@ -58,6 +58,7 @@ export default {
         'footer-tiny': '362px',
         'main-spec': '538px',
         'my-page': '915px',
+        'mini': '410px',
       },
       backgroundPosition: {
         'custom': 'right 35% bottom 45%',

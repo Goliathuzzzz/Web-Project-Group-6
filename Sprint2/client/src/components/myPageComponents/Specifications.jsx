@@ -26,7 +26,7 @@ function Specifications() {
         <div className="flex flex-col space-y-4">
           <div className="p-5 text-left text-white bg-myPageBlue rounded-sm">
             <h1 className="text-base font-Orbitron">Tesla</h1>
-            <h2 className="text-base font-Orbitron">Model X</h2>
+            <h2 className="text-base font-Orbitron">Model Y</h2>
             <img
               src={Charger}
               alt="Tesla Charger"

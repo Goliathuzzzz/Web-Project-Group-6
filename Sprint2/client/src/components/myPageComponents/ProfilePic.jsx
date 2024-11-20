@@ -18,7 +18,7 @@ function ProfilePic() {
 
   return (
     <div className="flex bg-gradient-to-b mx-4 my-page:mr-0 from-darkerBlue to-darkBlue my-page:max-w-md justify-between rounded-sm mt-10">
-      <div className="w-24"></div>
+      <div className="w-16 mini:w-32 sm:w-60 my-page:w-28 lg:w-28"></div>
       <div className="flex flex-col items-center text-white font-Orbitron tracking-wider text-xl mb-3">
         <img
           src={pic}
@@ -27,7 +27,7 @@ function ProfilePic() {
         />
         <h2>{name}</h2>
       </div>
-      <div className="w-8"></div>
+      <div className="w-0 mini:w-20"></div>
       <img
         src={edit}
         alt="Edit profile"
