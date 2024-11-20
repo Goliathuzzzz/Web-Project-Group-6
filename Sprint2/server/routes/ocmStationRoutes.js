@@ -8,7 +8,7 @@ router.get('/', async (req, res) => {
         const response = await axios.get('https://api.openchargemap.io/v3/poi/', {
             params: {
                 output: 'json',
-                countrycode: 'FI', //default to fin
+                countrycode: 'FI',
                 maxresults: maxResults,
                 compact: true,
                 verbose: false,
@@ -50,7 +50,7 @@ router.get('/', async (req, res) => {
 
 module.exports = router;
 
-// from connections:
+// tooodooooo:
 // "Connections":
 //         {
 //           "ID": 307235,
