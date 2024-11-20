@@ -307,3 +307,92 @@ const handleRightClick = () => {
 The `HeroMain` component is now more appealing and interactable, it makes the suer more likely to engage in the message that our hero is trying to accomplish. Carousel is a great mechanic for displaying content dynamically and using useState hook is a great way of achieving this functionality. Similar elements could be used in other parts of the web application. It is also easy to extend the arrays and customize the content.
 
 ---
+
+## **5. Map Component**
+
+## **Summary**
+
+The map component was developed using React and the MapTiler SDK to display EV charging stations with custom markers and an info box for station details. This was an introduction to working with mapping libraries and creating custom UI elements for them, which presented several challenges but also served as a valuable learning experience.
+
+---
+
+## **Challenges Encountered**
+
+1. **Custom Popups**: MapLibre's default popup functionality was initially used to display information about charging stations. However, due to limited customizability, a separate `InfoBox` component was created as a custom popup. This provided greater control over the design but required extra effort to integrate properly. The connection between the markers and the info box is shown below:
+
+    ```javascript
+    const handleMarkerClick = (e, station) => {
+      e.stopPropagation();
+      setActiveStation(station);
+    };
+
+    {activeStation && <InfoBox station={activeStation} />}
+    ```
+
+2. **Switching Map Libraries**: The component was initially built using Leaflet and TileServer GL. However, this approach proved to be overly complex and not as customizable as needed, leading to the use of MapTiler SDK, which provided a more straightforward solution. The map was initialized with the following code:
+
+    ```javascript
+    const initializeMap = (mapContainerElement) => {
+      return new maptilersdk.Map({
+        container: mapContainerElement,
+        style: `https://api.maptiler.com/maps/e44b03e8-e159-489f-9e95-78adfed9c239/style.json?key=${maptilersdk.config.apiKey}`,
+        center: [INITIAL_POSITION.lng, INITIAL_POSITION.lat],
+        zoom: INITIAL_ZOOM,
+        pitch: 0,
+        bearing: 0,
+        geolocateControl: false,
+        navigationControl: false,
+        attributionControl: false, 
+      });
+    };
+    ```
+
+3. **Updating Marker Icons**: Efforts were made to dynamically update marker icons to reflect the clicked state. However, attempts to re-render markers using `useEffect` caused the map to crash. Although the root cause remains unclear, the issue is suspected to relate to the GPU heaviness of the map.
+
+---
+
+## **Key Learnings**
+
+This project provided opportunities to learn several new concepts and techniques:
+
+1. **Using `useEffect`**: `useEffect` was used extensively to manage side effects, such as initializing the map and adding event listeners. Through this project, a better understanding of `useEffect` and the importance of cleanup in preventing memory leaks was gained. For example:
+
+    ```javascript
+    useEffect(() => {
+      if (map.current) return;
+
+      map.current = initializeMap(mapContainer.current);
+
+      const newMarkers = addMarkers(map.current);
+      setMarkers(newMarkers);
+
+      const handleMapClick = () => setActiveStation(null);
+      map.current.on("click", handleMapClick);
+
+      return () => {
+        newMarkers.forEach((marker) => {
+          marker.getElement().removeEventListener("click", handleMarkerClick);
+          marker.remove();
+        });
+        map.current.off("click", handleMapClick);
+        map.current.remove();
+        map.current = null;
+      };
+    }, []);
+    ```
+
+2. **Custom UI Components**: The creation of the `InfoBox` component highlighted the benefits of building custom solutions when library-provided features do not meet specific requirements.
+
+---
+
+## Current Issues and Future Improvements
+
+1. **Marker Updates**: The issue of dynamically updating marker icons without crashing the map remains unresolved. Further investigation is planned to optimize how markers are rendered and updated.
+
+2. **Additional Features**: Future enhancements include adding marker clustering, implementing station filtering, and integrating geolocation features to improve the overall user experience.
+
+---
+
+## Conclusion
+
+The development of the map component provided valuable experience with React and mapping libraries. While some challenges were encountered and a few issues remain, significant progress was made, particularly in understanding `useEffect` and creating custom UI components. The work so far has laid a solid foundation for improving the map further.
