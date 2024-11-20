@@ -31,7 +31,7 @@ function Register() {
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="flex h-2/3 min-h-[450px]">
-        <div className="flex flex-col bg-white max-w-[450px] min-w-[360px] lg:w-1/2 xl:w-1/2 sm:w-1/2 justify-center items-center h-[100%] w-1/4 font-Roboto mb-24 rounded-tl-sm rounded-bl-sm">
+        <div className="flex flex-col bg-white max-w-[450px] min-w-[350px] lg:w-1/2 xl:w-1/2 sm:w-1/2 justify-center items-center h-[100%] w-1/4 font-Roboto mb-24 rounded-tl-sm rounded-bl-sm">
           <button className="flex items-center justify-center border p-2 mb-2.5 w-3/4 rounded-sm border-borderBlue">
             <img src={google} alt="Google Logo" className="w-6 h-6 mr-2" />
             <span className="text-gray-700 font-medium text-xs">
