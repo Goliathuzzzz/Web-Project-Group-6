@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import logo from "../../assets/images/logo.png";
 import userCircle from "../../assets/images/user.png";
 import menuIcon from "../../assets/images/menu.png";
-import PageLinks from "../PageLinks";
+import PageLinks from "./PageLinks";
 import Search from "../../assets/images/search.png";
 import { Link } from "react-router-dom";
 import { googleLogout } from "@react-oauth/google";
@@ -125,7 +125,7 @@ function NavBar() {
 
       {/* Conditional rendering of PageLinks for smaller screens */}
       {menuOpen && (
-        <div className="absolute top-14 left-0 w-full bg-gradient-to-b from-darkerBlue to-darkBlue md:hidden z-10">
+        <div className="absolute top-14 left-0 w-full bg-gradient-to-b from-darkerBlue to-darkBlue md:hidden z-20">
           <nav className="flex flex-col space-y-4 p-4">
             <PageLinks
               parentClass="flex flex-col space-y-4"
