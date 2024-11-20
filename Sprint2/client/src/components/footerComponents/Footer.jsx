@@ -1,8 +1,8 @@
 import { useState } from "react";
-import AboutLinks from "../AboutLinks";
-import ContactsLinks from "../ContactsLinks";
-import LegalLinks from "../LegalLinks";
-import SocialLinks from "../SocialLinks";
+import AboutLinks from "./AboutLinks";
+import ContactsLinks from "./ContactsLinks";
+import LegalLinks from "./LegalLinks";
+import SocialLinks from "./SocialLinks";
 import logo from "../../assets/images/logo_footer.png";
 import footerText from "./footerText";
 import appStore from "../../assets/images/app_store.png";
