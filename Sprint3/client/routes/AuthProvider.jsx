@@ -8,6 +8,7 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("site") || "");
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -48,12 +49,14 @@ const AuthProvider = ({ children }) => {
       });
       const res = await response.json();
       console.log(res);
-      if (res) {
+      if (res.token) {
         setUser(res);
         setToken(res.token);
         localStorage.setItem("site", res.token);
         navigate("/");
         return;
+      } else {
+        setErrorMessage(res.message);
       }
       throw new Error(res.message);
     } catch (err) {
@@ -101,7 +104,7 @@ const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ token, user, loginAction, googleLogin, logOut }}
+      value={{ token, user, loginAction, googleLogin, logOut, errorMessage }}
     >
       {children}
     </AuthContext.Provider>

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import google from "../../assets/images/google_logo.png";
 import image from "../../assets/images/login_page.png";
 import { Link } from "react-router-dom";
@@ -8,9 +7,8 @@ import { useAuth } from "../../../routes/AuthProvider";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState([]);
   const [rememberMe, setRememberMe] = useState(false);
-  const navigate = useNavigate();
+  const [message, setMessage] = useState([]);
   const auth = useAuth();
 
   const handleLogin = (e) => {
@@ -19,9 +17,15 @@ function Login() {
       auth.loginAction(email, password);
       return;
     } else {
-      alert("Please enter both email and password.");
+      setMessage("Please enter both email and password!");
     }
   };
+
+  useEffect(() => {
+    if (auth.errorMessage) {
+      setMessage(auth.errorMessage);
+    }
+  }, [auth.errorMessage]);
 
   const gLogin = () => {
     auth.googleLogin();
@@ -72,6 +76,9 @@ function Login() {
                 Remember Me
               </label>
             </div>
+            {message && (
+              <p className="text-red-500 text-xs mb-2.5">{message}</p>
+            )}
             <button
               type="button"
               onClick={handleLogin}
