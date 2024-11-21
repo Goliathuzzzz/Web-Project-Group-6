@@ -12,8 +12,13 @@ const getAllUsers = async (req, res) => {
 
 const createUser = async (req, res) => {
   try {
-    const newUser = await User.create({ ...req.body });
-    res.status(201).json(newUser);
+    const dupeEmails = await User.find({ email: req.body.email });
+    if (dupeEmails.length == 0) {
+      const newUser = await User.create({ ...req.body });
+      res.status(201).json(newUser);
+    } else {
+      res.status(400).json({ message: "User with this email already exists!" });
+    } 
   } catch (error) {
     res
       .status(400)
