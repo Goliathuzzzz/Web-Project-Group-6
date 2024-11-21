@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
+const userAuth = require('../middleware/userAuth');
 const {
   getAllUsers,
   getUserById,
@@ -14,7 +15,7 @@ const {
 // For user routes that don't require auth
 
 // POST /users (registration)
-router.post('/', createUser);
+router.post('/',createUser);
 
 // GET /users/login (logging in)
 router.post('/login', userLogin)
