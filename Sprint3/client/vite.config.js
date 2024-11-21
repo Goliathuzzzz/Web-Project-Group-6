@@ -9,8 +9,9 @@ export default defineConfig({
     open: true, // Automatically opens the browser
   },
   proxy: {
-  "/api": {
-    target: "http://localhost:4000",
-    changeOrigin: true,
-  },
+    "/api": {
+      target: "http://localhost:4000",
+      changeOrigin: true,
+    },
+  }
 });
