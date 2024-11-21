@@ -10,6 +10,7 @@ const {
   updateUser,
   deleteUser,
   userLogin,
+  getMe,
 } = require('../controllers/userController');
 
 // For user routes that don't require auth
@@ -18,7 +19,10 @@ const {
 router.post('/',createUser);
 
 // GET /users/login (logging in)
-router.post('/login', userLogin)
+router.post('/login', userLogin);
+
+// GET /users/me (Fetch currently logged in user)
+router.get('/me', userAuth, getMe);
 
 //custom middleware for authentication
 router.use(auth);

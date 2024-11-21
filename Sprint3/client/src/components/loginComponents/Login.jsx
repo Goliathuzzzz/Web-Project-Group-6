@@ -5,6 +5,7 @@ import image from "../../assets/images/login_page.png";
 import { useGoogleLogin } from "@react-oauth/google";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "../../../routes/AuthProvider";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -12,6 +13,7 @@ function Login() {
   const [user, setUser] = useState([]);
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
+  const auth = useAuth();
 
   const gLogin = useGoogleLogin({
     onSuccess: (codeResponse) => setUser(codeResponse),
@@ -41,29 +43,13 @@ function Login() {
     }
   }, [user]);
 
-  const handleLogin = () => {
+  const handleLogin = (e) => {
+    e.preventDefault();
     if (email && password) {
-      getUser(email, password);
+      auth.loginAction(email, password);
+      return;
     } else {
       alert("Please enter both email and password.");
-    }
-  };
-
-  const getUser = async (email, password) => {
-    try {
-      const res = await fetch("api/users/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email, password: password }),
-      });
-      if (res.ok) {
-        const userData = await res.json();
-        localStorage.setItem("profile", JSON.stringify(userData));
-      } else {
-        alert("Incorrect email and password combination!");
-      }
-    } catch (error) {
-      console.error("Error fetching user data:", error);
     }
   };
 

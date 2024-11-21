@@ -42,7 +42,7 @@ function Register() {
         body: JSON.stringify(newUser),
       });
       if (res.ok) {
-        console.log("Registered successfully:", { name, email });
+        console.log("Registered successfully:", { username, email });
         alert("Registration successful!");
         navigate("/login");
       } else {

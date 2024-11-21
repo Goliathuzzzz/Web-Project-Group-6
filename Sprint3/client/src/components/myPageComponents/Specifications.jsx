@@ -3,20 +3,20 @@ import Car from "../../assets/images/tesla_car.png";
 import Charger from "../../assets/images/Tesla.png";
 import { chargerTypes, chargerPowers, serviceProviders } from "./selectOptions";
 import { reviews } from "./reviews";
+import { useAuth } from "../../../routes/AuthProvider";
 
 function Specifications() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [location, setLocation] = useState("Helsinki");
+  const { user } = useAuth();
 
   useEffect(() => {
-    const storedProfile = localStorage.getItem("profile");
-    if (storedProfile) {
-      const profile = JSON.parse(storedProfile);
-      setName(profile.name);
-      setEmail(profile.email);
+    if (user) {
+      setName(user.username);
+      setEmail(user.email);
     }
-  }, []);
+  }, [user]);
 
   return (
     <div className="flex flex-col lg:flex-row justify-center gap-4 lg:gap-7 p-4">

@@ -55,6 +55,16 @@ const getUserById = async (req, res) => {
   }
 };
 
+// GET currently logged in user
+const getMe = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    res.json({ user });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to fetch user data' });
+  }
+}
+
 // Gets user by email and password (for logging in)
 const userLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -146,6 +156,7 @@ const deleteUser = async (req, res) => {
 module.exports = {
   getAllUsers,
   getUserById,
+  getMe,
   userLogin,
   createUser,
   replaceUser,
