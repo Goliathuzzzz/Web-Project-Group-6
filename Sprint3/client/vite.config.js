@@ -6,12 +6,13 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 3000, // Set the default port to 3000. IMPORTANT BECAUSE GOOGLE LOGIN USES THIS PORT!
+    proxy: {
+    "/api": {
+      target: "http://localhost:4000", // Proxies backend requests to port 4000.
+      changeOrigin: true,
+      },
+    },
     open: true, // Automatically opens the browser
   },
-  proxy: {
-    "/api": {
-      target: "http://localhost:4000",
-      changeOrigin: true,
-    },
-  }
+  
 });

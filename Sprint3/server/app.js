@@ -1,6 +1,6 @@
 const express = require('express');
 const connectDB = require('./config/db');
-const cors = require("cors");
+const cors = require('cors');
 const app = express();
 const stationRoutes = require('./routes/stationRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -14,10 +14,10 @@ app.use(express.json());
 app.use(logger);
 app.get('/', (req, res) => res.send('API Running!'));
 
-app.use('/stations', stationRoutes);
-app.use('/users', userRoutes);
+app.use('/api/stations', stationRoutes);
+app.use('/api/users', userRoutes);
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

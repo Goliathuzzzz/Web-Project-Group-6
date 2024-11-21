@@ -8,16 +8,22 @@ const {
   replaceUser,
   updateUser,
   deleteUser,
+  userLogin,
 } = require('../controllers/userController');
 
-// GET /users
-router.get('/', getAllUsers);
+// For user routes that don't require auth
+
+// POST /users (registration)
+router.post('/', createUser);
+
+// GET /users/login (logging in)
+router.post('/login', userLogin)
 
 //custom middleware for authentication
 router.use(auth);
 
-// POST /users
-router.post('/', createUser);
+// GET /users
+router.get('/', getAllUsers);
 
 // GET /users/:stationId
 router.get('/:userId', getUserById);

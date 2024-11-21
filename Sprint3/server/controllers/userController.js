@@ -45,6 +45,22 @@ const getUserById = async (req, res) => {
   }
 };
 
+// Gets user by email and password (for logging in)
+const userLogin = async (req, res) => {
+  try {
+    const user = await User.findOne({ ...req.body });
+    if (user) {
+      // res.status(200).json({username: user.username, email: user.email});
+      res.status(200).json({username: user.username, email: user.email});
+      console.log(user);
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to retrieve user' });
+  }
+};
+
 //find user by id and replace it with new user data
 const replaceUser = async (req, res) => {
   const { userId } = req.params;
@@ -114,6 +130,7 @@ const deleteUser = async (req, res) => {
 module.exports = {
   getAllUsers,
   getUserById,
+  userLogin,
   createUser,
   replaceUser,
   updateUser,

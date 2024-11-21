@@ -10,7 +10,6 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState([]);
-  const [username, setUsername] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
 
@@ -44,10 +43,27 @@ function Login() {
 
   const handleLogin = () => {
     if (email && password) {
-      console.log("Logging in:", { email, password, rememberMe });
-      //login logic here
+      getUser(email, password);
     } else {
       alert("Please enter both email and password.");
+    }
+  };
+
+  const getUser = async (email, password) => {
+    try {
+      const res = await fetch("api/users/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email, password: password }),
+      });
+      if (res.ok) {
+        const userData = await res.json();
+        localStorage.setItem("profile", JSON.stringify(userData));
+      } else {
+        alert("Incorrect email and password combination!");
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
     }
   };
 

@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import google from "../../assets/images/google_logo.png";
 import register from "../../assets/images/registration_page.png";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleRegistration = () => {
-    if (!name || !email || !confirmEmail || !password || !confirmPassword) {
+    if (!username || !email || !confirmEmail || !password || !confirmPassword) {
       alert("Please fill in all fields.");
       return;
     }
@@ -23,9 +25,32 @@ function Register() {
       return;
     }
 
-    //simu successful registration
-    console.log("Registered successfully:", { name, email });
-    alert("Registration successful!");
+    const newUser = {
+      username,
+      password,
+      email,
+    };
+
+    addUser(newUser);
+  };
+
+  const addUser = async (newUser) => {
+    try {
+      const res = await fetch("/api/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newUser),
+      });
+      if (res.ok) {
+        console.log("Registered successfully:", { name, email });
+        alert("Registration successful!");
+        navigate("/login");
+      } else {
+        console.error("Failed to add user.");
+      }
+    } catch (error) {
+      console.error("Error adding user:", error);
+    }
   };
 
   return (
@@ -48,9 +73,9 @@ function Register() {
           >
             <input
               className="flex w-3/4 border mb-3 rounded-sm bg-inputGrey text-xs p-1 border-borderBlue pl-2 pt-2 pb-2"
-              placeholder="Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             ></input>
             <input
               className="flex w-3/4 border mb-3 p-[5px] rounded-sm bg-inputGrey text-xs border-borderBlue pl-2 pt-2 pb-2"
@@ -97,4 +122,5 @@ function Register() {
     </div>
   );
 }
+
 export default Register;
