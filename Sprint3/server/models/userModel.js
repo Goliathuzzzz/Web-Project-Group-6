@@ -20,4 +20,12 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
+userSchema.set("toJSON", {
+  virtuals: true,
+  transform: (doc, ret) => {
+    ret.id = ret._id;
+    return ret;
+  },
+});
+
 module.exports = mongoose.model('User', userSchema);

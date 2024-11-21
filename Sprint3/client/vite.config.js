@@ -8,4 +8,9 @@ export default defineConfig({
     port: 3000, // Set the default port to 3000. IMPORTANT BECAUSE GOOGLE LOGIN USES THIS PORT!
     open: true, // Automatically opens the browser
   },
+  proxy: {
+  "/api": {
+    target: "http://localhost:4000",
+    changeOrigin: true,
+  },
 });
