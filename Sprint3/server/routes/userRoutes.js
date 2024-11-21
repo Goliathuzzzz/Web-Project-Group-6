@@ -11,6 +11,7 @@ const {
   deleteUser,
   userLogin,
   getMe,
+  googleLogin,
 } = require('../controllers/userController');
 
 // For user routes that don't require auth
@@ -18,8 +19,11 @@ const {
 // POST /users (registration)
 router.post('/',createUser);
 
-// GET /users/login (logging in)
+// POST /users/login (logging in)
 router.post('/login', userLogin);
+
+// POST /users/google-login (Google login)
+router.post('/google-login', googleLogin)
 
 // GET /users/me (Fetch currently logged in user)
 router.get('/me', userAuth, getMe);

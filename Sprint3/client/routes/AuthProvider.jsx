@@ -1,5 +1,8 @@
+import { useGoogleLogin } from "@react-oauth/google";
+import { useGoogleOneTapLogin } from "@react-oauth/google";
 import { useContext, createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
@@ -58,6 +61,37 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  const googleLogin = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      if (tokenResponse) {
+        console.log(
+          "Fetching user info with access token:",
+          tokenResponse.access_token
+        );
+        try {
+          const response = await fetch("/api/users/google-login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ token: tokenResponse.access_token }), // Use the access token
+          });
+          const data = await response.json();
+          if (data.token) {
+            setUser(data.user);
+            setToken(data.token);
+            localStorage.setItem("site", data.token);
+            navigate("/");
+          } else {
+            throw new Error(data.message);
+          }
+        } catch (error) {
+          console.error("Google login failed:", error);
+        }
+      }
+    },
+  });
+
   const logOut = () => {
     setUser(null);
     setToken("");
@@ -66,7 +100,9 @@ const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ token, user, loginAction, logOut }}>
+    <AuthContext.Provider
+      value={{ token, user, loginAction, googleLogin, logOut }}
+    >
       {children}
     </AuthContext.Provider>
   );

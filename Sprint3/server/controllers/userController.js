@@ -1,6 +1,7 @@
 const User = require('../models/userModel');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const axios = require('axios');
 const { generateToken } = require('../utils/generateToken');
 const { hashPassword } = require('../utils/hashPassword');
 
@@ -84,7 +85,32 @@ const userLogin = async (req, res) => {
     console.error(error);
     res.status(500).json({ message: "server error", error: error.message });
     }
-  
+};
+
+const googleLogin = async (req, res) => {
+  const { token } = req.body;
+  try {
+    // Fetch user info from Google using the access token
+    const response = await axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${token}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      },
+    });
+    console.log(response.data);
+    const { id, email, name, picture } = response.data;
+
+    let user = await User.findOne({ email });
+    if (!user) {
+      user = await User.create({ googleId: id, email, username: name, picture });
+    }
+
+    const jwtToken = generateToken(user);
+    res.json({ token: jwtToken, user: { id: user.id, username: user.username, email: user.email, picture: user.picture } });
+  } catch (error) {
+    console.log("Error during google login: ", error)
+    res.status(500).json({ message: 'Google login failed', error: error.message });
+  }
 };
 
 //find user by id and replace it with new user data
@@ -158,6 +184,7 @@ module.exports = {
   getUserById,
   getMe,
   userLogin,
+  googleLogin,
   createUser,
   replaceUser,
   updateUser,

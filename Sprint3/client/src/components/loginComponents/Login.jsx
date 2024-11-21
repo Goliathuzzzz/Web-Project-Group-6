@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import google from "../../assets/images/google_logo.png";
 import image from "../../assets/images/login_page.png";
-import { useGoogleLogin } from "@react-oauth/google";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { useAuth } from "../../../routes/AuthProvider";
 
 function Login() {
@@ -15,34 +13,6 @@ function Login() {
   const navigate = useNavigate();
   const auth = useAuth();
 
-  const gLogin = useGoogleLogin({
-    onSuccess: (codeResponse) => setUser(codeResponse),
-    onError: (error) => console.log("Login Failed:", error),
-  });
-
-  useEffect(() => {
-    if (user && user.access_token) {
-      console.log("Fetching user info with access token:", user.access_token);
-      axios
-        .get(
-          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`,
-          {
-            headers: {
-              Authorization: `Bearer ${user.access_token}`,
-              Accept: "application/json",
-            },
-          }
-        )
-        .then((res) => {
-          console.log("User info fetched:", res.data);
-          localStorage.setItem("profile", JSON.stringify(res.data));
-          navigate("/");
-          window.location.reload();
-        })
-        .catch((err) => console.log("Error fetching user info:", err));
-    }
-  }, [user]);
-
   const handleLogin = (e) => {
     e.preventDefault();
     if (email && password) {
@@ -51,6 +21,11 @@ function Login() {
     } else {
       alert("Please enter both email and password.");
     }
+  };
+
+  const gLogin = () => {
+    auth.googleLogin();
+    return;
   };
 
   return (
