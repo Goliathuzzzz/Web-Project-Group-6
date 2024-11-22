@@ -1,8 +1,8 @@
-import React, { useRef, useState, useEffect, useCallback } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import * as maptilersdk from "@maptiler/sdk";
 import "@maptiler/sdk/dist/maptiler-sdk.css";
-import stations from "../../../../server/mock-data/ev_stations_mock_data.json";
+import axios from "axios";
 import InfoBox from "./InfoBox";
 import CustomMarker from "./Marker";
 import MapButtons from "./MapButtons";
@@ -19,42 +19,11 @@ maptilersdk.config.apiKey = import.meta.env.VITE_REACT_APP_MAPTILER_API_KEY;
 function Map() {
   const mapContainer = useRef(null);
   const map = useRef(null);
+  const [stations, setStations] = useState([]);
   const [activeStation, setActiveStation] = useState(null);
   const [markers, setMarkers] = useState([]);
 
-  const handleMarkerClick = useCallback((e, station) => {
-    e.stopPropagation();
-    setActiveStation(station);
-  }, []);
-
-  // Function to add markers to the map
-  const addMarkers = useCallback((mapInstance) => {
-    return stations.map((station) => {
-      const markerElement = document.createElement("div");
-      const root = createRoot(markerElement);
-
-      root.render(
-        <CustomMarker
-          key={`${station.coordinates.latitude}-${station.coordinates.longitude}-${station.connectors[0]?.type}`} // Needs to be replaced with a station id
-          connector={station.connectors[0]}
-          size="32px"
-        />
-      );
-
-      const marker = new maptilersdk.Marker({ element: markerElement })
-        .setLngLat([
-          station.coordinates.longitude,
-          station.coordinates.latitude,
-        ])
-        .addTo(mapInstance);
-
-      marker
-        .getElement()
-        .addEventListener("click", (e) => handleMarkerClick(e, station));
-
-      return marker;
-    });
-  }, [handleMarkerClick]);
+  // Helpers
 
   // Initialize the map
   const initializeMap = (mapContainerElement) => {
@@ -75,7 +44,7 @@ function Map() {
         navigationControl: false, // Added manually
         attributionControl: false, // Added manually
       });
-      
+
       /*
       mapInstance.addControl(new maptilersdk.MaptilerGeolocateControl({
         positionOptions: {
@@ -90,30 +59,63 @@ function Map() {
     }
   };
 
-  useEffect(() => {
-    if (map.current) return; // Prevent reinitialization if the map is already initialized
+  const fetchStations = async (bounds) => {
+    try {
+      const { north, south, east, west } = bounds;
+      const response = await axios.get("/api/chargers", {
+        params: {
+          maxResults: 100,
+          north,
+          south,
+          east,
+          west,
+        },
+      });
+      console.log(response.data);
+      setStations(response.data);
+    } catch (error) {
+      console.error("Failed to fetch stations:", error);
+    }
+  }
 
-    const mapInstance = initializeMap(mapContainer.current);
-    if (!mapInstance) return; // Prevent further execution if the map failed to initialize
+  // Function to add markers to the map
+  const addMarkers = (mapInstance) => {
+    return stations.map((station) => {
+      const markerElement = document.createElement("div");
+      const root = createRoot(markerElement);
 
-    map.current = mapInstance;
+      root.render(
+        <CustomMarker
+          //key={station.id} // Needs to be replaced with a station id
+          connector={station.connections.connectionType}
+          size="32px"
+        />
+      );
 
-    // Add markers to the map
-    const newMarkers = addMarkers(map.current);
-    setMarkers(newMarkers);
+      const marker = new maptilersdk.Marker({ element: markerElement })
+        .setLngLat([
+          station.location.longitude,
+          station.location.latitude,
+        ])
+        .addTo(mapInstance);
 
-    // Close the info box when the map is clicked
-    const handleMapClick = () => setActiveStation(null);
-    map.current.on("click", handleMapClick);
+      marker
+        .getElement()
+        .addEventListener("click", (e) => handleMarkerClick(e, station));
 
-    // Cleanup on unmount
-    return () => {
-      setMarkers([]);
-      map.current.off("click", handleMapClick);
-      map.current.remove();
-      map.current = null;
-    };
-  }, [addMarkers]);
+      return marker;
+    });
+  };
+
+  // Event handlers
+
+  const handleMarkerClick = (e, station) => {
+    e.stopPropagation();
+    setActiveStation(station);
+  };
+
+  // Close the info box when the map is clicked
+  const handleMapClick = () => setActiveStation(null);
 
   const zoomIn = () => {
     if (map.current) {
@@ -148,6 +150,42 @@ function Map() {
     }
   };
   */
+
+  // Effect hooks
+
+  useEffect(() => {
+    if (map.current) return; // Prevent reinitialization if the map is already initialized
+
+    const mapInstance = initializeMap(mapContainer.current);
+    if (!mapInstance) return; // Prevent further execution if the map failed to initialize
+
+    map.current = mapInstance;
+
+    fetchStations({
+      north: map.current.getBounds().getNorth(),
+      south: map.current.getBounds().getSouth(),
+      east: map.current.getBounds().getEast(),
+      west: map.current.getBounds().getWest(),
+    });
+
+    // Add markers to the map
+    const newMarkers = addMarkers(map.current);
+    setMarkers(newMarkers);
+
+    map.current.on("click", handleMapClick);
+
+    // Cleanup on unmount
+    return () => {
+      newMarkers.forEach((marker) => {
+        marker.getElement().removeEventListener("click", handleMarkerClick);
+        marker.remove();
+      });
+      setMarkers([]);
+      map.current.off("click", handleMapClick);
+      map.current.remove();
+      map.current = null;
+    };
+  }, [stations]);
 
   return (
     <div className="relative w-full h-screen">
