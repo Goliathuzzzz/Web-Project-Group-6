@@ -12,10 +12,10 @@ export const pageLinks = [
 ];
 
 export const aboutLinks = [
-  { id: 1, href: "#about-us", text: "About Us >" },
-  { id: 2, href: "#how-it-works", text: "How It Works >" },
-  { id: 3, href: "#our-partners", text: "Our Partners >" },
-  { id: 4, href: "#news", text: "News >" },
+  { id: 1, href: "/about-us#about-us", text: "About Us >" },
+  { id: 2, href: "/about-us#how-it-works", text: "How It Works >" },
+  { id: 3, href: "/about-us#our-partners", text: "Our Partners >" },
+  { id: 4, href: "/about-us#news", text: "News >" },
 ]
 
 export const contactsLinks = [

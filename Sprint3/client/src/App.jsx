@@ -14,6 +14,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import ProfilePic from "./components/myPageComponents/ProfilePic";
 import SavedStations from "./components/myPageComponents/SavedStations";
+import AboutUs from "./components/aboutUsComponents/AboutUs";
 
 /* Placeholder code for testing */
 function App() {
@@ -37,6 +38,7 @@ function App() {
                 </>
               }
             />
+            <Route path="about-us" element={<AboutUs/>} />
             <Route path="login" element={<Login />} />
             <Route
               path="dashboard"
