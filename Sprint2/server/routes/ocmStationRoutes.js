@@ -3,99 +3,88 @@ const axios = require('axios');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-    try {
-        const { maxResults } = req.query; //params from frontend?
-        const response = await axios.get('https://api.openchargemap.io/v3/poi/', {
-            params: {
-                output: 'json',
-                countrycode: 'FI',
-                maxresults: maxResults,
-                compact: true,
-                verbose: false,
-            },
-            headers: {
-                'X-API-Key': process.env.OPEN_CHARGE_MAP_API_KEY,
-            },
-        });
+  try {
+    const { maxResults, north, south, east, west } = req.query; //params from frontend?
+    const response = await axios.get('https://api.openchargemap.io/v3/poi/', {
+      params: {
+        output: 'json',
+        countrycode: 'FI',
+        maxresults: 2000, //due to filtering, this number gets all the chargers in Finland but it's filtered later
+        // compact: true,
+        verbose: true,
+      },
+      headers: {
+        'X-API-Key': process.env.OPEN_CHARGE_MAP_API_KEY,
+      },
+    });
 
-        //what data?
-        const formattedData = response.data.map(item => ({
-            location: {
-                title: item.AddressInfo?.Title || 'N/A',
-                addressLine1: item.AddressInfo?.AddressLine1 || 'N/A',
-                town: item.AddressInfo?.Town || 'N/A',
-                postcode: item.AddressInfo?.Postcode || 'N/A',
-                latitude: item.AddressInfo?.Latitude || 'N/A',
-                longitude: item.AddressInfo?.Longitude || 'N/A',
-            },
-            usageType: {
-                isPayAtLocation: item.UsageType?.IsPayAtLocation || false,
-                isMembershipRequired: item.UsageType?.IsMembershipRequired || false,
-                isAccessKeyRequired: item.UsageType?.IsAccessKeyRequired || false,
-            },
-            statusType: {
-                isOperational: item.StatusType?.IsOperational || false,
-                isUserSelectable: item.StatusType?.IsUserSelectable || false,
-            },
-            isRecentlyVerified: item.IsRecentlyVerified || false,
-            dateLastVerified: item.DateLastVerified || 'N/A',
-        }));
+    const formattedData = response.data
+      .filter(
+        (item) =>
+          item.UsageType?.Title === 'Public' && //filtering out the stations that are not public
+          item.Connections?.some(
+            (
+              connection //filtering out the connection types that are not useful for the project
+            ) => [2, 25, 27, 28, 30, 32, 33, 1036].includes(connection.ConnectionTypeID) //30, 27 tesla; 32 type1; 33 type2; 2 chademo; 25 type2 socket only; 28 type F slow charge; 1036 type 2 tethered
+          ) 
+      )
+      .map((item) => ({
+        location: {
+          title: item.AddressInfo?.Title || 'N/A',
+          addressLine1: item.AddressInfo?.AddressLine1 || 'N/A',
+          town: item.AddressInfo?.Town || 'N/A',
+          postcode: item.AddressInfo?.Postcode || 'N/A',
+          latitude: item.AddressInfo?.Latitude || 'N/A',
+          longitude: item.AddressInfo?.Longitude || 'N/A',
+        },
+        usageType: {
+          isPayAtLocation: item.UsageType?.IsPayAtLocation || false,
+          isMembershipRequired: item.UsageType?.IsMembershipRequired || false,
+          isAccessKeyRequired: item.UsageType?.IsAccessKeyRequired || false,
+          isPublic: item.UsageType?.Title || false,
+        },
+        statusType: {
+          isOperational: item.StatusType?.IsOperational || false,
+          isUserSelectable: item.StatusType?.IsUserSelectable || false,
+        },
+        isRecentlyVerified: item.IsRecentlyVerified || false,
+        dateLastVerified: item.DateLastVerified || 'N/A',
+        connections:
+          item.Connections?.map((connection) => ({
+            id: connection.ID || 'N/A',
+            connectionTypeID: connection.ConnectionTypeID || 'N/A',
+            powerKW: connection.PowerKW || 'N/A',
+            level: connection.LevelID || 'N/A',
+            quantity: connection.Quantity || 0,
+            isFastChargeCapable: connection.Level?.IsFastChargeCapable || false,
+            connectionType: connection.ConnectionType?.Title || 'N/A',
+            formalName: connection.ConnectionType?.FormalName || 'N/A',
+          })) || [],
+      }))
+      //for future use, when we want to filter out the stations not currently showing in map view. we can also use distance from the center point
+      // .filter((station) => {
+      //   const { latitude, longitude } = station.location;
+      //   return (
+      //     latitude >= parseFloat(south) &&
+      //     latitude <= parseFloat(north) &&
+      //     longitude >= parseFloat(west) &&
+      //     longitude <= parseFloat(east)
+      //   );
+      // });
 
-        res.json(formattedData);
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Error retrieving charging points');
-    }
+    //just for checking in console
+    const uniqueStations = [
+      ...new Map( 
+        formattedData.map((item) => [item.location.title, item])
+      ).values(),
+    ];
+    console.log(`Unique Stations: ${uniqueStations.length}`);
+
+    res.json(formattedData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error retrieving charging points');
+  }
 });
 
 module.exports = router;
-
-// tooodooooo:
-// "Connections":
-//         {
-//           "ID": 307235,
-//           "ConnectionTypeID": 25,
-//           "ConnectionType": {
-//             "FormalName": "IEC 62196-2 Type 2",
-//             "IsDiscontinued": false,
-//             "IsObsolete": false,
-//             "ID": 25,
-//             "description": "Type 2 (Socket Only)"
-//           },
-//           "Reference": null,
-//           "StatusTypeID": 50,
-//           "StatusType": {
-//             "IsOperational": true,
-//             "IsUserSelectable": true,
-//             "ID": 50,
-//             "description": "Operational"
-//           },
-//           "LevelID": 2,
-//           "Level": {
-//             "Comments": "Over 2 kW, usually non-domestic socket type",
-//             "IsFastChargeCapable": false,
-//             "ID": 2,
-//             "description": "Level 2 : Medium (Over 2kW)"
-//           },
-//           "Amps": null,
-//           "Voltage": null,
-//           "PowerKW": 22,
-//           "CurrentTypeID": 20,
-//           "CurrentType": {
-//             "Description": "Alternating Current - Three Phase",
-//             "ID": 20,
-//             "description": "AC (Three-Phase)"
-//           },
-//           "Quantity": 3,
-//           "Comments": null
-//         },       "NumberOfPoints": 4,
-//         "GeneralComments": null,
-//         "DatePlanned": null,
-//         "DateLastConfirmed": null,
-//         "StatusTypeID": 50,
-//         "DateLastStatusUpdate": "2021-11-07T16:36:00Z",
-//         "MetadataValues": null,
-//         "DataQualityLevel": 1,
-//         "DateCreated": "2021-11-07T16:36:00Z",
-//         "SubmissionStatusTypeID": 200
-//       },
