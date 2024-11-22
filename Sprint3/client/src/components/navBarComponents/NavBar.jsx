@@ -6,8 +6,11 @@ import PageLinks from "./PageLinks";
 import Search from "../../assets/images/search.png";
 import { Link } from "react-router-dom";
 import { googleLogout } from "@react-oauth/google";
+import { useAuth } from "../../../routes/AuthProvider";
 
 function NavBar() {
+  const { user, logOut } = useAuth();
+
   const loginButton = (
     <Link to="/login">
       <button className="bg-gradient-to-r from-eGreen to-darkGreen py-2 px-6 nav-phone:px-12 rounded-full hover:bg-darkGreen hover:text-white transition-all duration-500 font-bold text-1xl font-Roboto">
@@ -15,38 +18,6 @@ function NavBar() {
       </button>
     </Link>
   );
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [logButton, setLogButton] = useState(loginButton);
-  const [profilePic, setProfilePic] = useState(userCircle);
-
-  // log out function to log the user out of google and set the profile array to null
-  const logOut = () => {
-    googleLogout();
-    localStorage.removeItem("profile");
-    window.location.reload();
-  };
-
-  useEffect(() => {
-    const storedProfile = localStorage.getItem("profile");
-    if (storedProfile) {
-      const profile = JSON.parse(storedProfile);
-      setLogButton(logoutButton);
-      setProfilePic(profile.picture);
-    } else {
-      setLogButton(loginButton);
-      setProfilePic(userCircle);
-    }
-  }, []);
-
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
-  const toggleSearch = () => {
-    setSearchOpen(!searchOpen);
-  };
-
   const logoutButton = (
     <button
       onClick={logOut}
@@ -55,6 +26,29 @@ function NavBar() {
       Log Out
     </button>
   );
+
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [logButton, setLogButton] = useState(loginButton);
+  const [profilePic, setProfilePic] = useState(userCircle);
+
+  useEffect(() => {
+    if (user) {
+      setLogButton(logoutButton);
+      setProfilePic(user.picture || userCircle);
+    } else {
+      setLogButton(loginButton);
+      setProfilePic(userCircle);
+    }
+  }, [user]);
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  const toggleSearch = () => {
+    setSearchOpen(!searchOpen);
+  };
 
   return (
     <div className="relative flex items-center justify-between px-4 py-2 bg-gradient-to-b from-darkerBlue to-darkBlue nav-phone:px-12">

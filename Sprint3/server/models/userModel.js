@@ -10,12 +10,22 @@ const userSchema = new Schema(
     },
     password: {
       type: String,
-      required: true,
+      required: function() {
+        return !this.googleId; // Password is required only if googleId is not present
+      },
     },
     email: {
       type: String,
       required: true,
-    }
+    },
+    googleId: {
+      type: String,
+      unique: true,
+      sparse: true, // Allows for null values
+    },
+    picture: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

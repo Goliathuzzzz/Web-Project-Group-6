@@ -9,19 +9,28 @@ function Register() {
   const [confirmEmail, setConfirmEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [message, setMessage] = useState([]);
   const navigate = useNavigate();
 
   const handleRegistration = () => {
     if (!username || !email || !confirmEmail || !password || !confirmPassword) {
-      alert("Please fill in all fields.");
+      setMessage("Please fill in all fields.");
+      return;
+    }
+    if (!validateEmail(email)) {
+      setMessage("Please enter a valid email address.");
       return;
     }
     if (email !== confirmEmail) {
-      alert("Please provide the correct email.");
+      setMessage("Emails do not match.");
+      return;
+    }
+    if (password.length < 8) {
+      setMessage("Password should be at least 8 characters long.");
       return;
     }
     if (password !== confirmPassword) {
-      alert("Please provide the correct password.");
+      setMessage("Passwords do not match.");
       return;
     }
 
@@ -34,6 +43,11 @@ function Register() {
     addUser(newUser);
   };
 
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
+
   const addUser = async (newUser) => {
     try {
       const res = await fetch("/api/users", {
@@ -42,7 +56,7 @@ function Register() {
         body: JSON.stringify(newUser),
       });
       if (res.ok) {
-        console.log("Registered successfully:", { name, email });
+        console.log("Registered successfully:", { username, email });
         alert("Registration successful!");
         navigate("/login");
       } else {
@@ -103,6 +117,9 @@ function Register() {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             ></input>
+            {message && (
+              <p className="text-red-500 text-xs mb-2.5">{message}</p>
+            )}
             <button
               type="submit"
               className="flex w-3/4 justify-center p-2 rounded-3xl font-bold bg-gradient-to-r from-eGreen to-eGreenDark  hover:bg-darkGreen hover:text-white transition-all duration-500 mt-10"

@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
-import base_pic from "../../assets/images/my-page-img.png";
+import user_circle from "../../assets/images/user.png";
 import edit from "../../assets/images/edit.png";
+import { useAuth } from "../../../routes/AuthProvider";
 
 function ProfilePic() {
   const [isWindowOpen, setIsWindowOpen] = useState(false);
-  const [name, setName] = useState("Your name");
-  const [pic, setPic] = useState(base_pic);
+  const [username, setName] = useState("");
+  const [pic, setPic] = useState(user_circle);
+  const { user } = useAuth();
 
   useEffect(() => {
-    const storedProfile = localStorage.getItem("profile");
-    if (storedProfile) {
-      const profile = JSON.parse(storedProfile);
-      setName(profile.name);
-      setPic(profile.picture);
+    if (user) {
+      setName(user.username);
+      setPic(user.picture || user_circle);
     }
-  }, []);
+  }, [user]);
 
   return (
     <div className="flex bg-gradient-to-b mx-4 my-page:mr-0 from-darkerBlue to-darkBlue my-page:max-w-md justify-between rounded-sm mt-10">
@@ -25,7 +25,7 @@ function ProfilePic() {
           alt="profile-picture"
           className="w-32 h-32 rounded-full my-3"
         />
-        <h2>{name}</h2>
+        <h2>{username}</h2>
       </div>
       <div className="w-0 mini:w-20"></div>
       <img

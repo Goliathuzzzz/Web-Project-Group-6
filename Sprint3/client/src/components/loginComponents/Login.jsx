@@ -1,70 +1,35 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import google from "../../assets/images/google_logo.png";
 import image from "../../assets/images/login_page.png";
-import { useGoogleLogin } from "@react-oauth/google";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import { useAuth } from "../../../routes/AuthProvider";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState([]);
   const [rememberMe, setRememberMe] = useState(false);
-  const navigate = useNavigate();
+  const [message, setMessage] = useState([]);
+  const auth = useAuth();
 
-  const gLogin = useGoogleLogin({
-    onSuccess: (codeResponse) => setUser(codeResponse),
-    onError: (error) => console.log("Login Failed:", error),
-  });
-
-  useEffect(() => {
-    if (user && user.access_token) {
-      console.log("Fetching user info with access token:", user.access_token);
-      axios
-        .get(
-          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`,
-          {
-            headers: {
-              Authorization: `Bearer ${user.access_token}`,
-              Accept: "application/json",
-            },
-          }
-        )
-        .then((res) => {
-          console.log("User info fetched:", res.data);
-          localStorage.setItem("profile", JSON.stringify(res.data));
-          navigate("/");
-          window.location.reload();
-        })
-        .catch((err) => console.log("Error fetching user info:", err));
-    }
-  }, [user]);
-
-  const handleLogin = () => {
+  const handleLogin = (e) => {
+    e.preventDefault();
     if (email && password) {
-      getUser(email, password);
+      auth.loginAction(email, password);
+      return;
     } else {
-      alert("Please enter both email and password.");
+      setMessage("Please enter both email and password!");
     }
   };
 
-  const getUser = async (email, password) => {
-    try {
-      const res = await fetch("api/users/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email, password: password }),
-      });
-      if (res.ok) {
-        const userData = await res.json();
-        localStorage.setItem("profile", JSON.stringify(userData));
-      } else {
-        alert("Incorrect email and password combination!");
-      }
-    } catch (error) {
-      console.error("Error fetching user data:", error);
+  useEffect(() => {
+    if (auth.errorMessage) {
+      setMessage(auth.errorMessage);
     }
+  }, [auth.errorMessage]);
+
+  const gLogin = () => {
+    auth.googleLogin();
+    return;
   };
 
   return (
@@ -111,6 +76,9 @@ function Login() {
                 Remember Me
               </label>
             </div>
+            {message && (
+              <p className="text-red-500 text-xs mb-2.5">{message}</p>
+            )}
             <button
               type="button"
               onClick={handleLogin}

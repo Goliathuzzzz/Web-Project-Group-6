@@ -1,5 +1,9 @@
 const User = require('../models/userModel');
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const axios = require('axios');
+const { generateToken } = require('../utils/generateToken');
+const { hashPassword } = require('../utils/hashPassword');
 
 const getAllUsers = async (req, res) => {
   try {
@@ -11,17 +15,24 @@ const getAllUsers = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
+  const { username, password, email } = req.body;
   try {
-    const dupeEmails = await User.find({ email: req.body.email });
-    if (dupeEmails.length == 0) {
-      const newUser = await User.create({ ...req.body });
-      res.status(201).json(newUser);
+    const dupeEmails = await User.findOne({ email });
+    if (!dupeEmails) {
+      const hashedPassword = await hashPassword(password);
+      const newUser = {
+        username,
+        password: hashedPassword,
+        email
+      }
+      await User.create(newUser);
+      res.status(201).json({username, email});
     } else {
       res.status(400).json({ message: "User with this email already exists!" });
     } 
   } catch (error) {
     res
-      .status(400)
+      .status(500)
       .json({ message: 'Failed to create user', error: error.message });
   }
 };
@@ -45,19 +56,60 @@ const getUserById = async (req, res) => {
   }
 };
 
+// GET currently logged in user
+const getMe = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    res.json({ user });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to fetch user data' });
+  }
+}
+
 // Gets user by email and password (for logging in)
 const userLogin = async (req, res) => {
+  const { email, password } = req.body;
   try {
-    const user = await User.findOne({ ...req.body });
-    if (user) {
-      // res.status(200).json({username: user.username, email: user.email});
-      res.status(200).json({username: user.username, email: user.email});
-      console.log(user);
-    } else {
-      res.status(404).json({ message: 'User not found' });
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({message: "Invalid email or password!"});
+    } 
+    const isMatch = bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Invalid email or password' });
     }
+
+    const token = generateToken(user);
+    res.json({ token, user: {id: user.id, username: user.username, email: user.email } });
   } catch (error) {
-    res.status(500).json({ message: 'Failed to retrieve user' });
+    console.error(error);
+    res.status(500).json({ message: "server error", error: error.message });
+    }
+};
+
+const googleLogin = async (req, res) => {
+  const { token } = req.body;
+  try {
+    // Fetch user info from Google using the access token
+    const response = await axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${token}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      },
+    });
+    console.log(response.data);
+    const { id, email, name, picture } = response.data;
+
+    let user = await User.findOne({ email });
+    if (!user) {
+      user = await User.create({ googleId: id, email, username: name, picture });
+    }
+
+    const jwtToken = generateToken(user);
+    res.json({ token: jwtToken, user: { id: user.id, username: user.username, email: user.email, picture: user.picture } });
+  } catch (error) {
+    console.log("Error during google login: ", error)
+    res.status(500).json({ message: 'Google login failed', error: error.message });
   }
 };
 
@@ -130,7 +182,9 @@ const deleteUser = async (req, res) => {
 module.exports = {
   getAllUsers,
   getUserById,
+  getMe,
   userLogin,
+  googleLogin,
   createUser,
   replaceUser,
   updateUser,

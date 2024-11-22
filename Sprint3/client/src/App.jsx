@@ -14,47 +14,59 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import ProfilePic from "./components/myPageComponents/ProfilePic";
 import SavedStations from "./components/myPageComponents/SavedStations";
+import AuthProvider from "../routes/AuthProvider";
+import PrivateRoute from "../routes/PrivateRoute";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 /* Placeholder code for testing */
 function App() {
   return (
     <div className="max-w-screen-2xl m-auto bg-homepage bg-cover">
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route
-              index
-              element={
-                <>
-                  <Hero />
-                  <ProcessList />
-                  <div className="flex flex-col md:flex-row md:justify-between">
-                    <ReviewList />
-                    <Calculator />
-                  </div>
-                  <PowerUp />
-                  <CallToAction />
-                </>
-              }
-            />
-            <Route path="login" element={<Login />} />
-            <Route
-              path="dashboard"
-              element={
-                <>
-                  <div className="flex flex-col my-page:flex-row justify-center my-page:gap-5">
-                    <ProfilePic />
-                    <SavedStations />
-                  </div>
-                  <Specifications />
-                </>
-              }
-            />
-            <Route path="about" element={<>{/* Placeholder element */}</>} />
-            <Route path="map" element={<Map />} />
-            <Route path="registration" element={<Register />} />
-          </Route>
-        </Routes>
+        <GoogleOAuthProvider
+          clientId={import.meta.env.VITE_REACT_APP_GOOGLE_CLIENT_ID}
+        >
+          <AuthProvider>
+            <Routes>
+              <Route path="/" element={<Layout />}>
+                <Route
+                  index
+                  element={
+                    <>
+                      <Hero />
+                      <ProcessList />
+                      <div className="flex flex-col md:flex-row md:justify-between">
+                        <ReviewList />
+                        <Calculator />
+                      </div>
+                      <PowerUp />
+                      <CallToAction />
+                    </>
+                  }
+                />
+                <Route path="login" element={<Login />} />
+                <Route
+                  path="dashboard"
+                  element={
+                    <>
+                      <div className="flex flex-col my-page:flex-row justify-center my-page:gap-5">
+                        <ProfilePic />
+                        <SavedStations />
+                      </div>
+                      <Specifications />
+                    </>
+                  }
+                />
+                <Route
+                  path="about"
+                  element={<>{/* Placeholder element */}</>}
+                />
+                <Route path="map" element={<Map />} />
+                <Route path="registration" element={<Register />} />
+              </Route>
+            </Routes>
+          </AuthProvider>
+        </GoogleOAuthProvider>
         <Footer />
       </BrowserRouter>
     </div>
