@@ -8,10 +8,14 @@ const {
   replaceStation,
   updateStation,
   deleteStation,
+  customSearch,
 } = require('../controllers/stationController');
 
 // GET /stations
 router.get('/', getAllStations);
+
+// GET custom search
+router.get('/customSearch', customSearch);
 
 //custom middleware for authentication
 router.use(auth);

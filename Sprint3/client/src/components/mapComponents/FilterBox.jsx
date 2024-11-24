@@ -8,14 +8,60 @@ import Cancel from "../../assets/images/close.png";
 
 function FilterBox({ title, onClose }) {
   const [chargingPower, setChargingPower] = useState(22);
+  let [query, setQuery] = useState("");
+  const [complexQuery, setComplexQuery] = useState(false);
+
+  const updateQuery = (value) => {
+    if (!complexQuery) {
+      setQuery((query += `?connectors=${value}`));
+    }
+    if (complexQuery) {
+      setQuery((query += `&connectors=${value}`));
+    }
+    if (!complexQuery) {
+      setComplexQuery(true);
+    }
+    console.log(query);
+  };
+
+  const clearQuery = () => {
+    setQuery("");
+    setComplexQuery(false);
+  };
+
+  const handleClose = () => {
+    clearQuery();
+    onClose();
+  };
+
+  const search = async () => {
+    const stationSearch = "api/stations/customSearch" + query;
+    console.log(stationSearch);
+    try {
+      const res = await fetch(stationSearch);
+      const data = await res.json();
+      console.log(data);
+    } catch (error) {
+      console.error("Failed to fetch stations", error);
+    }
+  };
 
   return (
     <div className="absolute right-16 top-0 bg-gradient-to-b from-darkerBlue to-darkBlue p-4 shadow-lg rounded w-96">
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center mb-4 border">
         <h3 className="text-lg font-semibold font-Orbitron text-white">
           {title}
         </h3>
-        <button onClick={onClose} className="transition-transform duration-200 hover:scale-125 hover:brightness-150 pr-1">
+        <button
+          className="text-lg font-semibold font-Orbitron text-eGreen transition-transform duration-200 hover:scale-125"
+          onClick={search}
+        >
+          Search
+        </button>
+        <button
+          onClick={handleClose}
+          className="transition-transform duration-200 hover:scale-125 hover:brightness-150 pr-1"
+        >
           <img src={Cancel} alt="Cancel" className="w-3 h-3" />
         </button>
       </div>
@@ -23,7 +69,10 @@ function FilterBox({ title, onClose }) {
       {/* Charger types */}
       <div className="mb-4">
         <div className="grid grid-cols-1 gap-2">
-          <button className="p-2 flex items-start rounded bg-ctaYellow bg-opacity-15 transition-transform duration-200 hover:scale-105 hover:brightness-150">
+          <button
+            className="p-2 flex items-start rounded bg-ctaYellow bg-opacity-15 transition-transform duration-200 hover:scale-105 hover:brightness-150"
+            onClick={() => updateQuery("Type2")}
+          >
             <div className="flex flex-col items-start">
               <span className="text-ctaYellow font-Orbitron">Type 2</span>
               <span className="text-sm text-white font-Roboto">
@@ -37,7 +86,10 @@ function FilterBox({ title, onClose }) {
               className="ml-auto w-10 h-10 self-center"
             />
           </button>
-          <button className="p-2 flex items-start rounded bg-salmonRed bg-opacity-15 transition-transform duration-200 hover:scale-105 hover:brightness-150">
+          <button
+            className="p-2 flex items-start rounded bg-salmonRed bg-opacity-15 transition-transform duration-200 hover:scale-105 hover:brightness-150"
+            onClick={() => updateQuery("CCS2")}
+          >
             <div className="flex flex-col items-start">
               <span className="text-salmonRed font-Orbitron">CCS2</span>
               <span className="text-sm text-white">
@@ -51,7 +103,10 @@ function FilterBox({ title, onClose }) {
               className="ml-auto w-10 h-10 self-center"
             />
           </button>
-          <button className="p-2 flex items-start rounded bg-electricBlue bg-opacity-15 transition-transform duration-200 hover:scale-105 hover:brightness-150">
+          <button
+            className="p-2 flex items-start rounded bg-electricBlue bg-opacity-15 transition-transform duration-200 hover:scale-105 hover:brightness-150"
+            onClick={() => updateQuery("CHAdeMO")}
+          >
             <div className="flex flex-col items-start">
               <span className="text-electricBlue font-Orbitron">CHAdeMO</span>
               <span className="text-sm text-white">
@@ -65,7 +120,10 @@ function FilterBox({ title, onClose }) {
               className="ml-auto w-10 h-10 self-center"
             />
           </button>
-          <button className="p-2 flex items-start rounded bg-eGreen bg-opacity-15 transition-transform duration-200 hover:scale-105 hover:brightness-150">
+          <button
+            className="p-2 flex items-start rounded bg-eGreen bg-opacity-15 transition-transform duration-200 hover:scale-105 hover:brightness-150"
+            onClick={() => updateQuery("Tesla")}
+          >
             <div className="flex flex-col items-start">
               <span className="text-eGreen font-Orbitron">Tesla</span>
               <span className="text-sm text-white">

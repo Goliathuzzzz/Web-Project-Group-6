@@ -40,6 +40,28 @@ const getStationById = async (req, res) => {
   }
 };
 
+// Custom search for map filters and search bar
+const customSearch = async (req, res) => {
+  const { location, availability, connectors, provider, power } = req.query;
+  console.log(connectors);
+
+  try {
+    const query = {};
+    if (connectors) {
+      query.connectors = { $in: connectors };
+      console.log(query);
+    }
+    if (power) {
+      query.power = { $gte: power };
+    }
+
+    const stations = await Station.find(query);
+    res.status(200).json(stations);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to search stations' });
+  }
+};
+
 //find station by id and replace it with new station data
 const replaceStation = async (req, res) => {
   const { stationId } = req.params;
@@ -109,6 +131,7 @@ const deleteStation = async (req, res) => {
 module.exports = {
   getAllStations,
   getStationById,
+  customSearch,
   createStation,
   replaceStation,
   updateStation,
