@@ -68,7 +68,7 @@ function FilterBox({
             <select
               name="providers"
               multiple={true}
-              onChange={(e) => handleUpdateQuery("providers", e.target.value)}
+              onChange={(e) => handleUpdateQuery("provider", e.target.value)}
             >
               {providers.map((provider) => (
                 <option key={provider.id} value={provider.provider}>
@@ -90,7 +90,7 @@ function FilterBox({
             <select
               name="locations"
               multiple={true}
-              onChange={(e) => handleUpdateQuery("locations", e.target.value)}
+              onChange={(e) => handleUpdateQuery("location", e.target.value)}
             >
               {locations.map((location) => (
                 <option key={location.id} value={location.location}>

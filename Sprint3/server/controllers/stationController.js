@@ -43,18 +43,37 @@ const getStationById = async (req, res) => {
 // Custom search for map filters and search bar
 const customSearch = async (req, res) => {
   const { location, availability, connectors, provider, power } = req.query;
-  console.log(connectors);
+  console.log("Query Parameters:", req.query);
 
   try {
     const query = {};
+
+    // Handle connectors
     if (connectors) {
-      query.connectors = { $in: connectors };
-      console.log(query);
-    }
-    if (power) {
-      query.power = { $gte: power };
+      query.connectors = { $in: Array.isArray(connectors) ? connectors : [connectors] };
     }
 
+    // Handle locations
+    if (location) {
+      query.location = { $in: location };
+    }
+
+    // Handle providers
+    if (provider) {
+      query.provider = { $in: provider };
+    }
+
+    // Handle power
+    if (power) {
+      query.power = { $gte: Number(power) };
+    }
+
+    // Handle availability (example: assuming availability is a boolean field)
+    if (availability !== undefined) {
+      query.availability = availability === 'true';
+    }
+
+    console.log("Constructed Query:", query);
     const stations = await Station.find(query);
     res.status(200).json(stations);
   } catch (error) {

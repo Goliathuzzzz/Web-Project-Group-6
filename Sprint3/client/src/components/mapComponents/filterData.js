@@ -7,7 +7,7 @@ import tesla from "../../assets/images/tesla_img.png";
 export const ChargerTypeData = [
     {
         id: 1,
-        type: "Type2",
+        type: "Type 2",
         label: "Type 2",
         description: "wewewewewewewewewewewewewewe wewewewewewewewewewe",
         image: type2,
@@ -16,8 +16,8 @@ export const ChargerTypeData = [
     },
     {
         id: 2,
-        type: "CCS2",
-        label: "CCS2",
+        type: "CCS",
+        label: "CCS",
         description: "wewewewewewewewewewewewewewe wewewewewewewewewewe",
         image: ccs2,
         bgColor: "bg-salmonRed",
