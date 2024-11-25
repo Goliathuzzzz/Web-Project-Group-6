@@ -16,6 +16,7 @@ import ProfilePic from "./components/myPageComponents/ProfilePic";
 import SavedStations from "./components/myPageComponents/SavedStations";
 import AboutUs from "./components/aboutUsComponents/AboutUs";
 import ContactUs from "./components/contactComponents/contactUs";
+import Legal from "./components/legalComponents/legal";
 
 /* Placeholder code for testing */
 function App() {
@@ -40,8 +41,9 @@ function App() {
               }
             />
             <Route path="about-us" element={<AboutUs/>} />
-            <Route path="login" element={<Login />} />
-            <Route path="contact" element={<ContactUs />} />
+            <Route path="login" element={<Login/>} />
+            <Route path="contact" element={<ContactUs/>} />
+            <Route path="legal" element={<Legal/>} /> 
             <Route
               path="dashboard"
               element={
@@ -54,7 +56,6 @@ function App() {
                 </>
               }
             />
-            <Route path="about" element={<>{/* Placeholder element */}</>} />
             <Route path="map" element={<Map />} />
             <Route path="registration" element={<Register />} />
           </Route>
