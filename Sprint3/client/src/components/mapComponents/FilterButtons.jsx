@@ -7,6 +7,22 @@ import { ChargerTypeData } from "./filterData";
 
 function FilterButtons() {
   const [visible, setVisible] = useState(null);
+  const [query, setQuery] = useState("");
+  const [complexQuery, setComplexQuery] = useState(false);
+
+  const updateQuery = (param, value) => {
+    if (!complexQuery) {
+      setQuery(`/customSearch?${param}=${value}`);
+      setComplexQuery(true);
+    } else {
+      setQuery((prevQuery) => `${prevQuery}&${param}=${value}`);
+    }
+  };
+
+  const clearQuery = () => {
+    setQuery("");
+    setComplexQuery(false);
+  };
 
   const toggleBox = (boxName) => {
     setVisible(visible === boxName ? null : boxName);
@@ -29,6 +45,9 @@ function FilterButtons() {
         {visible === "chargerType" && (
           <FilterBox
             title="Charger Type Filter"
+            query={query}
+            onUpdateQuery={updateQuery}
+            onClearQuery={clearQuery}
             chargerData={ChargerTypeData}
             content="Select the types of chargers you want to filter."
             onClose={() => setVisible(null)}
@@ -47,6 +66,9 @@ function FilterButtons() {
         {visible === "provider" && (
           <FilterBox
             title="Provider Filter"
+            query={query}
+            onUpdateQuery={updateQuery}
+            onClearQuery={clearQuery}
             content="Select the providers you want to filter."
             onClose={() => setVisible(null)}
           />
@@ -63,7 +85,10 @@ function FilterButtons() {
         </button>
         {visible === "other" && (
           <FilterBox
-            title="Other Filter"
+            title="Location Filter"
+            query={query}
+            onUpdateQuery={updateQuery}
+            onClearQuery={clearQuery}
             content="Configure additional filters for your map."
             onClose={() => setVisible(null)}
           />

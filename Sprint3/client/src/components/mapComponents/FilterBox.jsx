@@ -1,60 +1,30 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import Cancel from "../../assets/images/close.png";
+import { useFilterData } from "./FilterDataContext";
 
-function FilterBox({ title, chargerData, onClose }) {
+function FilterBox({
+  title,
+  query,
+  onUpdateQuery,
+  onClearQuery,
+  onClose,
+  chargerData,
+}) {
   const [chargingPower, setChargingPower] = useState(22);
-  let [query, setQuery] = useState("");
-  const [complexQuery, setComplexQuery] = useState(false);
-  const [providers, setProviders] = useState([]);
-  const [locations, setLocations] = useState([]);
+  const { providers, locations } = useFilterData();
 
-  const onUpdateQuery = (param, value) => {
-    if (!complexQuery) {
-      setQuery((query += `/customSearch?${param}=${value}`));
-    }
-    if (complexQuery) {
-      setQuery((query += `&${param}=${value}`));
-    }
-    if (!complexQuery) {
-      setComplexQuery(true);
-    }
-    console.log(query);
+  const handleUpdateQuery = (param, value) => {
+    onUpdateQuery(param, value);
   };
 
-  const clearQuery = () => {
-    setQuery("");
-    setComplexQuery(false);
+  const handleClearQuery = () => {
+    onClearQuery();
   };
 
   const handleClose = () => {
-    clearQuery();
-    setProviders([]);
-    setLocations([]);
     onClose();
   };
-
-  const getAllFilterData = async () => {
-    try {
-      const res = await fetch("api/stations/unique-providers-locations");
-      const data = await res.json();
-      console.log(data);
-      return data;
-    } catch (error) {
-      console.error("Failed to fetch providers and stations", error);
-    }
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const { locations, providers } = await getAllFilterData();
-      if (locations && providers) {
-        setLocations(locations);
-        setProviders(providers);
-      }
-    };
-    fetchData();
-  }, []);
 
   const search = async () => {
     const stationSearch = "api/stations" + query;
@@ -89,71 +59,77 @@ function FilterBox({ title, chargerData, onClose }) {
       </div>
 
       {/* Providers */}
-      <div className="mb-4">
-        <div className="flex gap-2 bg-mediumBlue p-2 items-center rounded-md">
-          <h4 className="font-semibold text-sm text-white font-Orbitron">
-            Providers:
-          </h4>
-          <select
-            name="providers"
-            multiple={true}
-            onChange={(e) => onUpdateQuery("providers", e.target.value)}
-          >
-            {providers.map((provider) => (
-              <option key={provider.id} value={provider.provider}>
-                {provider.provider}
-              </option>
-            ))}
-          </select>
+      {title === "Provider Filter" && (
+        <div className="mb-4">
+          <div className="flex gap-2 bg-mediumBlue p-2 items-center rounded-md">
+            <h4 className="font-semibold text-sm text-white font-Orbitron">
+              Providers:
+            </h4>
+            <select
+              name="providers"
+              multiple={true}
+              onChange={(e) => handleUpdateQuery("providers", e.target.value)}
+            >
+              {providers.map((provider) => (
+                <option key={provider.id} value={provider.provider}>
+                  {provider.provider}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Locations */}
-      <div className="mb-4">
-        <div className="flex gap-2 bg-mediumBlue p-2 items-center rounded-md">
-          <h4 className="font-semibold text-sm text-white font-Orbitron">
-            Providers:
-          </h4>
-          <select
-            name="locations"
-            multiple={true}
-            onChange={(e) => onUpdateQuery("locations", e.target.value)}
-          >
-            {locations.map((location) => (
-              <option key={location.id} value={location.location}>
-                {location.location}
-              </option>
-            ))}
-          </select>
+      {title === "Location Filter" && (
+        <div className="mb-4">
+          <div className="flex gap-2 bg-mediumBlue p-2 items-center rounded-md">
+            <h4 className="font-semibold text-sm text-white font-Orbitron">
+              Providers:
+            </h4>
+            <select
+              name="locations"
+              multiple={true}
+              onChange={(e) => handleUpdateQuery("locations", e.target.value)}
+            >
+              {locations.map((location) => (
+                <option key={location.id} value={location.location}>
+                  {location.location}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Charger types */}
-      <div className="mb-4">
-        <div className="grid grid-cols-1 gap-2">
-          {chargerData.map((filter) => (
-            <button
-              key={filter.id}
-              className={`p-2 flex items-start rounded ${filter.bgColor} bg-opacity-15 transition-transform duration-200 hover:scale-105 hover:brightness-150`}
-              onClick={() => onUpdateQuery("connectors", filter.type)}
-            >
-              <div className="flex flex-col items-start">
-                <span className={`${filter.textColor} font-Orbitron`}>
-                  {filter.label}
-                </span>
-                <span className="text-sm text-white font-Roboto">
-                  {filter.description}
-                </span>
-              </div>
-              <img
-                src={filter.image}
-                alt={filter.label}
-                className="ml-auto w-10 h-10 self-center"
-              />
-            </button>
-          ))}
+      {title === "Charger Type Filter" && (
+        <div className="mb-4">
+          <div className="grid grid-cols-1 gap-2">
+            {chargerData.map((filter) => (
+              <button
+                key={filter.id}
+                className={`p-2 flex items-start rounded ${filter.bgColor} bg-opacity-15 transition-transform duration-200 hover:scale-105 hover:brightness-150`}
+                onClick={() => handleUpdateQuery("connectors", filter.type)}
+              >
+                <div className="flex flex-col items-start">
+                  <span className={`${filter.textColor} font-Orbitron`}>
+                    {filter.label}
+                  </span>
+                  <span className="text-sm text-white font-Roboto">
+                    {filter.description}
+                  </span>
+                </div>
+                <img
+                  src={filter.image}
+                  alt={filter.label}
+                  className="ml-auto w-10 h-10 self-center"
+                />
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Car battery voltage */}
       <div className="mb-4">
@@ -191,7 +167,7 @@ function FilterBox({ title, chargerData, onClose }) {
       </div>
       <button
         className="mt-2 text-lg font-semibold font-Orbitron text-salmonRed transition-transform duration-200 hover:scale-125"
-        onClick={clearQuery}
+        onClick={handleClearQuery}
       >
         Reset Filters
       </button>

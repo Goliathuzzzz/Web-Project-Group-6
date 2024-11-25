@@ -7,6 +7,7 @@ import InfoBox from "./InfoBox";
 import CustomMarker from "./Marker";
 import MapButtons from "./MapButtons";
 import FilterButtons from "./FilterButtons";
+import { FilterDataProvider } from "./FilterDataContext";
 
 const INITIAL_POSITION = { lng: 25.3824874, lat: 64.4191221 };
 const INITIAL_ZOOM = 3;
@@ -119,12 +120,14 @@ function Map() {
   };
 
   return (
-    <div className="relative w-full h-screen">
-      <div ref={mapContainer} className="absolute w-full h-full" />
-      <MapButtons onZoomIn={zoomIn} onZoomOut={zoomOut} onReset={resetView} />
-      <FilterButtons />
-      {activeStation && <InfoBox station={activeStation} />}
-    </div>
+    <FilterDataProvider>
+      <div className="relative w-full h-screen">
+        <div ref={mapContainer} className="absolute w-full h-full" />
+        <MapButtons onZoomIn={zoomIn} onZoomOut={zoomOut} onReset={resetView} />
+        <FilterButtons />
+        {activeStation && <InfoBox station={activeStation} />}
+      </div>
+    </FilterDataProvider>
   );
 }
 
