@@ -1,200 +1,106 @@
-import React, { useRef, useState, useEffect } from "react";
-import { createRoot } from "react-dom/client";
-import * as maptilersdk from "@maptiler/sdk";
-import "@maptiler/sdk/dist/maptiler-sdk.css";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { MapContainer, TileLayer, useMapEvents } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import 'mapbox-gl/dist/mapbox-gl.css';
+import { useStations } from "./mapHooks/useStations";
+import { useDebounce } from "./mapHooks/useDebounce";
+import MapEventHandler from "./mapHooks/MapEventHandler";
+import FetchStations from "./components/FetchStations";
+import CustomMarker from "./CustomMarker";
 import InfoBox from "./InfoBox";
-import CustomMarker from "./Marker";
-import MapButtons from "./MapButtons";
-import FilterButtons from "./FilterButtons";
+const { VITE_REACT_MAPBOX_STYLE_ID, VITE_REACT_MAPBOX_USERNAME, VITE_REACT_MAPBOX_TOKEN } = import.meta.env;
 
-const INITIAL_POSITION = { lng: 25.3824874, lat: 64.4191221 };
-const INITIAL_ZOOM = 3;
+const INITIAL_BOUNDS = [
+  [59.4, 18.7],
+  [71.1, 33.6],
+]
+const INITIAL_POSITION = [64.4191221, 25.3824874];
+const INITIAL_ZOOM = 5;
 
-if (!import.meta.env.VITE_REACT_APP_MAPTILER_API_KEY) {
-  throw new Error("MapTiler API key is missing. Please set REACT_APP_MAPTILER_API_KEY.");
+if (!VITE_REACT_MAPBOX_TOKEN || !VITE_REACT_MAPBOX_STYLE_ID || !VITE_REACT_MAPBOX_USERNAME) {
+  throw new Error("Mapbox environment variables are missing. Please check your .env file.");
 }
-maptilersdk.config.apiKey = import.meta.env.VITE_REACT_APP_MAPTILER_API_KEY;
 
-function Map() {
-  const mapContainer = useRef(null);
-  const map = useRef(null);
-  const [stations, setStations] = useState([]);
-  const [activeStation, setActiveStation] = useState(null);
-  const [markers, setMarkers] = useState([]);
-
-  // Helpers
-
-  // Initialize the map
-  const initializeMap = (mapContainerElement) => {
-    try {
-      const mapInstance = new maptilersdk.Map({
-        container: mapContainerElement,
-        style: `https://api.maptiler.com/maps/e44b03e8-e159-489f-9e95-78adfed9c239/style.json?key=${maptilersdk.config.apiKey}`,
-        center: [INITIAL_POSITION.lng, INITIAL_POSITION.lat],
-        zoom: INITIAL_ZOOM,
-        minZoom: INITIAL_ZOOM,
-        maxBounds: [
-          [18.7, 59.4],
-          [33.6, 71.1],
-        ],
-        pitch: 0,
-        bearing: 0,
-        geolocateControl: false, // Added manually
-        navigationControl: false, // Added manually
-        attributionControl: false, // Added manually
-      });
-
-      /*
-      mapInstance.addControl(new maptilersdk.MaptilerGeolocateControl({
-        positionOptions: {
-          enableHighAccuracy: true,
-        },
-        trackUserLocation: true,
-      }));
-      */
-      return mapInstance;
-    } catch (error) {
-      console.error("Failed to initialize the map:", error);
-    }
+const Map = () => {
+  const initialBounds = {
+    north: 71.1,
+    south: 59.4,
+    east: 33.6,
+    west: 18.7,
+    maxResults: 100,
   };
 
-  const fetchStations = async (bounds) => {
-    try {
-      const { north, south, east, west } = bounds;
-      const response = await axios.get("/api/chargers", {
-        params: {
-          maxResults: 100,
-          north,
-          south,
-          east,
-          west,
-        },
-      });
-      console.log(response.data);
-      setStations(response.data);
-    } catch (error) {
-      console.error("Failed to fetch stations:", error);
-    }
+  const { stations, fetchStations, error: stationsError } = useStations(initialBounds);
+  const handleMapMove = useDebounce(fetchStations);
+  const [selectedStation, setSelectedStation] = useState(null);
+  const [tileError, setTileError] = useState(false);
+
+  const handleClose = () => {
+    setSelectedStation(null);
+  };
+
+  const handleTileError = () => {
+    setTileError(true);
+  };
+
+  if (tileError) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-100">
+        <div className="text-center">
+          <h1 className="text-2xl font-semibold text-red-600">Map Failed to Load</h1>
+          <p className="mt-2 text-gray-600">Please check your internet connection or try again later.</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
   }
-
-  // Function to add markers to the map
-  const addMarkers = (mapInstance) => {
-    return stations.map((station) => {
-      const markerElement = document.createElement("div");
-      const root = createRoot(markerElement);
-
-      root.render(
-        <CustomMarker
-          //key={station.id} // Needs to be replaced with a station id
-          connector={station.connections.connectionType}
-          size="32px"
-        />
-      );
-
-      const marker = new maptilersdk.Marker({ element: markerElement })
-        .setLngLat([
-          station.location.longitude,
-          station.location.latitude,
-        ])
-        .addTo(mapInstance);
-
-      marker
-        .getElement()
-        .addEventListener("click", (e) => handleMarkerClick(e, station));
-
-      return marker;
-    });
-  };
-
-  // Event handlers
-
-  const handleMarkerClick = (e, station) => {
-    e.stopPropagation();
-    setActiveStation(station);
-  };
-
-  // Close the info box when the map is clicked
-  const handleMapClick = () => setActiveStation(null);
-
-  const zoomIn = () => {
-    if (map.current) {
-      map.current.zoomIn();
-    }
-  };
-
-  const zoomOut = () => {
-    if (map.current) {
-      map.current.zoomOut();
-    }
-  };
-
-  /*
-  const geoLocate = () => {
-    console.log("Locating...");
-    if (!map.current) return; // Prevent execution if the map is not initialized
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        map.current.flyTo({
-          center: [position.coords.longitude, position.coords.latitude],
-          zoom: 16,
-        });
-        if (!map.current._controls.includes("maptiler-geolocate-control")) {
-          console.error(map.current._controls);
-        }
-      }, (error) => {
-        console.error("Failed to get the current position:", error);
-      });
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
-  };
-  */
-
-  // Effect hooks
-
-  useEffect(() => {
-    if (map.current) return; // Prevent reinitialization if the map is already initialized
-
-    const mapInstance = initializeMap(mapContainer.current);
-    if (!mapInstance) return; // Prevent further execution if the map failed to initialize
-
-    map.current = mapInstance;
-
-    fetchStations({
-      north: map.current.getBounds().getNorth(),
-      south: map.current.getBounds().getSouth(),
-      east: map.current.getBounds().getEast(),
-      west: map.current.getBounds().getWest(),
-    });
-
-    // Add markers to the map
-    const newMarkers = addMarkers(map.current);
-    setMarkers(newMarkers);
-
-    map.current.on("click", handleMapClick);
-
-    // Cleanup on unmount
-    return () => {
-      newMarkers.forEach((marker) => {
-        marker.getElement().removeEventListener("click", handleMarkerClick);
-        marker.remove();
-      });
-      setMarkers([]);
-      map.current.off("click", handleMapClick);
-      map.current.remove();
-      map.current = null;
-    };
-  }, [stations]);
 
   return (
     <div className="relative w-full h-screen">
-      <div ref={mapContainer} className="absolute w-full h-full" />
-      <MapButtons onZoomIn={zoomIn} onZoomOut={zoomOut} />
-      <FilterButtons />
-      {activeStation && <InfoBox station={activeStation} />}
+      <MapContainer
+        center={INITIAL_POSITION}
+        zoom={INITIAL_ZOOM}
+        minZoom={INITIAL_ZOOM}
+        maxBounds={INITIAL_BOUNDS}
+        maxBoundsViscosity={1.0}
+        scrollWheelZoom={true}
+        className="absolute w-full h-full z-0"
+      >
+        <TileLayer
+          attribution='Imagery &copy; <a href="https://www.mapbox.com/">Mapbox</a>'
+          url={`https://api.mapbox.com/styles/v1/${VITE_REACT_MAPBOX_USERNAME}/${VITE_REACT_MAPBOX_STYLE_ID}/tiles/256/{z}/{x}/{y}@2x?access_token=${VITE_REACT_MAPBOX_TOKEN}`}
+          eventHandlers={{
+            tileerror: handleTileError,
+          }}
+        />
+        <FetchStations handleMapMove={handleMapMove} />
+        {stations.map((station) => (
+          <CustomMarker
+            key={station.id}
+            station={station}
+            isSelected={selectedStation?.id === station.id}
+            onClick={() => setSelectedStation(station)}
+          />
+        ))}
+        <MapEventHandler onMapClick={handleClose} />
+      </MapContainer>
+      {stationsError && (
+        <div className="absolute top-0 left-0 right-0 bg-red-600 text-white p-2 text-center z-50">
+          Error loading stations. Please try again later.
+        </div>
+      )}
+      {selectedStation && (
+        <div className="absolute top-4 left-4 z-50">
+          <InfoBox station={selectedStation} />
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default Map;
