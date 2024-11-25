@@ -35,11 +35,17 @@ const Legal = () => {
           {section.heading}
         </h1>
         {section.sections.map((sec, index) => (
-          <div key={index} className="mb-6" >
+          <div key={index} className="mb-6">
             <h2 className="text-xl font-semibold text-eGreenDark mb-2 font-Roboto">
               {sec.subheading}
             </h2>
-            <p className="text-inputGrey leading-relaxed">{sec.content}</p>
+            <ul className="list-disc pl-5 space-y-2">
+              {sec.content.map((point, i) => (
+                <li key={i} className="text-inputGrey leading-relaxed">
+                  {point}
+                </li>
+              ))}
+            </ul>
           </div>
         ))}
       </section>
