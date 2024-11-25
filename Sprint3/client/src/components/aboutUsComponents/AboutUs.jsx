@@ -30,13 +30,13 @@ const AboutUs = () => {
   }, [location]);
 
   return (
-    <div className="flex justify-center min-h-screen py-10 px-4">
+    <div className="flex justify-center min-h-screen py-10 px-4" id="about-us" ref={aboutUsRef}>
       <div
         className="bg-darkBlue shadow-lg rounded-lg p-8 text-inputGrey"
       >
         <img src={traffic} alt="Traffic image" className="pb-4"></img>
         {/* About Us Section */}
-        <section className="mb-8" id="about-us" ref={aboutUsRef}>
+        <section className="mb-8">
           <h2 className="text-3xl font-bold text-eGreen mb-4 font-Orbitron">
             About Us
           </h2>

@@ -19,10 +19,10 @@ export const aboutLinks = [
 ]
 
 export const contactsLinks = [
-  { id: 1, href: "#customer-support", text: "Customer Support >" },
-  { id: 2, href: "#email-us", text: "Email Us >" },
-  { id: 3, href: "#phone-support", text: "Phone Support >" },
-  { id: 4, href: "#office-location", text: "Office Location >" },
+  { id: 1, href: "/contact", text: "Customer Support >" },
+  { id: 2, href: "/contact", text: "Email Us >" },
+  { id: 3, href: "/contact", text: "Phone Support >" },
+  { id: 4, href: "/contact", text: "Office Location >" },
 ]
 
 export const legalLinks = [

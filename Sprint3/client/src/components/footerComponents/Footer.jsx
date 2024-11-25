@@ -31,14 +31,9 @@ export default function Footer() {
 
           {/* About links section */}
           <div className="flex-col items-start mt-4 md:mt-0 hidden custom:block">
-            <Link
-              to="/about-us"
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            >
               <h4 className="text-white text-base mb-2 font-Orbitron whitespace-nowrap">
                 About Us
               </h4>
-            </Link>
             <AboutLinks itemClass="text-white text-sm hover:text-gray-300 transition duration-300 font-Roboto whitespace-nowrap" />
           </div>
 
