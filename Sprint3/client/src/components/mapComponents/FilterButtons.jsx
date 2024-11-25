@@ -3,6 +3,7 @@ import mapCharger from "../../assets/images/map_charger.png";
 import mapService from "../../assets/images/map_service.png";
 import mapOther from "../../assets/images/map_other.png";
 import FilterBox from "./FilterBox";
+import { ChargerTypeData } from "./filterData";
 
 function FilterButtons() {
   const [visible, setVisible] = useState(null);
@@ -28,6 +29,7 @@ function FilterButtons() {
         {visible === "chargerType" && (
           <FilterBox
             title="Charger Type Filter"
+            chargerData={ChargerTypeData}
             content="Select the types of chargers you want to filter."
             onClose={() => setVisible(null)}
           />

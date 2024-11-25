@@ -1,22 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
-import Tesla from "../../assets/images/tesla_img.png";
-import Type2 from "../../assets/images/type2_img.png";
-import CCS2 from "../../assets/images/ccs6_img.png";
-import Chademo from "../../assets/images/chademo_img.png";
 import Cancel from "../../assets/images/close.png";
 
-function FilterBox({ title, onClose }) {
+function FilterBox({ title, chargerData, onClose }) {
   const [chargingPower, setChargingPower] = useState(22);
   let [query, setQuery] = useState("");
   const [complexQuery, setComplexQuery] = useState(false);
+  const [providers, setProviders] = useState([]);
+  const [locations, setLocations] = useState([]);
 
-  const updateQuery = (value) => {
+  const onUpdateQuery = (param, value) => {
     if (!complexQuery) {
-      setQuery((query += `?connectors=${value}`));
+      setQuery((query += `/customSearch?${param}=${value}`));
     }
     if (complexQuery) {
-      setQuery((query += `&connectors=${value}`));
+      setQuery((query += `&${param}=${value}`));
     }
     if (!complexQuery) {
       setComplexQuery(true);
@@ -31,11 +29,35 @@ function FilterBox({ title, onClose }) {
 
   const handleClose = () => {
     clearQuery();
+    setProviders([]);
+    setLocations([]);
     onClose();
   };
 
+  const getAllFilterData = async () => {
+    try {
+      const res = await fetch("api/stations/unique-providers-locations");
+      const data = await res.json();
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.error("Failed to fetch providers and stations", error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { locations, providers } = await getAllFilterData();
+      if (locations && providers) {
+        setLocations(locations);
+        setProviders(providers);
+      }
+    };
+    fetchData();
+  }, []);
+
   const search = async () => {
-    const stationSearch = "api/stations/customSearch" + query;
+    const stationSearch = "api/stations" + query;
     console.log(stationSearch);
     try {
       const res = await fetch(stationSearch);
@@ -48,7 +70,7 @@ function FilterBox({ title, onClose }) {
 
   return (
     <div className="absolute right-16 top-0 bg-gradient-to-b from-darkerBlue to-darkBlue p-4 shadow-lg rounded w-96">
-      <div className="flex justify-between items-center mb-4 border">
+      <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-semibold font-Orbitron text-white">
           {title}
         </h3>
@@ -66,77 +88,70 @@ function FilterBox({ title, onClose }) {
         </button>
       </div>
 
+      {/* Providers */}
+      <div className="mb-4">
+        <div className="flex gap-2 bg-mediumBlue p-2 items-center rounded-md">
+          <h4 className="font-semibold text-sm text-white font-Orbitron">
+            Providers:
+          </h4>
+          <select
+            name="providers"
+            multiple={true}
+            onChange={(e) => onUpdateQuery("providers", e.target.value)}
+          >
+            {providers.map((provider) => (
+              <option key={provider.id} value={provider.provider}>
+                {provider.provider}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      {/* Locations */}
+      <div className="mb-4">
+        <div className="flex gap-2 bg-mediumBlue p-2 items-center rounded-md">
+          <h4 className="font-semibold text-sm text-white font-Orbitron">
+            Providers:
+          </h4>
+          <select
+            name="locations"
+            multiple={true}
+            onChange={(e) => onUpdateQuery("locations", e.target.value)}
+          >
+            {locations.map((location) => (
+              <option key={location.id} value={location.location}>
+                {location.location}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
       {/* Charger types */}
       <div className="mb-4">
         <div className="grid grid-cols-1 gap-2">
-          <button
-            className="p-2 flex items-start rounded bg-ctaYellow bg-opacity-15 transition-transform duration-200 hover:scale-105 hover:brightness-150"
-            onClick={() => updateQuery("Type2")}
-          >
-            <div className="flex flex-col items-start">
-              <span className="text-ctaYellow font-Orbitron">Type 2</span>
-              <span className="text-sm text-white font-Roboto">
-                Lorem ipsum dolor sit amet consectetur. Eget duis nullam
-                tincidunt sed. Molestie pretium at.
-              </span>
-            </div>
-            <img
-              src={Type2}
-              alt="Type 2"
-              className="ml-auto w-10 h-10 self-center"
-            />
-          </button>
-          <button
-            className="p-2 flex items-start rounded bg-salmonRed bg-opacity-15 transition-transform duration-200 hover:scale-105 hover:brightness-150"
-            onClick={() => updateQuery("CCS2")}
-          >
-            <div className="flex flex-col items-start">
-              <span className="text-salmonRed font-Orbitron">CCS2</span>
-              <span className="text-sm text-white">
-                Lorem ipsum dolor sit amet consectetur. Eget duis nullam
-                tincidunt sed. Molestie pretium at.
-              </span>
-            </div>
-            <img
-              src={CCS2}
-              alt="CCS2"
-              className="ml-auto w-10 h-10 self-center"
-            />
-          </button>
-          <button
-            className="p-2 flex items-start rounded bg-electricBlue bg-opacity-15 transition-transform duration-200 hover:scale-105 hover:brightness-150"
-            onClick={() => updateQuery("CHAdeMO")}
-          >
-            <div className="flex flex-col items-start">
-              <span className="text-electricBlue font-Orbitron">CHAdeMO</span>
-              <span className="text-sm text-white">
-                Lorem ipsum dolor sit amet consectetur. Eget duis nullam
-                tincidunt sed. Molestie pretium at.
-              </span>
-            </div>
-            <img
-              src={Chademo}
-              alt="CHAdeMO"
-              className="ml-auto w-10 h-10 self-center"
-            />
-          </button>
-          <button
-            className="p-2 flex items-start rounded bg-eGreen bg-opacity-15 transition-transform duration-200 hover:scale-105 hover:brightness-150"
-            onClick={() => updateQuery("Tesla")}
-          >
-            <div className="flex flex-col items-start">
-              <span className="text-eGreen font-Orbitron">Tesla</span>
-              <span className="text-sm text-white">
-                Lorem ipsum dolor sit amet consectetur. Eget duis nullam
-                tincidunt sed. Molestie pretium at.
-              </span>
-            </div>
-            <img
-              src={Tesla}
-              alt="Tesla"
-              className="ml-auto w-10 h-10 self-center"
-            />
-          </button>
+          {chargerData.map((filter) => (
+            <button
+              key={filter.id}
+              className={`p-2 flex items-start rounded ${filter.bgColor} bg-opacity-15 transition-transform duration-200 hover:scale-105 hover:brightness-150`}
+              onClick={() => onUpdateQuery("connectors", filter.type)}
+            >
+              <div className="flex flex-col items-start">
+                <span className={`${filter.textColor} font-Orbitron`}>
+                  {filter.label}
+                </span>
+                <span className="text-sm text-white font-Roboto">
+                  {filter.description}
+                </span>
+              </div>
+              <img
+                src={filter.image}
+                alt={filter.label}
+                className="ml-auto w-10 h-10 self-center"
+              />
+            </button>
+          ))}
         </div>
       </div>
 
@@ -174,6 +189,12 @@ function FilterBox({ title, onClose }) {
           className="w-full"
         />
       </div>
+      <button
+        className="mt-2 text-lg font-semibold font-Orbitron text-salmonRed transition-transform duration-200 hover:scale-125"
+        onClick={clearQuery}
+      >
+        Reset Filters
+      </button>
     </div>
   );
 }

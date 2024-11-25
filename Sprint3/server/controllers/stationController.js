@@ -128,6 +128,58 @@ const deleteStation = async (req, res) => {
   }
 };
 
+// Function to get all unique providers and locations
+const getAllUniqueProvidersAndLocations = async (req, res) => {
+  try {
+    const providersResult = await Station.aggregate([
+      {
+        $group: {
+          _id: "$provider",
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          provider: "$_id"
+        }
+      }
+    ]);
+
+    const locationsResult = await Station.aggregate([
+      {
+        $group: {
+          _id: "$location",
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          location: "$_id"
+        }
+      }
+    ]);
+
+    const providersWithIds = providersResult.map((provider, index) => ({
+      id: index + 1,
+      provider: provider.provider
+    }));
+
+    const locationsWithIds = locationsResult.map((location, index) => ({
+      id: index + 1,
+      location: location.location
+    }));
+
+    res.status(200).json({
+      providers: providersWithIds,
+      locations: locationsWithIds
+    });
+  } catch (error) {
+    console.error("Failed to fetch unique providers and locations:", error);
+    res.status(500).json({ message: 'Failed to fetch unique providers and locations', error: error.message });
+  }
+};
+
+
 module.exports = {
   getAllStations,
   getStationById,
@@ -136,4 +188,5 @@ module.exports = {
   replaceStation,
   updateStation,
   deleteStation,
+  getAllUniqueProvidersAndLocations,
 };
