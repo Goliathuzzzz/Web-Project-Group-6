@@ -104,9 +104,10 @@ function NavBar() {
 
       {/* Search bar visible only on medium and larger screens */}
       <div className="relative items-center w-1/4 mx-6 ml-20 hidden search-bar-bp:flex">
-        <form className="flex" onSubmit={handleSubmit}>
+        <form className="flex" onSubmit={handleSubmit} name="SearchForm">
           <input
             type="text"
+            id="searchQuery"
             name="query"
             placeholder="Search for locations and providers"
             ref={searchInputRef}
@@ -120,6 +121,8 @@ function NavBar() {
           />
           <button
             type="submit"
+            id="searchButton"
+            name="submitbutton"
             className="bg-gradient-to-r from-eGreen to-darkGreen py-1 ml-2 nav-phone:px-6 rounded-full hover:bg-darkGreen hover:text-white transition-all duration-500 font-bold text-1xl font-Roboto"
           >
             Search
@@ -174,9 +177,10 @@ function NavBar() {
       {/* Conditional rendering of search bar */}
       {searchOpen && (
         <div className="absolute top-full left-0 w-full bg-gradient-to-b from-darkerBlue to-darkBlue p-4 md:hidden z-10">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} name="SearchForm">
             <input
               type="text"
+              id="searchQuery"
               name="query"
               placeholder="Search for locations and providers"
               onChange={handleInputChange}
@@ -185,6 +189,8 @@ function NavBar() {
             />
             <button
               type="submit"
+              id="searchButton"
+              name="submitbutton"
               className="bg-gradient-to-r from-eGreen to-darkGreen py-1 mt-2 nav-phone:px-6 rounded-full hover:bg-darkGreen hover:text-white transition-all duration-500 font-bold text-1xl font-Roboto"
             >
               Search
