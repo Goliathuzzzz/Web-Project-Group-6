@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useState } from "react";
 import Cancel from "../../assets/images/close.png";
 import { useFilterData } from "./FilterDataContext";
@@ -14,10 +14,6 @@ function FilterBox({
   const [chargingPower, setChargingPower] = useState(22);
   const { providers, locations } = useFilterData();
 
-  const handleUpdateQuery = (param, value) => {
-    onUpdateQuery(param, value);
-  };
-
   const handleClearQuery = () => {
     onClearQuery();
   };
@@ -27,7 +23,7 @@ function FilterBox({
   };
 
   const search = async () => {
-    const stationSearch = "api/stations" + query;
+    const stationSearch = "api/stations/customSearch?" + query;
     console.log(stationSearch);
     try {
       const res = await fetch(stationSearch);
@@ -61,21 +57,21 @@ function FilterBox({
       {/* Providers */}
       {title === "Provider Filter" && (
         <div className="mb-4">
-          <div className="flex gap-2 bg-mediumBlue p-2 items-center rounded-md">
+          <div className="flex flex-col gap-2 bg-mediumBlue p-2 items-start rounded-md max-h-40 overflow-auto">
             <h4 className="font-semibold text-sm text-white font-Orbitron">
               Providers:
             </h4>
-            <select
-              name="providers"
-              multiple={true}
-              onChange={(e) => handleUpdateQuery("provider", e.target.value)}
-            >
-              {providers.map((provider) => (
-                <option key={provider.id} value={provider.provider}>
-                  {provider.provider}
-                </option>
-              ))}
-            </select>
+            {providers.map((provider) => (
+              <label key={provider.id} className="flex items-center">
+                <input
+                  type="checkbox"
+                  value={provider.provider}
+                  onChange={(e) => onUpdateQuery(e.target.value)}
+                  className="mr-2"
+                />
+                <span className="text-white">{provider.provider}</span>
+              </label>
+            ))}
           </div>
         </div>
       )}
@@ -83,21 +79,21 @@ function FilterBox({
       {/* Locations */}
       {title === "Location Filter" && (
         <div className="mb-4">
-          <div className="flex gap-2 bg-mediumBlue p-2 items-center rounded-md">
+          <div className="flex flex-col gap-2 bg-mediumBlue p-2 items-start rounded-md max-h-40 overflow-auto">
             <h4 className="font-semibold text-sm text-white font-Orbitron">
-              Providers:
+              Locations:
             </h4>
-            <select
-              name="locations"
-              multiple={true}
-              onChange={(e) => handleUpdateQuery("location", e.target.value)}
-            >
-              {locations.map((location) => (
-                <option key={location.id} value={location.location}>
-                  {location.location}
-                </option>
-              ))}
-            </select>
+            {locations.map((location) => (
+              <label key={location.id} className="flex items-center">
+                <input
+                  type="checkbox"
+                  value={location.location}
+                  onChange={(e) => onUpdateQuery(e.target.value)}
+                  className="mr-2"
+                />
+                <span className="text-white">{location.location}</span>
+              </label>
+            ))}
           </div>
         </div>
       )}
@@ -110,7 +106,7 @@ function FilterBox({
               <button
                 key={filter.id}
                 className={`p-2 flex items-start rounded ${filter.bgColor} bg-opacity-15 transition-transform duration-200 hover:scale-105 hover:brightness-150`}
-                onClick={() => handleUpdateQuery("connectors", filter.type)}
+                onClick={() => onUpdateQuery(filter.type)}
               >
                 <div className="flex flex-col items-start">
                   <span className={`${filter.textColor} font-Orbitron`}>

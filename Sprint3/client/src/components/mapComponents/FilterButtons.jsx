@@ -8,28 +8,52 @@ import { ChargerTypeData } from "./filterData";
 function FilterButtons() {
   const [visible, setVisible] = useState(null);
   const [query, setQuery] = useState("");
-  const [complexQuery, setComplexQuery] = useState(false);
-
-  const updateQuery = (param, value) => {
+  const [selectedProviders, setSelectedProviders] = useState([]);
+  const [selectedLocations, setSelectedLocations] = useState([]);
+  const [selectedConnectors, setSelectedConnectors] = useState([]);
+  const updateQuery = () => {
     let newQuery = "";
-    const queryString = `${param}=${value}`;
-    if (query.includes(queryString)) {
-      newQuery = query.replace(new RegExp(`[&?]${queryString}`), "");
-      if (newQuery === "") {
-        setComplexQuery(false);
-      }
-    } else {
-      if (!complexQuery) {
-        newQuery = `/customSearch?${param}=${value}`;
-        setComplexQuery(true);
-      } else {
-        newQuery = query + `&${param}=${value}`;
-      }
+    if (selectedProviders.length > 0) {
+      newQuery += "&provider=" + selectedProviders.join("&provider=");
     }
-
+    if (selectedLocations.length > 0) {
+      newQuery += "&location=" + selectedLocations.join("&location=");
+    }
+    if (selectedConnectors.length > 0) {
+      newQuery += "&connectors=" + selectedConnectors.join("&connectors=");
+    }
     setQuery(newQuery);
   };
 
+  const handleProviderChange = (value) => {
+    if (selectedProviders.includes(value)) {
+      setSelectedProviders((items) => items.filter((item) => item !== value));
+    } else {
+      setSelectedProviders([...selectedProviders, value]);
+    }
+  };
+
+  const handleLocationChange = (value) => {
+    if (selectedLocations.includes(value)) {
+      setSelectedLocations((items) => items.filter((item) => item !== value));
+    } else {
+      setSelectedLocations([...selectedLocations, value]);
+    }
+  };
+
+  const handleConnectorsChange = (value) => {
+    if (selectedConnectors.includes(value)) {
+      setSelectedConnectors((items) => items.filter((item) => item !== value));
+    } else {
+      setSelectedConnectors([...selectedConnectors, value]);
+    }
+  };
+
+  useEffect(() => {
+    updateQuery();
+  }, [selectedConnectors, selectedLocations, selectedProviders]);
+
+  // For debugging query
   useEffect(() => {
     console.log(query);
   }, [query]);
@@ -37,6 +61,9 @@ function FilterButtons() {
   const clearQuery = () => {
     setQuery("");
     setComplexQuery(false);
+    setSelectedProviders([]);
+    setSelectedLocations([]);
+    setSelectedConnectors([]);
   };
 
   const toggleBox = (boxName) => {
@@ -61,7 +88,7 @@ function FilterButtons() {
           <FilterBox
             title="Charger Type Filter"
             query={query}
-            onUpdateQuery={updateQuery}
+            onUpdateQuery={handleConnectorsChange}
             onClearQuery={clearQuery}
             chargerData={ChargerTypeData}
             content="Select the types of chargers you want to filter."
@@ -82,15 +109,15 @@ function FilterButtons() {
           <FilterBox
             title="Provider Filter"
             query={query}
-            onUpdateQuery={updateQuery}
+            onUpdateQuery={handleProviderChange}
             onClearQuery={clearQuery}
-            content="Select the providers you want to filter."
+            selected={selectedProviders}
             onClose={() => setVisible(null)}
           />
         )}
       </div>
 
-      {/* Other filter button */}
+      {/* Location filter button */}
       <div className="relative">
         <button
           onClick={() => toggleBox("other")}
@@ -102,9 +129,9 @@ function FilterButtons() {
           <FilterBox
             title="Location Filter"
             query={query}
-            onUpdateQuery={updateQuery}
+            onUpdateQuery={handleLocationChange}
             onClearQuery={clearQuery}
-            content="Configure additional filters for your map."
+            selected={selectedLocations}
             onClose={() => setVisible(null)}
           />
         )}
