@@ -7,12 +7,15 @@ import Search from "../../assets/images/search.png";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../../routes/AuthProvider";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useFilterData } from "../../../routes/FilterDataContext";
 
 function NavBar() {
   const { user, logOut } = useAuth();
+  const { providers, locations } = useFilterData();
   const navigate = useNavigate();
   const location = useLocation();
   const searchInputRef = useRef(null);
+  const [searchSuggestions, setSearchSuggestions] = useState([]);
 
   function capitalizeString(str) {
     if (!str) return str;
@@ -70,6 +73,26 @@ function NavBar() {
     console.log(data);
   };
 
+  const handleInputChange = (e) => {
+    const value = e.target.value.toLowerCase();
+    if (value.length > 2) {
+      const locationSuggestions = locations
+        .filter((location) => location.location.toLowerCase().includes(value))
+        .map((location) => location.location);
+      const providerSuggestions = providers
+        .filter((provider) => provider.provider.toLowerCase().includes(value))
+        .map((provider) => provider.provider);
+      setSearchSuggestions([...locationSuggestions, ...providerSuggestions]);
+    } else {
+      setSearchSuggestions([]);
+    }
+  };
+
+  const handleSuggestionClick = (suggestion) => {
+    searchInputRef.current.value = suggestion;
+    setSearchSuggestions([]);
+  };
+
   return (
     <div className="relative flex items-center justify-between px-4 py-2 bg-gradient-to-b from-darkerBlue to-darkBlue nav-phone:px-12">
       {/* Logo on the left */}
@@ -85,8 +108,9 @@ function NavBar() {
           <input
             type="text"
             name="query"
-            placeholder="Search for locations"
+            placeholder="Search for locations and providers"
             ref={searchInputRef}
+            onChange={handleInputChange}
             className="w-full py-1 pl-10 pr-4 text-white rounded-full bg-searchBarBg focus:outline-none focus:ring-2 focus:ring-searchBarSelected shadow-inner-lg font-Roboto"
           />
           <img
@@ -101,6 +125,19 @@ function NavBar() {
             Search
           </button>
         </form>
+        {searchSuggestions.length > 0 && (
+          <ul className="absolute top-full left-0 w-full bg-white border border-gray-300 rounded-md shadow-lg z-10">
+            {searchSuggestions.map((suggestion, index) => (
+              <li
+                key={index}
+                onClick={() => handleSuggestionClick(suggestion)}
+                className="px-4 py-2 cursor-pointer hover:bg-gray-200"
+              >
+                {suggestion}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       {/* Page links visible on medium and larger screens */}
@@ -141,7 +178,8 @@ function NavBar() {
             <input
               type="text"
               name="query"
-              placeholder="Search for locations"
+              placeholder="Search for locations and providers"
+              onChange={handleInputChange}
               ref={searchInputRef}
               className="w-full py-2 px-4 text-white rounded-full bg-searchBarBg focus:outline-none focus:ring-2 focus:ring-searchBarSelected shadow-inner-lg font-Roboto"
             />
@@ -152,6 +190,19 @@ function NavBar() {
               Search
             </button>
           </form>
+          {searchSuggestions.length > 0 && (
+            <ul className="absolute top-full left-0 w-full bg-white border border-gray-300 rounded-md shadow-lg z-10">
+              {searchSuggestions.map((suggestion, index) => (
+                <li
+                  key={index}
+                  onClick={() => handleSuggestionClick(suggestion)}
+                  className="px-4 py-2 cursor-pointer hover:bg-gray-200"
+                >
+                  {suggestion}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       )}
 

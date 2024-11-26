@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import Cancel from "../../assets/images/close.png";
-import { useFilterData } from "./FilterDataContext";
+import { useFilterData } from "../../../routes/FilterDataContext";
 
 function FilterBox({
   title,
