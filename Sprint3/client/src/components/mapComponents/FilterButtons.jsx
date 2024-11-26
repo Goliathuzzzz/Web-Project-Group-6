@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import mapCharger from "../../assets/images/map_charger.png";
 import mapService from "../../assets/images/map_service.png";
 import mapOther from "../../assets/images/map_other.png";
@@ -11,13 +11,28 @@ function FilterButtons() {
   const [complexQuery, setComplexQuery] = useState(false);
 
   const updateQuery = (param, value) => {
-    if (!complexQuery) {
-      setQuery(`/customSearch?${param}=${value}`);
-      setComplexQuery(true);
+    let newQuery = "";
+    const queryString = `${param}=${value}`;
+    if (query.includes(queryString)) {
+      newQuery = query.replace(new RegExp(`[&?]${queryString}`), "");
+      if (newQuery === "") {
+        setComplexQuery(false);
+      }
     } else {
-      setQuery((prevQuery) => `${prevQuery}&${param}=${value}`);
+      if (!complexQuery) {
+        newQuery = `/customSearch?${param}=${value}`;
+        setComplexQuery(true);
+      } else {
+        newQuery = query + `&${param}=${value}`;
+      }
     }
+
+    setQuery(newQuery);
   };
+
+  useEffect(() => {
+    console.log(query);
+  }, [query]);
 
   const clearQuery = () => {
     setQuery("");
