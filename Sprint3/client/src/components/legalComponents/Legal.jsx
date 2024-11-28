@@ -26,7 +26,6 @@ const Legal = () => {
 
   const renderSection = (sectionKey) => {
     const section = legalData[sectionKey];
-
     if (!section) return <p className="text-inputGrey">Section not found</p>;
 
     return (
