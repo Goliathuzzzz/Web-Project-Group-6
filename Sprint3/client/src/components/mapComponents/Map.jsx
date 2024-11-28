@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { MapContainer, TileLayer, CircleMarker } from "react-leaflet";
-import MarkerClusterGroup from "react-leaflet-cluster";
+import MarkerClusterGroup from "react-leaflet-markercluster";
 import "leaflet/dist/leaflet.css";
 import 'mapbox-gl/dist/mapbox-gl.css';
 import 'react-leaflet-markercluster/dist/styles.min.css';
@@ -42,7 +42,7 @@ const Map = () => {
   const [currentPosition, setCurrentPosition] = useState(INITIAL_POSITION);
 
   return (
-    <div className="relative w-full h-screen">
+    <div className="relative w-full h-screen z-0">
       <FilterButtons />
       <MapContainer
         center={INITIAL_POSITION}
