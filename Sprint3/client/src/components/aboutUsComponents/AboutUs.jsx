@@ -12,6 +12,12 @@ const AboutUs = () => {
   const ourPartnersRef = useRef(null);
   const newsRef = useRef(null);
 
+  const introItems = howItWorksData.filter((item) => item.key === 1);
+  const stepItems = howItWorksData.filter(
+    (item) => item.key > 1 && item.key < 7
+  );
+  const outroItems = howItWorksData.filter((item) => item.key === 7);
+
   useEffect(() => {
     const scrollToSection = () => {
       const hash = location.hash;
@@ -30,10 +36,12 @@ const AboutUs = () => {
   }, [location]);
 
   return (
-    <div className="flex justify-center min-h-screen py-10 px-4" id="about-us" ref={aboutUsRef}>
-      <div
-        className="bg-darkBlue shadow-lg rounded-lg p-8 text-inputGrey"
-      >
+    <div
+      className="flex justify-center min-h-screen py-10 px-4"
+      id="about-us"
+      ref={aboutUsRef}
+    >
+      <div className="bg-darkBlue shadow-lg rounded-lg p-8 text-inputGrey">
         <img src={traffic} alt="Traffic image" className="pb-4"></img>
         {/* About Us Section */}
         <section className="mb-8">
@@ -48,8 +56,7 @@ const AboutUs = () => {
           <h2 className="text-3xl font-bold text-eGreen mb-4 font-Orbitron">
             How It Works
           </h2>
-          {howItWorksData
-            .filter((item) => item.key === 1)
+          {introItems
             .map((item) => (
               <div key={item.key} className="mb-6">
                 <p className="text-inputGrey text-lg leading-relaxed">
@@ -59,8 +66,7 @@ const AboutUs = () => {
             ))}
           <div className="mt-8">
             <ol className="list-decimal text-lg pl-4">
-              {howItWorksData
-                .filter((item) => item.key > 1 && item.key < 7)
+              {stepItems
                 .map((item) => (
                   <li key={item.key} className="flex items-start">
                     <div className="text-eGreen font-bold text-xl">
@@ -76,8 +82,7 @@ const AboutUs = () => {
                 ))}
             </ol>
           </div>
-          {howItWorksData
-            .filter((item) => item.key === 7)
+          {outroItems
             .map((item) => (
               <div key={item.key} className="mt-6">
                 <p className="text-inputGrey text-lg leading-relaxed">
@@ -127,7 +132,9 @@ const AboutUs = () => {
             {newsData.map((news) => (
               <li key={news.id} className="border-t pt-4 border-mediumBlue">
                 <h3 className="text-xl font-semibold text-eGreen mb-2 font-Roboto">
-                  {news.heading}
+                  <a href="#" className="hover:underline">
+                    {news.heading}
+                  </a>
                 </h3>
                 <p className="text-inputGrey leading-relaxed">{news.content}</p>
               </li>

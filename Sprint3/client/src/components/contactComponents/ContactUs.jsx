@@ -26,7 +26,7 @@ const ContactUs = () => {
       content: formData.content,
     };
     addContactForm(newContactForm);
-    // Reset form
+    //reset form
     setFormData({ name: '', email: '', content: '' });
   };
 
@@ -51,7 +51,7 @@ const ContactUs = () => {
 
   return (
     <div className="flex items-center justify-center mb-16 mt-8">
-      <div className="w- font-Roboto">
+      <div className="font-Roboto">
         <h1 className="text-3xl font-bold text-eGreen mb-4 font-Orbitron ">
           Contact Us
         </h1>
@@ -62,7 +62,7 @@ const ContactUs = () => {
         </div>
         <div className="flex flex-row items-center relative justify-center">
           {/* Contact info section */}
-          <div className="bg-white p-4 rounded-xl w-64 h-64 justify-center absolute -translate-x-1/2 left-[-20px]">
+          <div className="bg-white p-4 rounded-xl w-64 h-64 justify-center absolute -translate-x-1/2 left-[-20px] hidden sm:block">
             <div>
               <h2 className="font-bold">Email Us</h2>
               <p className="mb-4">
@@ -149,6 +149,27 @@ const ContactUs = () => {
                 Submit
               </button>
             </form>
+          </div>
+        </div>
+
+        {/* Contact info for small screens */}
+        <div className="text-white mt-4 rounded-xl w-64 h-64justify-center hidden sm:hidden xs:block">
+          <div>
+            <h2 className="font-bold">Email Us</h2>
+            <p className="mb-4">
+              <a href={`mailto:${contactData.email}`}>{contactData.email}</a>
+            </p>
+          </div>
+
+          <div>
+            <h2 className="font-bold">Phone Support</h2>
+            <p className="mb-4">
+              <a href={`tel:${contactData.phone}`}>{contactData.phone}</a>
+            </p>
+          </div>
+          <div className="mb-2">
+            <h2 className="font-bold">Office Location</h2>
+            <p>{contactData.officeLocation}</p>
           </div>
         </div>
       </div>
