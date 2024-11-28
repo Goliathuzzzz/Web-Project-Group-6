@@ -29,7 +29,6 @@ router.get('/', async (req, res) => {
           ) 
       )
       .map((item) => ({
-        id: item.ID || 'N/A',
         location: {
           title: item.AddressInfo?.Title || 'N/A',
           addressLine1: item.AddressInfo?.AddressLine1 || 'N/A',

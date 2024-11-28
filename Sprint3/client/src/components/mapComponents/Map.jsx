@@ -1,88 +1,131 @@
-import React, { useState } from "react";
-import { MapContainer, TileLayer, CircleMarker } from "react-leaflet";
-import MarkerClusterGroup from "react-leaflet-markercluster";
-import "leaflet/dist/leaflet.css";
-import 'mapbox-gl/dist/mapbox-gl.css';
-import 'react-leaflet-markercluster/dist/styles.min.css';
-import { useStations } from "./mapHooks/useStations";
-import { useDebounce } from "./mapHooks/useDebounce";
-import { useGeolocation } from "./mapHooks/useGeolocation";
-import MapEventHandler from "./mapHooks/MapEventHandler";
-import FetchStations from "./components/FetchStations";
-import CustomMarker from "./CustomMarker";
+import React, { useRef, useState, useEffect } from "react";
+import { createRoot } from "react-dom/client";
+import * as maptilersdk from "@maptiler/sdk";
+import "@maptiler/sdk/dist/maptiler-sdk.css";
+import stations from "../../../../server/mock-data/ev_stations_mock_data.json";
 import InfoBox from "./InfoBox";
-import FilterButtons from "./FilterButtons";
+import CustomMarker from "./Marker";
 import MapButtons from "./MapButtons";
+import FilterButtons from "./FilterButtons";
 
-const { VITE_REACT_MAPBOX_STYLE_ID, VITE_REACT_MAPBOX_USERNAME, VITE_REACT_MAPBOX_TOKEN } = import.meta.env;
+const INITIAL_POSITION = { lng: 25.3824874, lat: 64.4191221 };
+const INITIAL_ZOOM = 3;
+const MAPTILER_API_KEY = "n0VzL3XOSQc7wKmZ93RG";
 
-const INITIAL_BOUNDS = [
-  [59.4, 18.7],
-  [71.1, 33.6],
-]
-const INITIAL_POSITION = [64.4191221, 25.3824874];
-const INITIAL_ZOOM = 5;
+maptilersdk.config.apiKey = MAPTILER_API_KEY;
 
-if (!VITE_REACT_MAPBOX_TOKEN || !VITE_REACT_MAPBOX_STYLE_ID || !VITE_REACT_MAPBOX_USERNAME) {
-  throw new Error("Mapbox environment variables are missing. Please check your .env file.");
-}
+function Map() {
+  const mapContainer = useRef(null);
+  const map = useRef(null);
+  const [activeStation, setActiveStation] = useState(null);
+  const [markers, setMarkers] = useState([]);
 
-const Map = () => {
-  const initialBounds = {
-    north: 71.1,
-    south: 59.4,
-    east: 33.6,
-    west: 18.7,
-    maxResults: 100,
+  const handleMarkerClick = (e, station) => {
+    e.stopPropagation();
+    setActiveStation(station);
   };
 
-  const { stations, fetchStations, error: stationsError } = useStations(initialBounds);
-  const handleMapMove = useDebounce(fetchStations);
-  const [selectedStation, setSelectedStation] = useState(null);
-  const [currentPosition, setCurrentPosition] = useState(INITIAL_POSITION);
+  // Function to add markers to the map
+  const addMarkers = (mapInstance) => {
+    return stations.map((station) => {
+      const markerElement = document.createElement("div");
+      const root = createRoot(markerElement);
+
+      root.render(
+        <CustomMarker
+          key={`${station.coordinates.latitude}-${station.coordinates.longitude}-${station.connectors[0]?.type}`}
+          connector={station.connectors[0]}
+          size="32px"
+        />
+      );
+
+      const marker = new maptilersdk.Marker({ element: markerElement })
+        .setLngLat([
+          station.coordinates.longitude,
+          station.coordinates.latitude,
+        ])
+        .addTo(mapInstance);
+
+      marker
+        .getElement()
+        .addEventListener("click", (e) => handleMarkerClick(e, station));
+
+      return marker;
+    });
+  };
+
+  // Initialize the map
+  const initializeMap = (mapContainerElement) => {
+    return new maptilersdk.Map({
+      container: mapContainerElement,
+      style: `https://api.maptiler.com/maps/e44b03e8-e159-489f-9e95-78adfed9c239/style.json?key=${maptilersdk.config.apiKey}`,
+      center: [INITIAL_POSITION.lng, INITIAL_POSITION.lat],
+      zoom: INITIAL_ZOOM,
+      minZoom: INITIAL_ZOOM,
+      maxBounds: [
+        [18.7, 59.4],
+        [33.6, 71.1],
+      ],
+      pitch: 0,
+      bearing: 0,
+      geolocateControl: false, // Hide find my location option
+      navigationControl: false, // Hide center option
+      attributionControl: false, // Hide zoom options
+    });
+  };
+
+  useEffect(() => {
+    if (map.current) return; // Prevent reinitialization if the map is already initialized
+
+    map.current = initializeMap(mapContainer.current);
+
+    // Add markers to the map
+    const newMarkers = addMarkers(map.current);
+    setMarkers(newMarkers);
+
+    // Close the info box when the map is clicked
+    const handleMapClick = () => setActiveStation(null);
+    map.current.on("click", handleMapClick);
+
+    // Cleanup on unmount
+    return () => {
+      newMarkers.forEach((marker) => {
+        marker.getElement().removeEventListener("click", handleMarkerClick);
+        marker.remove();
+      });
+      map.current.off("click", handleMapClick);
+      map.current.remove();
+      map.current = null;
+    };
+  }, []);
+
+  const zoomIn = () => {
+    if (map.current) {
+      map.current.zoomIn();
+    }
+  };
+
+  const zoomOut = () => {
+    if (map.current) {
+      map.current.zoomOut();
+    }
+  };
+
+  const resetView = () => {
+    if (map.current) {
+      map.current.setCenter([INITIAL_POSITION.lng, INITIAL_POSITION.lat]);
+      map.current.setZoom(INITIAL_ZOOM);
+    }
+  };
 
   return (
-    <div className="relative w-full h-screen z-0">
+    <div className="relative w-full h-screen">
+      <div ref={mapContainer} className="absolute w-full h-full" />
+      <MapButtons onZoomIn={zoomIn} onZoomOut={zoomOut} onReset={resetView} />
       <FilterButtons />
-      <MapContainer
-        center={INITIAL_POSITION}
-        zoom={INITIAL_ZOOM}
-        minZoom={INITIAL_ZOOM}
-        maxBounds={INITIAL_BOUNDS}
-        maxBoundsViscosity={1.0}
-        zoomControl={false}
-        className="absolute w-full h-full z-0"
-      >
-        <TileLayer
-          attribution='Imagery &copy; <a href="https://www.mapbox.com/">Mapbox</a>'
-          url={`https://api.mapbox.com/styles/v1/${VITE_REACT_MAPBOX_USERNAME}/${VITE_REACT_MAPBOX_STYLE_ID}/tiles/256/{z}/{x}/{y}@2x?access_token=${VITE_REACT_MAPBOX_TOKEN}`}
-        />
-        <MapButtons setCurrentPosition={setCurrentPosition} />
-        <FetchStations handleMapMove={handleMapMove} />
-        <MarkerClusterGroup>
-          {stations.map((station) => (
-            <CustomMarker
-              key={station.id}
-              station={station}
-              isSelected={selectedStation?.id === station.id}
-              onClick={() => setSelectedStation(station)}
-            />
-          ))}
-        </MarkerClusterGroup>
-        <MapEventHandler onMapClick={() => setSelectedStation(null)} />
-      </MapContainer>
-      {stationsError && (
-        <div className="absolute top-0 left-0 right-0 bg-red-600 text-white p-2 text-center z-50">
-          Error loading stations. Please try again later.
-        </div>
-      )}
-      {selectedStation && (
-        <div className="absolute top-4 left-4 z-50">
-          <InfoBox station={selectedStation} />
-        </div>
-      )}
+      {activeStation && <InfoBox station={activeStation} />}
     </div>
   );
-};
+}
 
 export default Map;
