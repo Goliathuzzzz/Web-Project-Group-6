@@ -18,31 +18,31 @@ function ReviewWindow({ station, onClose }) {
     setReviews(stationReviews ? stationReviews.reviews : []);
   }, [station.name]);
 
-  // const handleSubmit = () => {
-  //   if (!user) {
-  //     alert("You must be logged in to submit a review.");
-  //     return;
-  //   }
+  const handleSubmit = () => {
+    if (!user) {
+      alert("You must be logged in to submit a review.");
+      return;
+    }
 
-  //   if (newReview.trim() && newRating > 0) {
-  //     const updatedReviews = [
-  //       ...reviews,
-  //       {
-  //         user: user.username || "Anonymous",
-  //         text: newReview,
-  //         rating: newRating,
-  //       },
-  //     ];
-  //     setReviews(updatedReviews);
-  //     setNewReview("");
-  //     setNewRating(0);
+    if (newReview.trim() && newRating > 0) {
+      const updatedReviews = [
+        ...reviews,
+        {
+          user: user.username || "Anonymous",
+          text: newReview,
+          rating: newRating,
+        },
+      ];
+      setReviews(updatedReviews);
+      setNewReview("");
+      setNewRating(0);
 
-  //     // Add logic to persist the new review with rating
-  //     setActiveTab("existing"); // Switch back to the existing reviews tab
-  //   } else {
-  //     alert("Please add a review and select a rating.");
-  //   }
-  // };
+      // Add logic to persist the new review with rating
+      setActiveTab("existing"); // Switch back to the existing reviews tab
+    } else {
+      alert("Please add a review and select a rating.");
+    }
+  };
 
   const renderStars = (rating) => (
     <span className="text-yellow-400">
