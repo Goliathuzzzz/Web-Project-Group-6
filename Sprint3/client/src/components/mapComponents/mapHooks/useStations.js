@@ -12,6 +12,7 @@ export const useStations = (initialBounds) => {
         params: { ...bounds, maxResults: 100 },
       });
       setStations(response.data);
+      console.log("Fetched stations:", response.data);
     } catch (err) {
       setError(err);
       console.error("Error fetching stations:", err);
