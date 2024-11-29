@@ -1,8 +1,15 @@
-import React, { useRef, useState, useEffect } from "react";
-import { createRoot } from "react-dom/client";
-import * as maptilersdk from "@maptiler/sdk";
-import "@maptiler/sdk/dist/maptiler-sdk.css";
-import stations from "../../../../server/mock-data/ev_stations_mock_data.json";
+import React, { useState } from "react";
+import { MapContainer, TileLayer, CircleMarker } from "react-leaflet";
+import MarkerClusterGroup from "react-leaflet-markercluster";
+import "leaflet/dist/leaflet.css";
+import 'mapbox-gl/dist/mapbox-gl.css';
+import 'react-leaflet-markercluster/dist/styles.min.css';
+import { useStations } from "./mapHooks/useStations";
+import { useDebounce } from "./mapHooks/useDebounce";
+import { useGeolocation } from "./mapHooks/useGeolocation"; // unneccecary import?
+import MapEventHandler from "./mapHooks/MapEventHandler";
+import FetchStations from "./components/FetchStations";
+import CustomMarker from "./CustomMarker";
 import InfoBox from "./InfoBox";
 import CustomMarker from "./Marker";
 import MapButtons from "./MapButtons";
