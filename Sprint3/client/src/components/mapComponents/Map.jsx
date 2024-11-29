@@ -6,7 +6,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import 'react-leaflet-markercluster/dist/styles.min.css';
 import { useStations } from "./mapHooks/useStations";
 import { useDebounce } from "./mapHooks/useDebounce";
-import { useGeolocation } from "./mapHooks/useGeolocation";
+import { useGeolocation } from "./mapHooks/useGeolocation"; // unneccecary import?
 import MapEventHandler from "./mapHooks/MapEventHandler";
 import FetchStations from "./components/FetchStations";
 import CustomMarker from "./CustomMarker";
