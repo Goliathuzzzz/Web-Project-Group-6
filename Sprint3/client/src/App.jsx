@@ -70,7 +70,6 @@ function App() {
             </Routes>
           </AuthProvider>
         </GoogleOAuthProvider>
-        <Footer />
       </BrowserRouter>
     </div>
   );

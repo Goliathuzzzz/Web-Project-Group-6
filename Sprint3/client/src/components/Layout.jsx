@@ -1,11 +1,15 @@
 import NavBar from "./navBarComponents/NavBar";
-import { Outlet } from "react-router-dom";
+import Footer from "./footerComponents/Footer";
+import { Outlet, useLocation } from "react-router-dom";
 
 const Layout = () => {
+  const location = useLocation();
+
   return (
     <div>
       <NavBar />
       <Outlet />
+      {location.pathname !== "/map" && <Footer />}
     </div>
   );
 };
