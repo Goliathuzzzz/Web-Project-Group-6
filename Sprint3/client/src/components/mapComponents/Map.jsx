@@ -42,7 +42,7 @@ const Map = () => {
   const [currentPosition, setCurrentPosition] = useState(INITIAL_POSITION);
 
   return (
-    <div className="relative w-full h-screen">
+    <div className="relative w-full h-[calc(100vh-56px)]">
       <FilterButtons />
       <MapContainer
         center={INITIAL_POSITION}
