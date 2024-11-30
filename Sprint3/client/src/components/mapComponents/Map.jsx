@@ -42,7 +42,7 @@ const Map = () => {
   const [currentPosition, setCurrentPosition] = useState(INITIAL_POSITION);
 
   return (
-    <div className="relative w-full h-screen z-0">
+    <div className="relative w-full h-screen">
       <FilterButtons />
       <MapContainer
         center={INITIAL_POSITION}
@@ -57,7 +57,7 @@ const Map = () => {
           attribution='Imagery &copy; <a href="https://www.mapbox.com/">Mapbox</a>'
           url={`https://api.mapbox.com/styles/v1/${VITE_REACT_MAPBOX_USERNAME}/${VITE_REACT_MAPBOX_STYLE_ID}/tiles/256/{z}/{x}/{y}@2x?access_token=${VITE_REACT_MAPBOX_TOKEN}`}
         />
-        <MapButtons setCurrentPosition={setCurrentPosition} />
+        <MapButtons className="z-100" setCurrentPosition={setCurrentPosition} />
         <FetchStations handleMapMove={handleMapMove} />
         <MarkerClusterGroup>
           {stations.map((station) => (
