@@ -51,6 +51,7 @@ router.get('/', async (req, res) => {
         },
         isRecentlyVerified: item.IsRecentlyVerified || false,
         dateLastVerified: item.DateLastVerified || 'N/A',
+        usageCost: item.UsageCost || 'N/A',
         connections:
           item.Connections?.map((connection) => ({
             id: connection.ID || 'N/A',
