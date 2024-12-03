@@ -5,6 +5,9 @@ const axios = require('axios');
 const { generateToken } = require('../utils/generateToken');
 const { hashPassword } = require('../utils/hashPassword');
 
+// @desc    Get all users
+// @route   GET /api/users
+// @access  Public
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.find({}).sort({ createdAt: -1 });
@@ -14,6 +17,9 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+// @desc    Create a new user
+// @route   POST /api/users
+// @access  Public
 const createUser = async (req, res) => {
   const { username, password, email } = req.body;
   try {
@@ -37,6 +43,9 @@ const createUser = async (req, res) => {
   }
 };
 
+// @desc    Get user by ID
+// @route   GET /api/users/:userId
+// @access  Public
 const getUserById = async (req, res) => {
   const { userId } = req.params;
 
@@ -56,7 +65,9 @@ const getUserById = async (req, res) => {
   }
 };
 
-// GET currently logged in user
+// @desc    Get currently logged in user
+// @route   GET /api/users/me
+// @access  Private
 const getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
@@ -66,7 +77,9 @@ const getMe = async (req, res) => {
   }
 }
 
-// Gets user by email and password (for logging in)
+// @desc  Gets user by email and password (for logging in)
+// @route POST /api/users/login
+// @access Public
 const userLogin = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -87,6 +100,9 @@ const userLogin = async (req, res) => {
     }
 };
 
+// @desc  Google login
+// @route POST /api/users/google-login
+// @access Public
 const googleLogin = async (req, res) => {
   const { token } = req.body;
   try {
@@ -113,7 +129,9 @@ const googleLogin = async (req, res) => {
   }
 };
 
-//find user by id and replace it with new user data
+// @desc  Find user by id and replace it with new user data
+// @route PATCH /api/users/:userId
+// @access Private
 const replaceUser = async (req, res) => {
   const { userId } = req.params;
 
@@ -137,7 +155,9 @@ const replaceUser = async (req, res) => {
   }
 };
 
-//find user by id and update it with new user data
+// @desc  Find user by id and update it with new user data
+// @route PUT /api/users/:userId
+// @access Private
 const updateUser = async (req, res) => {
   const { userId } = req.params;
 
@@ -161,6 +181,9 @@ const updateUser = async (req, res) => {
   }
 };
 
+// @desc  Find user by id and delete it
+// @route DELETE /api/users/:userId
+// @access Private
 const deleteUser = async (req, res) => {
   const { userId } = req.params;
 

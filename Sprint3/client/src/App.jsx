@@ -20,6 +20,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import AboutUs from './components/aboutUsComponents/AboutUs';
 import ContactUs from './components/contactComponents/ContactUs';
 import Legal from './components/legalComponents/Legal';
+import AdminContactForms from './components/contactComponents/AdminContactForms';
 
 /* Placeholder code for testing */
 function App() {
@@ -52,6 +53,7 @@ function App() {
                 <Route path="contact" element={<ContactUs />} />
                 <Route path="legal" element={<Legal />} />
                 <Route path="login" element={<Login />} />
+                <Route path="admin-forms" element={<AdminContactForms />} />
                 <Route
                   path="dashboard"
                   element={

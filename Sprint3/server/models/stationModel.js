@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
+//used with mock data
 const stationSchema = new Schema(
   {
     name: {

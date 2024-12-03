@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../middleware/auth');
+const { auth } = require('../middleware/auth');
 const {
   getAllStations,
   getStationById,
@@ -10,6 +10,7 @@ const {
   deleteStation,
 } = require('../controllers/stationController');
 
+//used with mockdata
 // GET /stations
 router.get('/', getAllStations);
 
