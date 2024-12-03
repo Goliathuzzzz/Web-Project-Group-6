@@ -15,7 +15,6 @@ import Layout from "./components/Layout";
 import ProfilePic from "./components/myPageComponents/ProfilePic";
 import SavedStations from "./components/myPageComponents/SavedStations";
 import AuthProvider from "../routes/AuthProvider";
-import PrivateRoute from "../routes/PrivateRoute";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { FilterDataProvider } from "../routes/FilterDataContext";
 
