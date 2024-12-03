@@ -59,12 +59,14 @@ export default {
         'main-spec': '538px',
         'my-page': '915px',
         'mini': '410px',
+        'saved-stations': '500px',
       },
       backgroundPosition: {
         'custom': 'right 35% bottom 45%',
       },
       width: {
         'calculatorWidth': '795px',
+        'profileWidth': '362px',
       },
     },
   },
