@@ -59,6 +59,7 @@ export default {
         'main-spec': '538px',
         'my-page': '915px',
         'mini': '410px',
+        'xs': '480px',
         'saved-stations': '500px',
       },
       backgroundPosition: {

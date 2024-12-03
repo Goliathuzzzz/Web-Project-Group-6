@@ -19,14 +19,15 @@ router.get('/', async (req, res) => {
     });
 
     const formattedData = response.data
-      .filter(
-        (item) =>
-          item.UsageType?.Title === 'Public' && //filtering out the stations that are not public
-          item.Connections?.some(
-            (
-              connection //filtering out the connection types that are not useful for the project
-            ) => [2, 25, 27, 28, 30, 32, 33, 1036].includes(connection.ConnectionTypeID) //30, 27 tesla; 32 type1; 33 type2; 2 chademo; 25 type2 socket only; 28 type F slow charge; 1036 type 2 tethered
-          ) 
+      .filter((item) =>
+        item.Connections?.some(
+          (
+            connection //filtering out the connection types that are not useful for the project
+          ) =>
+            [2, 25, 27, 28, 30, 32, 33, 1036].includes(
+              connection.ConnectionTypeID
+            ) //30, 27 tesla; 32 type1; 33 type2; 2 chademo; 25 type2 socket only; 28 type F slow charge; 1036 type 2 tethered
+        )
       )
       .map((item) => ({
         id: item.ID || 'N/A',
@@ -50,6 +51,7 @@ router.get('/', async (req, res) => {
         },
         isRecentlyVerified: item.IsRecentlyVerified || false,
         dateLastVerified: item.DateLastVerified || 'N/A',
+        usageCost: item.UsageCost || 'N/A',
         connections:
           item.Connections?.map((connection) => ({
             id: connection.ID || 'N/A',
@@ -61,21 +63,21 @@ router.get('/', async (req, res) => {
             connectionType: connection.ConnectionType?.Title || 'N/A',
             formalName: connection.ConnectionType?.FormalName || 'N/A',
           })) || [],
-      }))
-      //for future use, when we want to filter out the stations not currently showing in map view. we can also use distance from the center point
-      // .filter((station) => {
-      //   const { latitude, longitude } = station.location;
-      //   return (
-      //     latitude >= parseFloat(south) &&
-      //     latitude <= parseFloat(north) &&
-      //     longitude >= parseFloat(west) &&
-      //     longitude <= parseFloat(east)
-      //   );
-      // });
+      }));
+    //for future use, when we want to filter out the stations not currently showing in map view. we can also use distance from the center point
+    // .filter((station) => {
+    //   const { latitude, longitude } = station.location;
+    //   return (
+    //     latitude >= parseFloat(south) &&
+    //     latitude <= parseFloat(north) &&
+    //     longitude >= parseFloat(west) &&
+    //     longitude <= parseFloat(east)
+    //   );
+    // });
 
     //just for checking in console
     const uniqueStations = [
-      ...new Map( 
+      ...new Map(
         formattedData.map((item) => [item.location.title, item])
       ).values(),
     ];

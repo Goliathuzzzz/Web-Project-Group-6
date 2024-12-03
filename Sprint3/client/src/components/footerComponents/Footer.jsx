@@ -1,12 +1,13 @@
-import { useState } from "react";
-import AboutLinks from "./AboutLinks";
-import ContactsLinks from "./ContactsLinks";
-import LegalLinks from "./LegalLinks";
-import SocialLinks from "./SocialLinks";
-import logo from "../../assets/images/logo_footer.png";
-import footerText from "./footerText";
-import appStore from "../../assets/images/app_store.png";
-import playStore from "../../assets/images/google_play.png";
+import { useState } from 'react';
+import AboutLinks from './AboutLinks';
+import ContactsLinks from './ContactsLinks';
+import LegalLinks from './LegalLinks';
+import SocialLinks from './SocialLinks';
+import logo from '../../assets/images/logo_footer.png';
+import footerText from './footerText';
+import appStore from '../../assets/images/app_store.png';
+import playStore from '../../assets/images/google_play.png';
+import { Link } from 'react-router-dom';
 
 export default function Footer() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -30,9 +31,9 @@ export default function Footer() {
 
           {/* About links section */}
           <div className="flex-col items-start mt-4 md:mt-0 hidden custom:block">
-            <h4 className="text-white text-base mb-2 font-Orbitron whitespace-nowrap">
-              About Us
-            </h4>
+              <h4 className="text-white text-base mb-2 font-Orbitron whitespace-nowrap">
+                About Us
+              </h4>
             <AboutLinks itemClass="text-white text-sm hover:text-gray-300 transition duration-300 font-Roboto whitespace-nowrap" />
           </div>
 
