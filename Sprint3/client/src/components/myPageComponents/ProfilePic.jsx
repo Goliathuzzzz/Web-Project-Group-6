@@ -8,7 +8,14 @@ function ProfilePic() {
   const [isWindowOpen, setIsWindowOpen] = useState(false);
   const [username, setName] = useState("");
   const [pic, setPic] = useState(user_circle);
-  const { user } = useAuth();
+  const [updatedUserName, setUpdatedUserName] = useState(username);
+  const [updatedLocation, setUpdatedLocation] = useState("");
+  const [newProfilePic, setNewProfilePic] = useState(null);
+  const { user, token } = useAuth();
+
+  const handleFileChange = (e) => {
+    setNewProfilePic(e.target.files[0]);
+  };
 
   useEffect(() => {
     if (user) {
@@ -16,6 +23,49 @@ function ProfilePic() {
       setPic(user.picture || user_circle);
     }
   }, [user]);
+
+  const updateUser = async (formData) => {
+    try {
+      const id = user._id;
+      const res = await fetch(`api/users/${id}`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to update user");
+      }
+      const resData = await res.json();
+      console.log(resData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleUpdate = () => {
+    const updatedUser = {
+      username: updatedUserName,
+      location: updatedLocation,
+      picture: newProfilePic,
+    };
+    console.log(updatedUser);
+    const formData = new FormData();
+    formData.append("username", updatedUser.username);
+    formData.append("location", updatedUser.location);
+    if (updatedUser.picture) {
+      formData.append("picture", updatedUser.picture);
+    }
+    updateUser(formData);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleUpdate();
+    setIsWindowOpen(false);
+  };
 
   return (
     <div className="relative flex bg-gradient-to-b mx-4 my-page:mr-0 from-darkerBlue to-darkBlue my-page:max-w-md my-page:w-profileWidth justify-center rounded-sm mt-10 items-center">
@@ -41,10 +91,10 @@ function ProfilePic() {
 
       {isWindowOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-10">
-          <div className="bg-myPageBlue w-[400px] h-[300px] rounded-lg shadow-lg">
+          <div className="bg-myPageBlue w-[400px] rounded-lg shadow-lg">
             <div className="flex justify-between items-center bg-eGreen px-4 py-2 rounded-t-lg">
               <h3 className="text-lg font-semibold font-Roboto">
-                Edit Profile Picture
+                Edit Profile
               </h3>
               <button
                 className="transition-transform duration-200 hover:scale-125 hover:brightness-150"
@@ -57,11 +107,39 @@ function ProfilePic() {
               <img
                 src={pic}
                 alt="profile-picture"
-                className="w-28 h-28 rounded-sm mb-4"
+                className="w-28 h-28 rounded-full mb-4"
               />
               <p className="text-center font-Roboto text-white">
                 Current Profile Picture
               </p>
+              <form onSubmit={handleSubmit} className="flex flex-col">
+                <input
+                  type="text"
+                  placeholder="Edit username"
+                  value={updatedUserName}
+                  onChange={(e) => setUpdatedUserName(e.target.value)}
+                  className="mb-2"
+                />
+                <input
+                  type="text"
+                  placeholder="Edit location"
+                  value={updatedLocation}
+                  onChange={(e) => setUpdatedLocation(e.target.value)}
+                  className="mb-2"
+                />
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="mb-2"
+                />
+                <button
+                  type="submit"
+                  className="bg-gradient-to-r from-eGreen to-darkGreen py-1 px-4 rounded-full hover:bg-darkGreen hover:text-white transition-all duration-500 font-bold text-1xl font-Roboto"
+                >
+                  Update user info
+                </button>
+              </form>
             </div>
           </div>
         </div>
