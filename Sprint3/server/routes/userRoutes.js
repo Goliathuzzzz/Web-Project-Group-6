@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const multer = require("multer");
 const auth = require('../middleware/auth');
 const userAuth = require('../middleware/userAuth');
 const {
@@ -13,6 +14,7 @@ const {
   getMe,
   googleLogin,
 } = require('../controllers/userController');
+const upload = multer({ dest: "uploads/" });
 
 // For user routes that don't require auth
 
@@ -29,7 +31,7 @@ router.post('/google-login', googleLogin)
 router.get('/me', userAuth, getMe);
 
 //custom middleware for authentication
-router.use(auth);
+// router.use(auth);
 
 // GET /users
 router.get('/', getAllUsers);
@@ -38,10 +40,10 @@ router.get('/', getAllUsers);
 router.get('/:userId', getUserById);
 
 // PUT /users/:stationId
-router.put('/:userId', updateUser);
+router.put('/:userId', userAuth, replaceUser);
 
 // PATCH /users/:stationId
-router.patch('/:userId', replaceUser);
+router.patch('/:userId', userAuth, upload.single("picture"), updateUser);
 
 // DELETE /users/:stationId
 router.delete('/:userId', deleteUser);

@@ -133,7 +133,7 @@ const replaceUser = async (req, res) => {
       res.status(404).json({ message: 'User not found' });
     }
   } catch (error) {
-    res.status(500).json({ message: 'Failed to update user' });
+    res.status(500).json({ message: 'Failed to update user'});
   }
 };
 
@@ -146,11 +146,17 @@ const updateUser = async (req, res) => {
   }
 
   try {
+    const updateData = { ...req.body };
+    if (req.file) {
+      updateData.picture = req.file.path; // Save the file path to the picture field
+    }
+    
     const updateUser = await User.findOneAndUpdate(
       { _id: userId },
-      { ...req.body },
+      updateData,
       { new: true }
     );
+    console.log(updateData);
     if (updateUser) {
       res.status(200).json(updateUser);
     } else {
