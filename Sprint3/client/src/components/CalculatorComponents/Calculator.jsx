@@ -14,7 +14,7 @@ function Calculator() {
         <div className="m-8 text-center lg:text-left">
           <h2 className="font-Orbitron text-xl text-electricBlue font-medium">
             Calculate the time and cost of charging your car
-          </h2>
+          </h2> 
         </div>
         <div className="flex flex-col font-Roboto text-base calc-size:ml-5 font-bold m-8 mt-0">
           <div className="flex flex-col lg:flex-row justify-around my-2 gap-x-2 gap-y-4 lg:gap-x-4">
