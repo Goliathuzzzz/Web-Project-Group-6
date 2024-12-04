@@ -1,6 +1,5 @@
 import React from "react";
 import Hero from "./components/heroComponents/Hero";
-import Footer from "./components/footerComponents/Footer";
 import Specifications from "./components/myPageComponents/Specifications";
 import Login from "./components/loginComponents/Login";
 import Register from "./components/registerComponents/Register";
