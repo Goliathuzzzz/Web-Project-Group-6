@@ -27,7 +27,7 @@ if (!VITE_REACT_MAPBOX_TOKEN || !VITE_REACT_MAPBOX_STYLE_ID || !VITE_REACT_MAPBO
   throw new Error("Mapbox environment variables are missing. Please check your .env file.");
 }
 
-const Map = () => {
+const Map = ({ minimap = false }) => { // minimap is false by default
   const initialBounds = {
     north: 71.1,
     south: 59.4,
@@ -41,9 +41,12 @@ const Map = () => {
   const [selectedStation, setSelectedStation] = useState(null);
   const [currentPosition, setCurrentPosition] = useState(INITIAL_POSITION);
 
+  const mapHeight = minimap ? "h-80" : "h-[calc(100vh-56px)]"; // if minimap is true, set height to 36px, else set height to 100vh-56px
+
+
   return (
-    <div className="relative w-full h-[calc(100vh-56px)]">
-      <FilterButtons />
+    <div className={`relative w-full ${mapHeight}`}> 
+      {!minimap && <FilterButtons />}
       <MapContainer
         center={INITIAL_POSITION}
         zoom={INITIAL_ZOOM}
@@ -57,7 +60,7 @@ const Map = () => {
           attribution='Imagery &copy; <a href="https://www.mapbox.com/">Mapbox</a>'
           url={`https://api.mapbox.com/styles/v1/${VITE_REACT_MAPBOX_USERNAME}/${VITE_REACT_MAPBOX_STYLE_ID}/tiles/256/{z}/{x}/{y}@2x?access_token=${VITE_REACT_MAPBOX_TOKEN}`}
         />
-        <MapButtons className="z-100" setCurrentPosition={setCurrentPosition} />
+        {!minimap && <MapButtons setCurrentPosition={setCurrentPosition} />}
         <FetchStations handleMapMove={handleMapMove} />
         <MarkerClusterGroup>
           {stations.map((station) => (
@@ -71,12 +74,12 @@ const Map = () => {
         </MarkerClusterGroup>
         <MapEventHandler onMapClick={() => setSelectedStation(null)} />
       </MapContainer>
-      {stationsError && (
+      {!minimap && stationsError && (
         <div className="absolute top-0 left-0 right-0 bg-red-600 text-white p-2 text-center z-50">
           Error loading stations. Please try again later.
         </div>
       )}
-      {selectedStation && (
+      {!minimap && selectedStation && (
         <div className="absolute top-4 left-4 z-50">
           <InfoBox station={selectedStation} />
         </div>
