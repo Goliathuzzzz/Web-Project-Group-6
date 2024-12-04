@@ -61,6 +61,8 @@ export default {
         'mini': '410px',
         'xs': '480px',
         'saved-stations': '500px',
+        'contact': '850px',
+        'contact-form': '670px',
       },
       backgroundPosition: {
         'custom': 'right 35% bottom 45%',
@@ -68,6 +70,24 @@ export default {
       width: {
         'calculatorWidth': '795px',
         'profileWidth': '362px',
+      },
+      keyframes: {
+        slideIn: {
+          '0%': { transform: 'translateX(100%)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' },
+        },
+      },
+      animation: {
+        slideIn: 'slideIn 1s ease-in-out',
+      },
+      keyframes: {
+        scrollRight: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' },
+        },
+      },
+      animation: {
+        scrollRight: 'scrollRight 20s linear infinite',
       },
     },
   },
