@@ -53,7 +53,7 @@ const Legal = () => {
 
   return (
     <div
-      className="flex justify-center min-h-screen py-10 px-4 bg-bodyBg"
+      className="flex justify-center min-h-screen py-10 px-4"
       id="legal-page"
     >
       <div className="bg-darkBlue shadow-lg rounded-lg p-8 text-inputGrey w-full max-w-4xl">
