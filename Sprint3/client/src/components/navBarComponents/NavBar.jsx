@@ -109,7 +109,7 @@ function NavBar() {
             type="text"
             id="searchQuery"
             name="query"
-            placeholder="Search for locations and providers"
+            placeholder="Search"
             ref={searchInputRef}
             onChange={handleInputChange}
             className="w-full py-1 pl-10 pr-4 text-white rounded-full bg-searchBarBg focus:outline-none focus:ring-2 focus:ring-searchBarSelected shadow-inner-lg font-Roboto"
@@ -117,13 +117,13 @@ function NavBar() {
           <img
             src={Search}
             alt="Search Icon"
-            className="absolute left-3 h-5 w-5 text-gray-400 font-Roboto mt-1"
+            className="absolute left-3 h-5 w-5 text-gray-400 font-Roboto mt-1.5"
           />
           <button
             type="submit"
             id="searchButton"
             name="submitbutton"
-            className="bg-gradient-to-r from-eGreen to-darkGreen py-1 ml-2 nav-phone:px-6 rounded-full hover:bg-darkGreen hover:text-white transition-all duration-500 font-bold text-1xl font-Roboto"
+            className="bg-gradient-to-r from-eGreen to-darkGreen py-1 ml-3 nav-phone:px-6 rounded-full hover:bg-darkGreen hover:text-white transition-all duration-500 font-bold text-1xl font-Roboto"
           >
             Search
           </button>
@@ -185,15 +185,15 @@ function NavBar() {
               placeholder="Search for locations and providers"
               onChange={handleInputChange}
               ref={searchInputRef}
-              className="w-full py-2 px-4 text-white rounded-full bg-searchBarBg focus:outline-none focus:ring-2 focus:ring-searchBarSelected shadow-inner-lg font-Roboto"
+              className="w-full py-2 px-4 text-white rounded-full pl-10 bg-searchBarBg focus:outline-none focus:ring-2 focus:ring-searchBarSelected shadow-inner-lg font-Roboto"
             />
             <button
               type="submit"
               id="searchButton"
               name="submitbutton"
-              className="bg-gradient-to-r from-eGreen to-darkGreen py-1 mt-2 nav-phone:px-6 rounded-full hover:bg-darkGreen hover:text-white transition-all duration-500 font-bold text-1xl font-Roboto"
+              className="absolute left-5 h-5 w-5 mt-2.5 text-gray-400 font-Roboto"
             >
-              Search
+              <img src={Search} alt="Search Icon" className="h-full w-full ml-2 transform transition-transform duration-200 hover:scale-125 hover:brightness-150" />
             </button>
           </form>
           {searchSuggestions.length > 0 && (
