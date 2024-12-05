@@ -19,7 +19,7 @@ const MapButtons = ({ setCurrentPosition, setAccuracy, isGeolocated, setIsGeoloc
             const newPosition = [coords.latitude, coords.longitude];
             setCurrentPosition(newPosition);
             setAccuracy(coords.accuracy);
-            map.setView(newPosition, 25);
+            map.setView(newPosition, 15);
         }
     }, [isGeolocated, coords, map, setCurrentPosition, setAccuracy]);
 

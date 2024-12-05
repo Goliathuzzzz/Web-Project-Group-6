@@ -3,31 +3,35 @@ import bookmark from "../../../assets/images/info_bookmark.png";
 import locate from "../../../assets/images/info_loc.png";
 import ReviewWindow from "../Reviews";
 import reviewsData from "../../../../../server/mock-data/reviews_mock_data.json";
-
 import { providers, connectorImages, connectorColors, connectorTypes } from "../connectorUtils";
 
+// Helper functions
+// Find the provider based on the station title
 const findProvider = (title) => {
     return providers.find(provider => title.includes(provider)) || "Unknown";
 };
 
+// Get the connector type name based on the connection type ID
+const getConnectorTypeName = (connectionTypeID) => {
+    return connectorTypes[connectionTypeID] || "Type 2";
+};
+
+// Calculate the average rating from the reviews
 const calculateAverageRating = (reviews) => {
     if (!reviews || reviews.length === 0) return 0;
     const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
     return Math.round(totalRating / reviews.length);
 };
 
-const getConnectorTypeName = (connectionTypeID) => {
-    return connectorTypes[connectionTypeID] || "Type 2";
-};
-
-// Connector Component
+// Connector Component to display information for each connector
 const ConnectorInfo = ({ connector, powerKW, reviews, onShowReviews }) => {
-    const connectorType = getConnectorTypeName(connector.connectionTypeID);
-    const averageRating = calculateAverageRating(reviews);
+    const connectorType = getConnectorTypeName(connector.connectionTypeID); // Get connector type
+    const averageRating = calculateAverageRating(reviews); // Calculate average rating
 
     return (
         <div className="relative p-3 bg-mediumBlue text-white rounded-md shadow space-y-1">
             <div className="flex items-center">
+                {/* Display connector icon */}
                 <img
                     src={connectorImages[connectorType] || ""}
                     alt={connectorType}
@@ -40,7 +44,7 @@ const ConnectorInfo = ({ connector, powerKW, reviews, onShowReviews }) => {
                 </span>
                 {/* Power */}
                 <span className="ml-2 font-Roboto">{powerKW} kW</span>
-                {/* Connector availability */}
+                {/* Connector availability (commented out) */}
                 {/* <span className="ml-1 font-Orbitron">{`${station.available}/${station.total}`}</span> */}
             </div>
             <div className="mt-3 flex flex-col">
@@ -66,17 +70,20 @@ const ConnectorInfo = ({ connector, powerKW, reviews, onShowReviews }) => {
     );
 };
 
-// InfoBox Component
+// InfoBox Component to display station information
 function InfoBox({ station, onBookmark }) {
-    const [isReviewWindowOpen, setReviewWindowOpen] = useState(false);
-    const googleMapsLink = `https://www.google.com/maps?q=${station.location.latitude},${station.location.longitude}`;
-    const googleMapsDirections = `https://www.google.com/maps/dir/?api=1&destination=${station.location.latitude},${station.location.longitude}`;
+    const [isReviewWindowOpen, setReviewWindowOpen] = useState(false); // State to control review window visibility
+    const googleMapsLink = `https://www.google.com/maps?q=${station.location.latitude},${station.location.longitude}`; // Google Maps link
+    const googleMapsDirections = `https://www.google.com/maps/dir/?api=1&destination=${station.location.latitude},${station.location.longitude}`; // Google Maps directions link
 
+    // Open and close review window
     const openReviewWindow = () => setReviewWindowOpen(true);
     const closeReviewWindow = () => setReviewWindowOpen(false);
-    const provider = findProvider(station.location.title);
-
+    // Find the reviews for the station
     const stationReviews = reviewsData.find((data) => data.stationName === station.name)?.reviews || [];
+
+    // Find the provider based on the station title
+    const provider = findProvider(station.location.title);
 
     return (
         <div className="absolute top-0 left-0 m-4 p-4 bg-gradient-to-b from-darkerBlue to-darkBlue text-white rounded-md shadow-lg w-fit">
@@ -131,6 +138,7 @@ function InfoBox({ station, onBookmark }) {
                     />
                 ))}
             </div>
+            {/* Review window */}
             {isReviewWindowOpen && <ReviewWindow station={station} onClose={closeReviewWindow} />}
         </div>
     );
