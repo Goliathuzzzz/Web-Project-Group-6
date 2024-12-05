@@ -10,7 +10,7 @@ import { useGeolocation } from "./mapHooks/useGeolocation"; // unneccecary impor
 import MapEventHandler from "./mapHooks/MapEventHandler";
 import FetchStations from "./components/FetchStations";
 import CustomMarker from "./CustomMarker";
-import InfoBox from "./InfoBox";
+import InfoBox from "./infoBoxComponents/InfoBoxV3";
 import FilterButtons from "./FilterButtons";
 import MapButtons from "./MapButtons";
 
