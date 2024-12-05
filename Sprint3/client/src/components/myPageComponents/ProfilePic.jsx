@@ -90,7 +90,7 @@ function ProfilePic() {
       <div className="absolute bottom-0 left-0 w-full h-16 bg-mediumBlue" />
 
       {isWindowOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-10">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20">
           <div className="bg-myPageBlue w-[400px] rounded-lg shadow-lg">
             <div className="flex justify-between items-center bg-eGreen px-4 py-2 rounded-t-lg">
               <h3 className="text-lg font-semibold font-Roboto">
@@ -103,41 +103,54 @@ function ProfilePic() {
                 <img src={Cancel} alt="Cancel" className="w-3 h-3" />
               </button>
             </div>
-            <div className="p-4 flex flex-col items-center">
+            <div className="p-5 flex flex-col items-center">
               <img
                 src={pic}
                 alt="profile-picture"
                 className="w-28 h-28 rounded-full mb-4"
               />
-              <p className="text-center font-Roboto text-white">
+              <p className="text-center font-Roboto text-white mb-4">
                 Current Profile Picture
               </p>
-              <form onSubmit={handleSubmit} className="flex flex-col">
-                <input
-                  type="text"
-                  placeholder="Edit username"
-                  value={updatedUserName}
-                  onChange={(e) => setUpdatedUserName(e.target.value)}
-                  className="mb-2"
-                />
-                <input
-                  type="text"
-                  placeholder="Edit location"
-                  value={updatedLocation}
-                  onChange={(e) => setUpdatedLocation(e.target.value)}
-                  className="mb-2"
-                />
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  className="mb-2"
-                />
+              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                <div className="flex flex-col w-64">
+                  <input
+                    type="text"
+                    placeholder="Edit username"
+                    value={updatedUserName}
+                    onChange={(e) => setUpdatedUserName(e.target.value)}
+                    className="mb-1 p-2 border rounded-md w-full max-w-md mx-auto"
+                  />
+                </div>
+                <div className="flex flex-col w-full">
+                  <input
+                    type="text"
+                    placeholder="Edit location"
+                    value={updatedLocation}
+                    onChange={(e) => setUpdatedLocation(e.target.value)}
+                    className="mb-1 p-2 border rounded-md w-full max-w-md mx-auto"
+                  />
+                </div>
+                <div className="flex justify-center">
+                  <label
+                    htmlFor="fileInput"
+                    className="bg-eGreen to-darkGreen py-2 px-6 rounded-full cursor-pointer text-black font-bold text-center hover:bg-darkGreen hover:text-white transition-all duration-500"
+                  >
+                    Choose Profile Picture
+                  </label>
+                  <input
+                    id="fileInput"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
+                </div>
                 <button
                   type="submit"
-                  className="bg-gradient-to-r from-eGreen to-darkGreen py-1 px-4 rounded-full hover:bg-darkGreen hover:text-white transition-all duration-500 font-bold text-1xl font-Roboto"
+                  className="bg-eGreen to-darkGreen py-1 px-6 rounded-full hover:bg-darkGreen hover:text-white transition-all duration-500 font-bold text-1xl font-Roboto mx-auto"
                 >
-                  Update user info
+                  Update
                 </button>
               </form>
             </div>
