@@ -11,7 +11,6 @@ export const useStations = (initialBounds) => {
       const response = await axios.get("/api/chargers", {
         params: { ...bounds, maxResults: 100 },
       });
-      console.log("Fetched stations:", response.data);
       setStations(response.data);
     } catch (err) {
       setError(err);
