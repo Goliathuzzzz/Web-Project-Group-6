@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { MapContainer, TileLayer, CircleMarker } from "react-leaflet";
+import { MapContainer, TileLayer, Circle } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import "leaflet/dist/leaflet.css";
 import 'mapbox-gl/dist/mapbox-gl.css';
 import 'react-leaflet-markercluster/dist/styles.min.css';
 import { useStations } from "./mapHooks/useStations";
 import { useDebounce } from "./mapHooks/useDebounce";
-import { useGeolocation } from "./mapHooks/useGeolocation"; // unneccecary import?
 import MapEventHandler from "./mapHooks/MapEventHandler";
 import FetchStations from "./components/FetchStations";
 import CustomMarker from "./CustomMarker";
@@ -40,12 +39,13 @@ const Map = ({ minimap = false }) => { // minimap is false by default
   const handleMapMove = useDebounce(fetchStations);
   const [selectedStation, setSelectedStation] = useState(null);
   const [currentPosition, setCurrentPosition] = useState(INITIAL_POSITION);
+  const [accuracy, setAccuracy] = useState(null);
+  const [isGeolocated, setIsGeolocated] = useState(false);
 
   const mapHeight = minimap ? "h-80" : "h-[calc(100vh-56px)]"; // if minimap is true, set height to 36px, else set height to 100vh-56px
 
-
   return (
-    <div className={`relative w-full ${mapHeight}`}> 
+    <div className={`relative w-full ${mapHeight}`}>
       {!minimap && <FilterButtons />}
       <MapContainer
         center={INITIAL_POSITION}
@@ -60,7 +60,15 @@ const Map = ({ minimap = false }) => { // minimap is false by default
           attribution='Imagery &copy; <a href="https://www.mapbox.com/">Mapbox</a>'
           url={`https://api.mapbox.com/styles/v1/${VITE_REACT_MAPBOX_USERNAME}/${VITE_REACT_MAPBOX_STYLE_ID}/tiles/256/{z}/{x}/{y}@2x?access_token=${VITE_REACT_MAPBOX_TOKEN}`}
         />
-        {!minimap && <MapButtons setCurrentPosition={setCurrentPosition} />}
+        {/* Geolocation circle */}
+        {isGeolocated && currentPosition && accuracy && (
+          <Circle center={currentPosition} radius={accuracy} color="#2B7FE5" />
+        )} 
+        {!minimap && <MapButtons
+          setCurrentPosition={setCurrentPosition}
+          setAccuracy={setAccuracy}
+          isGeolocated={isGeolocated}
+          setIsGeolocated={setIsGeolocated} />}
         <FetchStations handleMapMove={handleMapMove} />
         <MarkerClusterGroup>
           {stations.map((station) => (
