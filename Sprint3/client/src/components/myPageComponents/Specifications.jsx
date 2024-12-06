@@ -8,13 +8,14 @@ import { useAuth } from "../../../routes/AuthProvider";
 function Specifications() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [location, setLocation] = useState("Helsinki");
+  const [location, setLocation] = useState("");
   const { user } = useAuth();
 
   useEffect(() => {
     if (user) {
       setName(user.username);
       setEmail(user.email);
+      setLocation(user.location);
     }
   }, [user]);
 
