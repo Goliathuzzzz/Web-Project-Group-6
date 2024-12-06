@@ -7,8 +7,8 @@ import { useAuth } from "../../../routes/AuthProvider";
 function ProfilePic() {
   const [isWindowOpen, setIsWindowOpen] = useState(false);
   const [username, setName] = useState("");
+  const [location, setLocation] = useState("");
   const [pic, setPic] = useState(user_circle);
-  const [updatedUserName, setUpdatedUserName] = useState(username);
   const [updatedLocation, setUpdatedLocation] = useState("");
   const [newProfilePic, setNewProfilePic] = useState(null);
   const { user, token } = useAuth();
@@ -21,6 +21,7 @@ function ProfilePic() {
     if (user) {
       console.log(user);
       setName(user.username);
+      setLocation(user.location);
       setPic(user.picture ? user.picture : user_circle);
     }
   }, [user]);
@@ -49,14 +50,14 @@ function ProfilePic() {
 
   const handleUpdate = () => {
     const updatedUser = {
-      username: updatedUserName,
-      location: updatedLocation,
+      username: username,
+      location: location,
       picture: newProfilePic,
     };
     console.log(updatedUser);
     const formData = new FormData();
-    formData.append("username", updatedUser.username);
-    formData.append("location", updatedUser.location);
+    if (updatedUser.username) formData.append("username", updatedUser.username);
+    if (updatedUser.location) formData.append("location", updatedUser.location);
     if (updatedUser.picture) {
       formData.append("picture", updatedUser.picture);
     }
@@ -117,16 +118,16 @@ function ProfilePic() {
               <form onSubmit={handleSubmit} className="flex flex-col">
                 <input
                   type="text"
-                  placeholder={username}
-                  value={updatedUserName}
-                  onChange={(e) => setUpdatedUserName(e.target.value)}
+                  placeholder=""
+                  value={username}
+                  onChange={(e) => setName(e.target.value)}
                   className="mb-2"
                 />
                 <input
                   type="text"
-                  placeholder={user.location}
-                  value={updatedLocation}
-                  onChange={(e) => setUpdatedLocation(e.target.value)}
+                  placeholder=""
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
                   className="mb-2"
                 />
                 <input

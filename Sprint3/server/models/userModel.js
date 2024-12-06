@@ -26,6 +26,9 @@ const userSchema = new Schema(
     picture: {
       type: String,
     },
+    location: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
