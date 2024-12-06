@@ -8,6 +8,7 @@ const chargerRoutes = require('./routes/ocmStationRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const logger = require('./middleware/logger');
 const contactFormRoutes = require('./routes/contactFormRoutes');
+const path = require("path");
 
 const app = express();
 require('dotenv').config();
@@ -22,6 +23,7 @@ app.use(helmet());
 
 app.get('/', (req, res) => res.send('API Running!'));
 
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use('/api/stations', stationRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/chargers', chargerRoutes); 

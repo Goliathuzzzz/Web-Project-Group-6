@@ -19,8 +19,9 @@ function ProfilePic() {
 
   useEffect(() => {
     if (user) {
+      console.log(user);
       setName(user.username);
-      setPic(user.picture || user_circle);
+      setPic(user.picture ? user.picture : user_circle);
     }
   }, [user]);
 
@@ -40,6 +41,7 @@ function ProfilePic() {
       }
       const resData = await res.json();
       console.log(resData);
+      setPic(resData.picture ? resData.picture : user_circle);
     } catch (error) {
       console.error(error);
     }
@@ -115,14 +117,14 @@ function ProfilePic() {
               <form onSubmit={handleSubmit} className="flex flex-col">
                 <input
                   type="text"
-                  placeholder="Edit username"
+                  placeholder={username}
                   value={updatedUserName}
                   onChange={(e) => setUpdatedUserName(e.target.value)}
                   className="mb-2"
                 />
                 <input
                   type="text"
-                  placeholder="Edit location"
+                  placeholder={user.location}
                   value={updatedLocation}
                   onChange={(e) => setUpdatedLocation(e.target.value)}
                   className="mb-2"

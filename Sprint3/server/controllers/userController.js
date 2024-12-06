@@ -148,7 +148,7 @@ const updateUser = async (req, res) => {
   try {
     const updateData = { ...req.body };
     if (req.file) {
-      updateData.picture = req.file.path; // Save the file path to the picture field
+      updateData.picture = req.file.location;
     }
     
     const updateUser = await User.findOneAndUpdate(

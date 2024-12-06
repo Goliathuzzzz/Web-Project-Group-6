@@ -1,8 +1,6 @@
 import { useGoogleLogin } from "@react-oauth/google";
-import { useGoogleOneTapLogin } from "@react-oauth/google";
 import { useContext, createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
