@@ -29,13 +29,13 @@ const createUser = async (req, res) => {
       const newUser = {
         username,
         password: hashedPassword,
-        email
-      }
+        email,
+      };
       await User.create(newUser);
-      res.status(201).json({username, email});
+      res.status(201).json({ username, email });
     } else {
-      res.status(400).json({ message: "User with this email already exists!" });
-    } 
+      res.status(400).json({ message: 'User with this email already exists!' });
+    }
   } catch (error) {
     res
       .status(500)
@@ -75,7 +75,7 @@ const getMe = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Failed to fetch user data' });
   }
-}
+};
 
 // @desc  Gets user by email and password (for logging in)
 // @route POST /api/users/login
@@ -85,19 +85,27 @@ const userLogin = async (req, res) => {
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({message: "Invalid email or password!"});
-    } 
+      return res.status(400).json({ message: 'Invalid email or password!' });
+    }
     const isMatch = bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
 
     const token = generateToken(user);
-    res.json({ token, user: {id: user.id, username: user.username, email: user.email } });
+    res.json({
+      token,
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        isAdmin: user.isAdmin,
+      },
+    });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "server error", error: error.message });
-    }
+    res.status(500).json({ message: 'server error', error: error.message });
+  }
 };
 
 // @desc  Google login
@@ -107,25 +115,44 @@ const googleLogin = async (req, res) => {
   const { token } = req.body;
   try {
     // Fetch user info from Google using the access token
-    const response = await axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${token}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: 'application/json',
-      },
-    });
+    const response = await axios.get(
+      `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${token}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        },
+      }
+    );
     console.log(response.data);
     const { id, email, name, picture } = response.data;
 
     let user = await User.findOne({ email });
     if (!user) {
-      user = await User.create({ googleId: id, email, username: name, picture });
+      user = await User.create({
+        googleId: id,
+        email,
+        username: name,
+        picture,
+      });
     }
 
     const jwtToken = generateToken(user);
-    res.json({ token: jwtToken, user: { id: user.id, username: user.username, email: user.email, picture: user.picture } });
+    res.json({
+      token: jwtToken,
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        picture: user.picture,
+        isAdmin: user.isAdmin,
+      },
+    });
   } catch (error) {
-    console.log("Error during google login: ", error)
-    res.status(500).json({ message: 'Google login failed', error: error.message });
+    console.log('Error during google login: ', error);
+    res
+      .status(500)
+      .json({ message: 'Google login failed', error: error.message });
   }
 };
 

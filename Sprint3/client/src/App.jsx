@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Hero from './components/heroComponents/Hero';
 import Footer from './components/footerComponents/Footer';
 import Specifications from './components/myPageComponents/Specifications';
@@ -15,11 +15,11 @@ import Layout from './components/Layout';
 import ProfilePic from './components/myPageComponents/ProfilePic';
 import SavedStations from './components/myPageComponents/SavedStations';
 import AuthProvider from '../routes/AuthProvider';
-import PrivateRoute from '../routes/PrivateRoute';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import AboutUs from './components/aboutUsComponents/AboutUs';
 import ContactUs from './components/contactComponents/ContactUs';
 import Legal from './components/legalComponents/Legal';
+import ProtectedRoute from './components/ProtectedRoute';
 import AdminContactForms from './components/contactComponents/AdminContactForms';
 
 /* Placeholder code for testing */
@@ -53,7 +53,15 @@ function App() {
                 <Route path="contact" element={<ContactUs />} />
                 <Route path="legal" element={<Legal />} />
                 <Route path="login" element={<Login />} />
-                <Route path="admin-forms" element={<AdminContactForms />} />
+                {/* admin route for contact forms */}
+                <Route
+                  path="admin-forms"
+                  element={
+                    <ProtectedRoute>
+                      <AdminContactForms />
+                    </ProtectedRoute>
+                  }
+                />
                 <Route
                   path="dashboard"
                   element={

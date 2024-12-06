@@ -9,6 +9,7 @@ export const pageLinks = [
   // { id: 3, href: "/about", text: "About" },
   { id: 4, href: '/dashboard', text: 'Dashboard' },
   // { id: 5, href: "/registration", text: "Sign up" },
+  { id: 6, href: '/admin-forms', text: 'Admin' },
 ];
 
 export const aboutLinks = [
