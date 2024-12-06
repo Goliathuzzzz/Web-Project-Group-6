@@ -28,12 +28,7 @@ app.use(helmet());
 
 app.get('/', (req, res) => res.send('API Running!'));
 
-<<<<<<< HEAD
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-app.use('/api/stations', stationRoutes);
-=======
-// for mock data, app.use('/api/stations', stationRoutes);
->>>>>>> heta
 app.use('/api/users', userRoutes);
 app.use('/api/chargers', chargerRoutes);
 app.use('/api/reviews', reviewRoutes);
