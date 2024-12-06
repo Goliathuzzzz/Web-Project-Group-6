@@ -26,13 +26,10 @@ const userSchema = new Schema(
     picture: {
       type: String,
     },
-<<<<<<< HEAD
     location: {
       type: String,
     },
-=======
     isAdmin: { type: Boolean, default: false },
->>>>>>> heta
   },
   { timestamps: true }
 );

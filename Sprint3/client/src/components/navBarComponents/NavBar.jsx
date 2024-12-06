@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { useState, useEffect, useRef } from "react";
 import logo from "../../assets/images/logo.png";
 import userCircle from "../../assets/images/user.png";
@@ -9,17 +8,6 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../../routes/AuthProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useFilterData } from "../../../routes/FilterDataContext";
-=======
-import { useState, useEffect } from 'react';
-import logo from '../../assets/images/logo.png';
-import userCircle from '../../assets/images/user.png';
-import menuIcon from '../../assets/images/menu.png';
-import PageLinks from './PageLinks';
-import Search from '../../assets/images/search.png';
-import { Link } from 'react-router-dom';
-import { googleLogout } from '@react-oauth/google';
-import { useAuth } from '../../../routes/AuthProvider';
->>>>>>> heta
 
 function NavBar() {
   const { user, logOut } = useAuth();
