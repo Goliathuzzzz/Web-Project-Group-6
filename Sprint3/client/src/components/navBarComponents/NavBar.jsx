@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState, useEffect, useRef } from "react";
 import logo from "../../assets/images/logo.png";
 import userCircle from "../../assets/images/user.png";
@@ -8,6 +9,17 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../../routes/AuthProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useFilterData } from "../../../routes/FilterDataContext";
+=======
+import { useState, useEffect } from 'react';
+import logo from '../../assets/images/logo.png';
+import userCircle from '../../assets/images/user.png';
+import menuIcon from '../../assets/images/menu.png';
+import PageLinks from './PageLinks';
+import Search from '../../assets/images/search.png';
+import { Link } from 'react-router-dom';
+import { googleLogout } from '@react-oauth/google';
+import { useAuth } from '../../../routes/AuthProvider';
+>>>>>>> heta
 
 function NavBar() {
   const { user, logOut } = useAuth();
@@ -97,7 +109,7 @@ function NavBar() {
     <div className="relative flex items-center justify-between px-4 py-2 bg-gradient-to-b from-darkerBlue to-darkBlue nav-phone:px-12">
       {/* Logo on the left */}
       <div className="flex items-center">
-        <Link to={"/"}>
+        <Link to={'/'}>
           <img src={logo} alt="Plug It company logo" className="h-10 w-auto" />
         </Link>
       </div>

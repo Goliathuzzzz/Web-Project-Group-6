@@ -5,6 +5,9 @@ const axios = require('axios');
 const { generateToken } = require('../utils/generateToken');
 const { hashPassword } = require('../utils/hashPassword');
 
+// @desc    Get all users
+// @route   GET /api/users
+// @access  Public
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.find({}).sort({ createdAt: -1 });
@@ -14,6 +17,9 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+// @desc    Create a new user
+// @route   POST /api/users
+// @access  Public
 const createUser = async (req, res) => {
   const { username, password, email } = req.body;
   try {
@@ -23,13 +29,13 @@ const createUser = async (req, res) => {
       const newUser = {
         username,
         password: hashedPassword,
-        email
-      }
+        email,
+      };
       await User.create(newUser);
-      res.status(201).json({username, email});
+      res.status(201).json({ username, email });
     } else {
-      res.status(400).json({ message: "User with this email already exists!" });
-    } 
+      res.status(400).json({ message: 'User with this email already exists!' });
+    }
   } catch (error) {
     res
       .status(500)
@@ -37,6 +43,9 @@ const createUser = async (req, res) => {
   }
 };
 
+// @desc    Get user by ID
+// @route   GET /api/users/:userId
+// @access  Public
 const getUserById = async (req, res) => {
   const { userId } = req.params;
 
@@ -56,7 +65,9 @@ const getUserById = async (req, res) => {
   }
 };
 
-// GET currently logged in user
+// @desc    Get currently logged in user
+// @route   GET /api/users/me
+// @access  Private
 const getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
@@ -64,56 +75,90 @@ const getMe = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Failed to fetch user data' });
   }
-}
+};
 
-// Gets user by email and password (for logging in)
+// @desc  Gets user by email and password (for logging in)
+// @route POST /api/users/login
+// @access Public
 const userLogin = async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({message: "Invalid email or password!"});
-    } 
+      return res.status(400).json({ message: 'Invalid email or password!' });
+    }
     const isMatch = bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
 
     const token = generateToken(user);
-    res.json({ token, user: {id: user.id, username: user.username, email: user.email } });
+    res.json({
+      token,
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        isAdmin: user.isAdmin,
+      },
+    });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "server error", error: error.message });
-    }
+    res.status(500).json({ message: 'server error', error: error.message });
+  }
 };
 
+// @desc  Google login
+// @route POST /api/users/google-login
+// @access Public
 const googleLogin = async (req, res) => {
   const { token } = req.body;
   try {
     // Fetch user info from Google using the access token
-    const response = await axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${token}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: 'application/json',
-      },
-    });
+    const response = await axios.get(
+      `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${token}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        },
+      }
+    );
     console.log(response.data);
     const { id, email, name, picture } = response.data;
 
     let user = await User.findOne({ email });
     if (!user) {
-      user = await User.create({ googleId: id, email, username: name, picture });
+      user = await User.create({
+        googleId: id,
+        email,
+        username: name,
+        picture,
+      });
     }
 
     const jwtToken = generateToken(user);
-    res.json({ token: jwtToken, user: { id: user.id, username: user.username, email: user.email, picture: user.picture } });
+    res.json({
+      token: jwtToken,
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        picture: user.picture,
+        isAdmin: user.isAdmin,
+      },
+    });
   } catch (error) {
-    console.log("Error during google login: ", error)
-    res.status(500).json({ message: 'Google login failed', error: error.message });
+    console.log('Error during google login: ', error);
+    res
+      .status(500)
+      .json({ message: 'Google login failed', error: error.message });
   }
 };
 
-//find user by id and replace it with new user data
+// @desc  Find user by id and replace it with new user data
+// @route PATCH /api/users/:userId
+// @access Private
 const replaceUser = async (req, res) => {
   const { userId } = req.params;
 
@@ -137,7 +182,9 @@ const replaceUser = async (req, res) => {
   }
 };
 
-//find user by id and update it with new user data
+// @desc  Find user by id and update it with new user data
+// @route PUT /api/users/:userId
+// @access Private
 const updateUser = async (req, res) => {
   const { userId } = req.params;
 
@@ -167,6 +214,9 @@ const updateUser = async (req, res) => {
   }
 };
 
+// @desc  Find user by id and delete it
+// @route DELETE /api/users/:userId
+// @access Private
 const deleteUser = async (req, res) => {
   const { userId } = req.params;
 
