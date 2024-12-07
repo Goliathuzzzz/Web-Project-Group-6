@@ -10,7 +10,7 @@ const userSchema = new Schema(
     },
     password: {
       type: String,
-      required: function() {
+      required: function () {
         return !this.googleId; // Password is required only if googleId is not present
       },
     },
@@ -26,11 +26,15 @@ const userSchema = new Schema(
     picture: {
       type: String,
     },
+    location: {
+      type: String,
+    },
+    isAdmin: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
 
-userSchema.set("toJSON", {
+userSchema.set('toJSON', {
   virtuals: true,
   transform: (doc, ret) => {
     ret.id = ret._id;

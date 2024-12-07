@@ -1,6 +1,7 @@
 const Station = require('../models/stationModel');
 const mongoose = require('mongoose');
 
+//used with mock data
 const getAllStations = async (req, res) => {
   try {
     const stations = await Station.find({}).sort({ createdAt: -1 });

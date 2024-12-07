@@ -1,6 +1,6 @@
-import NavBar from "./navBarComponents/NavBar";
-import Footer from "./footerComponents/Footer";
-import { Outlet, useLocation } from "react-router-dom";
+import NavBar from './navBarComponents/NavBar';
+import Footer from './footerComponents/Footer';
+import { Outlet, useLocation } from 'react-router-dom';
 
 const Layout = () => {
   const location = useLocation();
@@ -9,7 +9,7 @@ const Layout = () => {
     <div>
       <NavBar />
       <Outlet />
-      {location.pathname !== "/map" && <Footer />}
+      {location.pathname !== '/map' && <Footer />}
     </div>
   );
 };

@@ -26,7 +26,7 @@ router.get('/', async (req, res) => {
           ) =>
             [2, 25, 27, 28, 30, 32, 33, 1036].includes(
               connection.ConnectionTypeID
-            ) //30, 27 tesla; 32 type1; 33 type2; 2 chademo; 25 type2 socket only; 28 type F slow charge; 1036 type 2 tethered
+            ) //30, 27 tesla; 32 type1; 33  css type2; 2 chademo; 25 type2 socket only; 28 type F slow charge; 1036 type 2 tethered
         )
       )
       .map((item) => ({
