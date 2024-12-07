@@ -8,7 +8,7 @@ const chargerRoutes = require('./routes/ocmStationRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const logger = require('./middleware/logger');
 const contactFormRoutes = require('./routes/contactFormRoutes');
-const path = require("path");
+const path = require('path');
 
 require('dotenv').config();
 
@@ -28,13 +28,19 @@ app.use(helmet());
 
 app.get('/', (req, res) => res.send('API Running!'));
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/users', userRoutes);
 app.use('/api/chargers', chargerRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/contact', contactFormRoutes);
 
-const port = process.env.PORT || 4000;
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+//export the app for testing without starting the server
+module.exports = app;
+
+//start the server only if not in test mode
+if (require.main === module) {
+  const port = process.env.PORT || 4000;
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  });
+}
