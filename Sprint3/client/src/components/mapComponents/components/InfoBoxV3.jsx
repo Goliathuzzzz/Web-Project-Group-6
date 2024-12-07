@@ -3,145 +3,175 @@ import bookmark from "../../../assets/images/info_bookmark.png";
 import locate from "../../../assets/images/info_loc.png";
 import ReviewWindow from "../Reviews";
 import reviewsData from "../../../../../server/mock-data/reviews_mock_data.json";
-import { providers, connectorImages, connectorColors, connectorTypes } from "../connectorUtils";
+import {
+  providers,
+  connectorImages,
+  connectorColors,
+  connectorTypes,
+  providerImages,
+} from "../connectorUtils";
 
 // Helper functions
 // Find the provider based on the station title
 const findProvider = (title) => {
-    return providers.find(provider => title.includes(provider)) || "Unknown";
+  return providers.find((provider) => title.includes(provider)) || "Unknown";
 };
 
 // Get the connector type name based on the connection type ID
 const getConnectorTypeName = (connectionTypeID) => {
-    return connectorTypes[connectionTypeID] || "Type 2";
+  return connectorTypes[connectionTypeID] || "Type 2";
 };
 
 // Calculate the average rating from the reviews
 const calculateAverageRating = (reviews) => {
-    if (!reviews || reviews.length === 0) return 0;
-    const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
-    return Math.round(totalRating / reviews.length);
+  if (!reviews || reviews.length === 0) return 0;
+  const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+  return Math.round(totalRating / reviews.length);
 };
 
 // Connector Component to display information for each connector
 const ConnectorInfo = ({ connector, powerKW, reviews, onShowReviews }) => {
-    const connectorType = getConnectorTypeName(connector.connectionTypeID); // Get connector type
-    const averageRating = calculateAverageRating(reviews); // Calculate average rating
+  const connectorType = getConnectorTypeName(connector.connectionTypeID); // Get connector type
+  const averageRating = calculateAverageRating(reviews); // Calculate average rating
 
-    return (
-        <div className="relative p-3 bg-mediumBlue text-white rounded-md shadow space-y-1">
-            <div className="flex items-center">
-                {/* Display connector icon */}
-                <img
-                    src={connectorImages[connectorType] || ""}
-                    alt={connectorType}
-                    className="w-6 h-6 mr-2"
-                />
-                <span
-                    className={`${connectorColors[connectorType] || "text-gray-400"} font-semibold font-Orbitron`}
-                >
-                    {connectorType}
-                </span>
-                {/* Power */}
-                <span className="ml-2 font-Roboto">{powerKW} kW</span>
-                {/* Connector availability (commented out) */}
-                {/* <span className="ml-1 font-Orbitron">{`${station.available}/${station.total}`}</span> */}
-            </div>
-            <div className="mt-3 flex flex-col">
-                <div className="font-Roboto">
-                    {/*<strong>24h Price</strong>{" "}*/}
-                </div>
-                {/* Average rating */}
-                <div className="flex items-center space-x-2">
-                    <span className="text-yellow-400">
-                        {"★".repeat(averageRating)}
-                        {"☆".repeat(5 - averageRating)}
-                    </span>
-                    {/* Show reviews button */}
-                    <button
-                        onClick={onShowReviews}
-                        className="text-blue-300 hover:underline"
-                    >
-                        Show reviews
-                    </button>
-                </div>
-            </div>
+  return (
+    <div className="relative p-3 bg-mediumBlue text-white rounded-md shadow space-y-1">
+      <div className="flex items-center">
+        {/* Display connector icon */}
+        <img
+          src={connectorImages[connectorType] || ""}
+          alt={connectorType}
+          className="w-6 h-6 mr-2"
+        />
+        <span
+          className={`${
+            connectorColors[connectorType] || "text-gray-400"
+          } font-semibold font-Orbitron`}
+        >
+          {connectorType}
+        </span>
+        {/* Power */}
+        <span className="font-Roboto ml-auto">{powerKW} kW</span>
+        {/* Connector availability (commented out) */}
+        {/* <span className="ml-1 font-Orbitron">{`${station.available}/${station.total}`}</span> */}
+      </div>
+      <div className="mt-3 flex flex-col">
+        <div className="font-Roboto">{/*<strong>24h Price</strong>{" "}*/}</div>
+        {/* Average rating */}
+        <div className="flex items-center">
+          <span className="text-yellow-400">
+            {"★".repeat(averageRating)}
+            {"☆".repeat(5 - averageRating)}
+          </span>
+          {/* Show reviews button */}
+          <button
+            onClick={onShowReviews}
+            className="text-blue-300 hover:underline ml-auto"
+          >
+            Show reviews
+          </button>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 // InfoBox Component to display station information
 function InfoBox({ station, onBookmark }) {
-    const [isReviewWindowOpen, setReviewWindowOpen] = useState(false); // State to control review window visibility
-    const googleMapsLink = `https://www.google.com/maps?q=${station.location.latitude},${station.location.longitude}`; // Google Maps link
-    const googleMapsDirections = `https://www.google.com/maps/dir/?api=1&destination=${station.location.latitude},${station.location.longitude}`; // Google Maps directions link
+  const [isReviewWindowOpen, setReviewWindowOpen] = useState(false); // State to control review window visibility
+  const googleMapsLink = `https://www.google.com/maps?q=${station.location.latitude},${station.location.longitude}`; // Google Maps link
+  const googleMapsDirections = `https://www.google.com/maps/dir/?api=1&destination=${station.location.latitude},${station.location.longitude}`; // Google Maps directions link
 
-    // Open and close review window
-    const openReviewWindow = () => setReviewWindowOpen(true);
-    const closeReviewWindow = () => setReviewWindowOpen(false);
-    // Find the reviews for the station
-    const stationReviews = reviewsData.find((data) => data.stationName === station.name)?.reviews || [];
+  // Open and close review window
+  const openReviewWindow = () => setReviewWindowOpen(true);
+  const closeReviewWindow = () => setReviewWindowOpen(false);
 
-    // Find the provider based on the station title
-    const provider = findProvider(station.location.title);
+  // Find the reviews for the station
+  const stationReviews =
+    reviewsData.find((data) => data.stationName === station.name)?.reviews ||
+    [];
 
-    return (
-        <div className="absolute top-0 left-0 m-4 p-4 bg-gradient-to-b from-darkerBlue to-darkBlue text-white rounded-md shadow-lg w-fit">
-            {/* Station info */}
-            <div className="flex space-x-2">
-                {/* Station title */}
-                <h3 className="text-xl font-semibold mb-2 font-Orbitron">{station.location.title}</h3>
-                <div className="absolute top-4 right-4 flex">
-                    {/* Bookmark button */}
-                    <button
-                        onClick={() => onBookmark(station)}
-                        className="w-7 h-7 flex items-center justify-center transform transition-transform duration-200 hover:scale-110 hover:brightness-150"
-                        title="Bookmark"
-                    >
-                        <img src={bookmark} alt="Bookmark" className="w-4 h-4" />
-                    </button>
-                    {/* Navigate button */}
-                    <button
-                        onClick={() => window.open(googleMapsDirections, "_blank")}
-                        className="w-7 h-7 flex items-center justify-center transform transition-transform duration-200 hover:scale-110 hover:brightness-150"
-                        title="Navigate"
-                    >
-                        <img src={locate} alt="Navigate" className="w-4 h-4" />
-                    </button>
-                </div>
-            </div>
-            {/* Station location */}
-            <p className="font-Roboto">
-                <strong>Location: </strong>{" "}
-                <a
-                    href={googleMapsLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-300 hover:underline"
-                >
-                    {station.location.title}, {station.location.addressLine1}, {station.location.town}, {station.location.postcode}
-                </a>
-            </p>
-            {/* Station provider */}
-            <p className="font-Roboto"><strong>Provider:</strong> {provider}</p>
-            {/* Station usage cost */}
-            <p className="font-Roboto"><strong>Usage Cost:</strong> {station.usageCost || "N/A"}</p>
-            {/* Connectors */}
-            <div className="mt-3 space-y-3">
-                {station.connections.map((connector, index) => (
-                    <ConnectorInfo
-                        key={index}
-                        connector={connector}
-                        powerKW={connector.powerKW}
-                        reviews={stationReviews}
-                        onShowReviews={openReviewWindow}
-                    />
-                ))}
-            </div>
-            {/* Review window */}
-            {isReviewWindowOpen && <ReviewWindow station={station} onClose={closeReviewWindow} />}
+  // Find the provider based on the station title
+  const provider = findProvider(station.location.title);
+
+  return (
+    <div className="absolute top-0 left-0 m-4 p-4 bg-gradient-to-b from-darkerBlue to-darkBlue text-white rounded-md shadow-lg w-72">
+      {/* Station info */}
+      <div className="flex space-x-2">
+        {/* Station title */}
+        <h3 className="text-base font-semibold mb-2 font-Orbitron pr-14 break-words mt-1">
+          {station.location.title}
+        </h3>
+        <div className="absolute top-4 right-4 flex">
+          {/* Bookmark button */}
+          <button
+            onClick={() => onBookmark(station)}
+            className="w-7 h-7 flex items-center justify-center transform transition-transform duration-200 hover:scale-110 hover:brightness-150"
+            title="Bookmark"
+          >
+            <img src={bookmark} alt="Bookmark" className="w-4 h-4" />
+          </button>
+          {/* Navigate button */}
+          <button
+            onClick={() => window.open(googleMapsDirections, "_blank")}
+            className="w-7 h-7 flex items-center justify-center transform transition-transform duration-200 hover:scale-110 hover:brightness-150"
+            title="Navigate"
+          >
+            <img src={locate} alt="Navigate" className="w-4 h-4" />
+          </button>
         </div>
-    );
+      </div>
+      {/* Station location */}
+      <p className="font-Roboto">
+        <strong>Location: </strong>{" "}
+        <a
+          href={googleMapsLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-300 hover:underline"
+        >
+          {station.location.title}, {station.location.addressLine1},{" "}
+          {station.location.town}, {station.location.postcode}
+        </a>
+      </p>
+      {/* Station provider */}
+      <div className="flex items-center justify-between">
+        <p className="font-Roboto">
+          <strong>Provider:</strong> {provider}
+        </p>
+        {/* Provider image */}
+      </div>
+      {/* Station usage cost */}
+      <div className="flex items-center justify-between font-Roboto">
+        <p>
+          <strong>Usage Cost:</strong> {station.usageCost || "N/A"}
+        </p>
+        {providerImages[provider] && (
+          <img
+            src={providerImages[provider]}
+            alt={provider}
+            className="w-10 h-10 ml-2 rounded-sm"
+          />
+        )}
+      </div>
+      {/* Connectors */}
+      <div className="mt-3 space-y-3 max-h-[300px] overflow-y-auto">
+        {station.connections.map((connector, index) => (
+          <ConnectorInfo
+            key={index}
+            connector={connector}
+            powerKW={connector.powerKW}
+            reviews={stationReviews}
+            onShowReviews={openReviewWindow}
+          />
+        ))}
+      </div>
+      {/* Review window */}
+      {isReviewWindowOpen && (
+        <ReviewWindow station={station} onClose={closeReviewWindow} />
+      )}
+    </div>
+  );
 }
 
 export default InfoBox;
