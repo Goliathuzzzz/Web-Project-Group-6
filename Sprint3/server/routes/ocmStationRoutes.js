@@ -90,4 +90,34 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.getById('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const idArray = id.split(',');
+    let queryString = '';
+    idArray.forEach((id) => {
+      queryString += `&id=${id}`;
+    });
+    const response = await axios.get(
+      `https://api.openchargemap.io/v3/poi/?${queryString}`,
+      {
+        params: {
+          output: 'json',
+          countrycode: 'FI',
+          maxresults: 1, //due to filtering, this number gets all the chargers in Finland but it's filtered later
+          // compact: true,
+          verbose: true,
+        },
+        headers: {
+          'X-API-Key': process.env.OPEN_CHARGE_MAP_API_KEY,
+        },
+      });
+    const data = response.data;
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error retrieving charging point');
+  }
+});
+
 module.exports = router;
