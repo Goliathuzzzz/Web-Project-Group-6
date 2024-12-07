@@ -6,7 +6,7 @@ import { useGoogleOneTapLogin } from '@react-oauth/google';
 import axios from 'axios';
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(localStorage.getItem('user') || '');
   const [token, setToken] = useState(localStorage.getItem('site') || '');
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
