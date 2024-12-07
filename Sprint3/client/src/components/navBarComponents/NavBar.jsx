@@ -153,7 +153,7 @@ function NavBar() {
           <img
             src={profilePic}
             alt="User profile"
-            className="h-8 w-auto rounded-full"
+            className="h-10 w-10 rounded-full"
           />
         </a>
       </div>
