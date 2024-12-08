@@ -59,14 +59,14 @@ const Calculator = () => {
               {errorMessage}
             </p>
           )}
-          <div className="flex justify-between items-center pb-4 md:pb-0">
+          <div className="flex justify-between items-center pb-4">
             <button
               onClick={calculateCharging}
-              className="font-Roboto bg-lilac rounded-lg text-xl py-1 px-12 ml-8 text-white hover:bg-darkLilac hover:text-white transition duration-500"
+              className="font-Roboto bg-lilac rounded-lg text-xl py-1 px-12 ml-8 text-white hover:bg-darkLilac hover:text-white transition duration-500 mt-4"
             >
               Calculate
             </button>
-            <img src={logo} alt="logo" className="w-20 pr-8" />
+            <img src={logo} alt="logo" className="w-20 pr-8 mt-2" />
           </div>
         </div>
       )}
