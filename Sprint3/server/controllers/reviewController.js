@@ -1,6 +1,7 @@
 const Review = require('../models/reviewModel');
 const mongoose = require('mongoose');
 
+// GET all reviews
 const getAllReviews = async (req, res) => {
   try {
     const reviews = await Review.find({}).sort({ createdAt: -1 });
@@ -10,9 +11,11 @@ const getAllReviews = async (req, res) => {
   }
 };
 
+// POST a review
 const createReview = async (req, res) => {
   try {
-    const newReview = await Review.create({ ...req.body });
+    const userId = req.user._id;
+    const newReview = await Review.create({ ...req.body, user_id: userId });
     res.status(201).json(newReview);
   } catch (error) {
     res
@@ -21,6 +24,7 @@ const createReview = async (req, res) => {
   }
 };
 
+// GET a review by ID
 const getReviewById = async (req, res) => {
   const { reviewId } = req.params;
 
@@ -40,7 +44,7 @@ const getReviewById = async (req, res) => {
   }
 };
 
-//find review by id and replace it with new review data
+// PATCH replace a review by ID
 const replaceReview = async (req, res) => {
   const { reviewId } = req.params;
 
@@ -49,8 +53,9 @@ const replaceReview = async (req, res) => {
   }
 
   try {
+    const userId = req.user._id;
     const replaceReview = await Review.findOneAndReplace(
-      { _id: reviewId },
+      { _id: reviewId, user_id: userId },
       { ...req.body },
       { new: true }
     );
@@ -64,7 +69,7 @@ const replaceReview = async (req, res) => {
   }
 };
 
-//find review by id and update it with new review data
+// PUT update a review by ID
 const updateReview = async (req, res) => {
   const { reviewId } = req.params;
 
@@ -73,8 +78,9 @@ const updateReview = async (req, res) => {
   }
 
   try {
+    const userId = req.user._id;
     const replaceReview = await Review.findOneAndUpdate(
-      { _id: reviewId },
+      { _id: reviewId, user_id: userId },
       { ...req.body },
       { new: true }
     );
@@ -88,6 +94,7 @@ const updateReview = async (req, res) => {
   }
 };
 
+// DELETE a review by ID
 const deleteReview = async (req, res) => {
   const { reviewId } = req.params;
 
@@ -95,7 +102,8 @@ const deleteReview = async (req, res) => {
     return res.status(400).json({ message: 'Invalid review ID' });
   }
   try {
-    const deletedReview = await Review.findOneAndDelete({ _id: reviewId });
+    const userId = req.user._id;
+    const deletedReview = await Review.findOneAndDelete({ _id: reviewId, user_id: userId});
     if (deletedReview) {
       res.status(200).json({ message: 'Review deleted successfully' });
     } else {
