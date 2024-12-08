@@ -9,6 +9,8 @@ const reviewRoutes = require('./routes/reviewRoutes');
 const logger = require('./middleware/logger');
 const contactFormRoutes = require('./routes/contactFormRoutes');
 const path = require('path');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
 
 require('dotenv').config();
 
@@ -25,6 +27,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logger);
 app.use(helmet());
+app.use(express.static(path.join(__dirname, 'public')));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
+  customCssUrl: '/swagger.css'} ));
 
 app.get('/', (req, res) => res.send('API Running!'));
 
