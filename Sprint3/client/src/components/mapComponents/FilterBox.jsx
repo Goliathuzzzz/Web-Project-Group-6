@@ -41,7 +41,7 @@ function FilterBox({
           {title}
         </h3>
         <button
-          className="text-lg font-semibold font-Orbitron text-eGreen transition-transform duration-200 hover:scale-125"
+          className="text-lg font-semibold font-Orbitron text-eGreen transition-transform duration-200 hover:scale-110"
           onClick={search}
         >
           Search
@@ -112,7 +112,7 @@ function FilterBox({
                   <span className={`${filter.textColor} font-Orbitron`}>
                     {filter.label}
                   </span>
-                  <span className="text-sm text-white font-Roboto">
+                  <span className="text-sm text-white font-Roboto text-left">
                     {filter.description}
                   </span>
                 </div>
@@ -162,7 +162,7 @@ function FilterBox({
         />
       </div>
       <button
-        className="mt-2 text-lg font-semibold font-Orbitron text-salmonRed transition-transform duration-200 hover:scale-125"
+        className="mt-2 text-lg font-semibold font-Orbitron text-salmonRed transition-transform duration-200 hover:scale-110"
         onClick={handleClearQuery}
       >
         Reset Filters
