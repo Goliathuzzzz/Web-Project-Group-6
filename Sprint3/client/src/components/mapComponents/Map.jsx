@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Circle } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import "leaflet/dist/leaflet.css";
-import 'mapbox-gl/dist/mapbox-gl.css';
-import 'react-leaflet-markercluster/dist/styles.min.css';
+import "mapbox-gl/dist/mapbox-gl.css";
+import "react-leaflet-markercluster/dist/styles.min.css";
 import { useStations } from "./mapHooks/useStations";
 import { useDebounce } from "./mapHooks/useDebounce";
 import MapEventHandler from "./mapHooks/MapEventHandler";
@@ -12,24 +12,29 @@ import CustomMarker from "./components/CustomMarker";
 import InfoBox from "./components/InfoBoxV3";
 import FilterButtons from "./FilterButtons";
 import MapButtons from "./MapButtons";
+import { useBookMark } from "./mapHooks/useBookMark";
+import { useLocation } from "react-router-dom";
 
 // Environment variables
-const { VITE_REACT_MAPBOX_STYLE_ID, VITE_REACT_MAPBOX_USERNAME, VITE_REACT_MAPBOX_TOKEN } = import.meta.env;
-
-// Default map bounds and settings
-const INITIAL_BOUNDS = [
-  [59.4, 18.7], // South West
-  [71.1, 33.6], // North East
-]
-const INITIAL_POSITION = [64.4191221, 25.3824874]; // Default center
-const INITIAL_ZOOM = 5; // Default zoom
+const {
+  VITE_REACT_MAPBOX_STYLE_ID,
+  VITE_REACT_MAPBOX_USERNAME,
+  VITE_REACT_MAPBOX_TOKEN,
+} = import.meta.env;
 
 // Check if environment variables are set
-if (!VITE_REACT_MAPBOX_TOKEN || !VITE_REACT_MAPBOX_STYLE_ID || !VITE_REACT_MAPBOX_USERNAME) {
-  throw new Error("Mapbox environment variables are missing. Please check your .env file.");
+if (
+  !VITE_REACT_MAPBOX_TOKEN ||
+  !VITE_REACT_MAPBOX_STYLE_ID ||
+  !VITE_REACT_MAPBOX_USERNAME
+) {
+  throw new Error(
+    "Mapbox environment variables are missing. Please check your .env file."
+  );
 }
 
-const Map = ({ minimap = false }) => { // minimap is false by default
+const Map = ({ minimap = false }) => {
+  // minimap is false by default
   // Initial bounds for fetching stations
   const initialBounds = {
     north: 71.1,
@@ -39,11 +44,31 @@ const Map = ({ minimap = false }) => { // minimap is false by default
     maxResults: 100,
   };
 
+  const location = useLocation();
+  const { latitude, longitude } = location.state || {};
+
+  // Default map bounds and settings
+  const INITIAL_BOUNDS = [
+    [59.4, 18.7], // South West
+    [71.1, 33.6], // North East
+  ];
+  const INITIAL_POSITION =
+    latitude && longitude ? [latitude, longitude] : [64.4191221, 25.3824874]; // Default center
+  const INITIAL_ZOOM = latitude && longitude ? 14 : 5; // Default zoom
+
+  // Setup bookmark hook
+  const { onBookmark } = useBookMark();
+
   // Fetch stations hook with initial bounds
-  const { stations, fetchStations, error: stationsError } = useStations(initialBounds);
+  const {
+    stations,
+    fetchStations,
+    error: stationsError,
+  } = useStations(initialBounds);
   // Debounce the fetchStations function to avoid calling it too often
   const handleMapMove = useDebounce(fetchStations);
-  // State variables for selected station and geolocation
+
+  // State variables for selected dtation and geolocation
   const [selectedStation, setSelectedStation] = useState(null);
   const [currentPosition, setCurrentPosition] = useState(INITIAL_POSITION);
   const [accuracy, setAccuracy] = useState(null);
@@ -72,18 +97,22 @@ const Map = ({ minimap = false }) => { // minimap is false by default
         />
         {/* Geolocation circle */}
         {isGeolocated && currentPosition && accuracy && (
-          <Circle center={currentPosition}
+          <Circle
+            center={currentPosition}
             radius={accuracy}
             fillColor="#2B7FE5"
             fillOpacity={0.6}
           />
         )}
         {/* Display map buttons if map isn't a minimap */}
-        {!minimap && <MapButtons
-          setCurrentPosition={setCurrentPosition}
-          setAccuracy={setAccuracy}
-          isGeolocated={isGeolocated}
-          setIsGeolocated={setIsGeolocated} />}
+        {!minimap && (
+          <MapButtons
+            setCurrentPosition={setCurrentPosition}
+            setAccuracy={setAccuracy}
+            isGeolocated={isGeolocated}
+            setIsGeolocated={setIsGeolocated}
+          />
+        )}
         {/* Fetch stations when the map moves */}
         <FetchStations handleMapMove={handleMapMove} />
         {/* Cluster stations for better performance */}
@@ -109,7 +138,7 @@ const Map = ({ minimap = false }) => { // minimap is false by default
       {/* Display station info box */}
       {!minimap && selectedStation && (
         <div className="absolute top-4 left-4 z-50">
-          <InfoBox station={selectedStation} />
+          <InfoBox station={selectedStation} onBookmark={onBookmark} />
         </div>
       )}
     </div>

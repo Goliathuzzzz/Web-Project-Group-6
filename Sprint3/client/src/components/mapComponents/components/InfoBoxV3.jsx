@@ -1,24 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import bookmark from "../../../assets/images/info_bookmark.png";
+import bookmarked from "../../../assets/images/info_bookmark_selected.png";
 import locate from "../../../assets/images/info_loc.png";
 import ReviewWindow from "../Reviews";
 import reviewsData from "../../../../../server/mock-data/reviews_mock_data.json";
+import { useAuth } from "../../../../routes/AuthProvider";
 import {
   providers,
   connectorImages,
   connectorColors,
   connectorTypes,
-  providerImages,
 } from "../connectorUtils";
 
 // Helper functions
 // Find the provider based on the station title
 const findProvider = (title) => {
   return providers.find((provider) => title.includes(provider)) || "Unknown";
+  return providers.find((provider) => title.includes(provider)) || "Unknown";
 };
 
 // Get the connector type name based on the connection type ID
 const getConnectorTypeName = (connectionTypeID) => {
+  return connectorTypes[connectionTypeID] || "Type 2";
   return connectorTypes[connectionTypeID] || "Type 2";
 };
 
@@ -27,10 +30,15 @@ const calculateAverageRating = (reviews) => {
   if (!reviews || reviews.length === 0) return 0;
   const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
   return Math.round(totalRating / reviews.length);
+  if (!reviews || reviews.length === 0) return 0;
+  const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+  return Math.round(totalRating / reviews.length);
 };
 
 // Connector Component to display information for each connector
 const ConnectorInfo = ({ connector, powerKW, reviews, onShowReviews }) => {
+  const connectorType = getConnectorTypeName(connector.connectionTypeID); // Get connector type
+  const averageRating = calculateAverageRating(reviews); // Calculate average rating
   const connectorType = getConnectorTypeName(connector.connectionTypeID); // Get connector type
   const averageRating = calculateAverageRating(reviews); // Calculate average rating
 
@@ -78,24 +86,40 @@ const ConnectorInfo = ({ connector, powerKW, reviews, onShowReviews }) => {
 
 // InfoBox Component to display station information
 function InfoBox({ station, onBookmark }) {
-  const [isReviewWindowOpen, setReviewWindowOpen] = useState(false); // State to control review window visibility
+  const { user } = useAuth(); // Get user data
+  const [isReviewWindowOpen, setReviewWindowOpen] = useState(
+    user.stations.includes(station.id) || false
+  ); // State to control review window visibility
+  const [isBookmarked, setIsBookmarked] = useState(false); // State to track if the station is bookmarked
   const googleMapsLink = `https://www.google.com/maps?q=${station.location.latitude},${station.location.longitude}`; // Google Maps link
   const googleMapsDirections = `https://www.google.com/maps/dir/?api=1&destination=${station.location.latitude},${station.location.longitude}`; // Google Maps directions link
 
   // Open and close review window
   const openReviewWindow = () => setReviewWindowOpen(true);
   const closeReviewWindow = () => setReviewWindowOpen(false);
-
   // Find the reviews for the station
   const stationReviews =
     reviewsData.find((data) => data.stationName === station.name)?.reviews ||
     [];
 
+  // Check if the station is bookmarked
+  useEffect(() => {
+    if (user && user.stations) {
+      setIsBookmarked(user.stations.includes(station.id));
+    }
+  }, [user, station.id]);
+
   // Find the provider based on the station title
   const provider = findProvider(station.location.title);
 
+  // Handle bookmark toggle
+  const handleBookmarkToggle = () => {
+    onBookmark(station);
+    setIsBookmarked(!isBookmarked);
+  };
+
   return (
-    <div className="absolute top-0 left-0 m-4 p-4 bg-gradient-to-b from-darkerBlue to-darkBlue text-white rounded-md shadow-lg w-72">
+    <div className="absolute top-0 left-0 m-4 p-4 bg-gradient-to-b from-darkerBlue to-darkBlue text-white rounded-md shadow-lg w-fit">
       {/* Station info */}
       <div className="flex space-x-2">
         {/* Station title */}
@@ -105,11 +129,15 @@ function InfoBox({ station, onBookmark }) {
         <div className="absolute top-4 right-4 flex">
           {/* Bookmark button */}
           <button
-            onClick={() => onBookmark(station)}
+            onClick={handleBookmarkToggle}
             className="w-7 h-7 flex items-center justify-center transform transition-transform duration-200 hover:scale-110 hover:brightness-150"
             title="Bookmark"
           >
-            <img src={bookmark} alt="Bookmark" className="w-4 h-4" />
+            <img
+              src={isBookmarked ? bookmarked : bookmark}
+              alt="Bookmark"
+              className="w-4 h-4"
+            />
           </button>
           {/* Navigate button */}
           <button
@@ -139,7 +167,6 @@ function InfoBox({ station, onBookmark }) {
         <p className="font-Roboto">
           <strong>Provider:</strong> {provider}
         </p>
-        {/* Provider image */}
       </div>
       {/* Station usage cost */}
       <div className="flex items-center justify-between font-Roboto">

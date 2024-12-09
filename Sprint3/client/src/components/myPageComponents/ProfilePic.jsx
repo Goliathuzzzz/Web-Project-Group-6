@@ -9,7 +9,6 @@ function ProfilePic() {
   const [username, setName] = useState("");
   const [location, setLocation] = useState("");
   const [pic, setPic] = useState(user_circle);
-  const [updatedLocation, setUpdatedLocation] = useState("");
   const [newProfilePic, setNewProfilePic] = useState(null);
   const { user, token } = useAuth();
 

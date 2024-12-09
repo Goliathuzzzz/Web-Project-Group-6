@@ -25,7 +25,7 @@ const reviewSchema = new Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true}
 );
 
 reviewSchema.set('toJSON', {
