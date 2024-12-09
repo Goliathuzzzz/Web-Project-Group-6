@@ -44,31 +44,6 @@ const getReviewById = async (req, res) => {
   }
 };
 
-// PATCH replace a review by ID
-const replaceReview = async (req, res) => {
-  const { reviewId } = req.params;
-
-  if (!mongoose.Types.ObjectId.isValid(reviewId)) {
-    return res.status(400).json({ message: 'Invalid review ID' });
-  }
-
-  try {
-    const userId = req.user._id;
-    const replaceReview = await Review.findOneAndReplace(
-      { _id: reviewId, user_id: userId },
-      { ...req.body },
-      { new: true }
-    );
-    if (replaceReview) {
-      res.status(200).json(replaceReview);
-    } else {
-      res.status(404).json({ message: 'Review not found' });
-    }
-  } catch (error) {
-    res.status(500).json({ message: 'Failed to update review' });
-  }
-};
-
 // PUT update a review by ID
 const updateReview = async (req, res) => {
   const { reviewId } = req.params;
@@ -79,13 +54,13 @@ const updateReview = async (req, res) => {
 
   try {
     const userId = req.user._id;
-    const replaceReview = await Review.findOneAndUpdate(
+    const updateReview = await Review.findOneAndUpdate(
       { _id: reviewId, user_id: userId },
       { ...req.body },
       { new: true }
     );
-    if (replaceReview) {
-      res.status(200).json(replaceReview);
+    if (updateReview) {
+      res.status(200).json(updateReview);
     } else {
       res.status(404).json({ message: 'Review not found' });
     }
@@ -118,7 +93,6 @@ module.exports = {
   getAllReviews,
   getReviewById,
   createReview,
-  replaceReview,
   updateReview,
   deleteReview,
 };
