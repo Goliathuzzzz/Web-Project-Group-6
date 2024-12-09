@@ -43,7 +43,7 @@ const Map = ({ minimap = false }) => { // minimap is false by default
   const { stations, fetchStations, error: stationsError } = useStations(initialBounds);
   // Debounce the fetchStations function to avoid calling it too often
   const handleMapMove = useDebounce(fetchStations);
-  // State variables for selected dtation and geolocation
+  // State variables for selected station and geolocation
   const [selectedStation, setSelectedStation] = useState(null);
   const [currentPosition, setCurrentPosition] = useState(INITIAL_POSITION);
   const [accuracy, setAccuracy] = useState(null);
