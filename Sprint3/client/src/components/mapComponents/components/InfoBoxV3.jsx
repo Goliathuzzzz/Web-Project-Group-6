@@ -16,12 +16,10 @@ import {
 // Find the provider based on the station title
 const findProvider = (title) => {
   return providers.find((provider) => title.includes(provider)) || "Unknown";
-  return providers.find((provider) => title.includes(provider)) || "Unknown";
 };
 
 // Get the connector type name based on the connection type ID
 const getConnectorTypeName = (connectionTypeID) => {
-  return connectorTypes[connectionTypeID] || "Type 2";
   return connectorTypes[connectionTypeID] || "Type 2";
 };
 
@@ -30,15 +28,10 @@ const calculateAverageRating = (reviews) => {
   if (!reviews || reviews.length === 0) return 0;
   const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
   return Math.round(totalRating / reviews.length);
-  if (!reviews || reviews.length === 0) return 0;
-  const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
-  return Math.round(totalRating / reviews.length);
 };
 
 // Connector Component to display information for each connector
 const ConnectorInfo = ({ connector, powerKW, reviews, onShowReviews }) => {
-  const connectorType = getConnectorTypeName(connector.connectionTypeID); // Get connector type
-  const averageRating = calculateAverageRating(reviews); // Calculate average rating
   const connectorType = getConnectorTypeName(connector.connectionTypeID); // Get connector type
   const averageRating = calculateAverageRating(reviews); // Calculate average rating
 
