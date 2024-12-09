@@ -34,10 +34,10 @@ const getReviewById = async (req, res) => {
 
   try {
     const review = await Review.findById(reviewId);
-    if (review) {
-      res.status(200).json(review);
-    } else {
+    if (!review) {
       res.status(404).json({ message: 'Review not found' });
+    } else {
+      res.status(200).json(review);
     }
   } catch (error) {
     res.status(500).json({ message: 'Failed to retrieve review' });
@@ -80,7 +80,7 @@ const deleteReview = async (req, res) => {
     const userId = req.user._id;
     const deletedReview = await Review.findOneAndDelete({ _id: reviewId, user_id: userId});
     if (deletedReview) {
-      res.status(200).json({ message: 'Review deleted successfully' });
+      res.status(204).send();
     } else {
       res.status(404).json({ message: 'Review not found' });
     }
