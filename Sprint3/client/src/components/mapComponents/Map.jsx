@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Circle } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import "leaflet/dist/leaflet.css";
@@ -13,6 +13,7 @@ import InfoBox from "./components/InfoBoxV3";
 import FilterButtons from "./FilterButtons";
 import MapButtons from "./MapButtons";
 import { useBookMark } from "./mapHooks/useBookMark";
+import { useLocation } from "react-router-dom";
 
 // Environment variables
 const {
@@ -20,14 +21,6 @@ const {
   VITE_REACT_MAPBOX_USERNAME,
   VITE_REACT_MAPBOX_TOKEN,
 } = import.meta.env;
-
-// Default map bounds and settings
-const INITIAL_BOUNDS = [
-  [59.4, 18.7], // South West
-  [71.1, 33.6], // North East
-];
-const INITIAL_POSITION = [64.4191221, 25.3824874]; // Default center
-const INITIAL_ZOOM = 5; // Default zoom
 
 // Check if environment variables are set
 if (
@@ -51,6 +44,18 @@ const Map = ({ minimap = false }) => {
     maxResults: 100,
   };
 
+  const location = useLocation();
+  const { latitude, longitude } = location.state || {};
+
+  // Default map bounds and settings
+  const INITIAL_BOUNDS = [
+    [59.4, 18.7], // South West
+    [71.1, 33.6], // North East
+  ];
+  const INITIAL_POSITION =
+    latitude && longitude ? [latitude, longitude] : [64.4191221, 25.3824874]; // Default center
+  const INITIAL_ZOOM = latitude && longitude ? 14 : 5; // Default zoom
+
   // Setup bookmark hook
   const { onBookmark } = useBookMark();
 
@@ -62,8 +67,10 @@ const Map = ({ minimap = false }) => {
   } = useStations(initialBounds);
   // Debounce the fetchStations function to avoid calling it too often
   const handleMapMove = useDebounce(fetchStations);
+
   // State variables for selected dtation and geolocation
   const [selectedStation, setSelectedStation] = useState(null);
+  const [zoom, setZoom] = useState(INITIAL_ZOOM);
   const [currentPosition, setCurrentPosition] = useState(INITIAL_POSITION);
   const [accuracy, setAccuracy] = useState(null);
   const [isGeolocated, setIsGeolocated] = useState(false);
@@ -77,7 +84,7 @@ const Map = ({ minimap = false }) => {
       {/* Map container */}
       <MapContainer
         center={INITIAL_POSITION}
-        zoom={INITIAL_ZOOM}
+        zoom={zoom}
         minZoom={INITIAL_ZOOM}
         maxBounds={INITIAL_BOUNDS}
         maxBoundsViscosity={1.0}
