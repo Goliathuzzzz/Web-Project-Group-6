@@ -3,7 +3,8 @@ import { useMap } from 'react-leaflet';
 import { useGeolocated } from 'react-geolocated';
 import zoomOut from "../../assets/images/map_out.png";
 import zoomIn from "../../assets/images/map_in.png";
-import geoLocate from "../../assets/images/map_center.png";
+import geoLocate from "../../assets/images/map_geolocate.png";
+import geoLocateOn from "../../assets/images/map_geolocate_on.png";
 import ReactDOM from 'react-dom';
 
 const MapButtons = ({ setCurrentPosition, setAccuracy, isGeolocated, setIsGeolocated }) => {
@@ -13,6 +14,8 @@ const MapButtons = ({ setCurrentPosition, setAccuracy, isGeolocated, setIsGeoloc
         userDecisionTimeout: 5000,
         isOptimisticGeolocationEnabled: true,
     });
+
+    const [geoLocateIcon, setGeoLocateIcon] = useState(geoLocate);
 
     useEffect(() => {
         if (isGeolocated && coords) {
@@ -24,14 +27,28 @@ const MapButtons = ({ setCurrentPosition, setAccuracy, isGeolocated, setIsGeoloc
     }, [isGeolocated, coords, map, setCurrentPosition, setAccuracy]);
 
     const handleGeolocate = () => {
+        if (!navigator.geolocation) {
+            setErrorMessage("Geolocation is not supported by your browser.");
+            console.log("Geolocation is not supported.");
+            return;
+        }
+
         if (isGeolocated) {
             setIsGeolocated(false);
+            setGeoLocateIcon(geoLocate);
             setCurrentPosition(null);
             setAccuracy(null);
             console.log("Geolocation tracking disabled");
         } else {
+            try {
+                getPosition();
+            } catch (error) {
+                setErrorMessage("Failed to retrieve location.");
+                console.log("Geolocation error: ", error);
+                return;
+            }
             setIsGeolocated(true);
-            getPosition();
+            setGeoLocateIcon(geoLocateOn);
             console.log("Geolocation tracking enabled");
         }
     };
@@ -39,7 +56,7 @@ const MapButtons = ({ setCurrentPosition, setAccuracy, isGeolocated, setIsGeoloc
     const buttons = (
         <div className="absolute bottom-20 right-6 z-20 rounded flex flex-col gap-1">
             <button onClick={handleGeolocate} className="pb-2 transform transition-transform duration-200 hover:scale-110 hover:brightness-150">
-                <img src={geoLocate} alt="Geolocate" className="w-10 h-10" />
+                <img src={geoLocateIcon} alt="Geolocate" className="w-10 h-10" />
             </button>
             <button onClick={() => map.zoomIn()} className="pb-2 transform transition-transform duration-200 hover:scale-110 hover:brightness-150">
                 <img src={zoomIn} alt="Zoom In" className="w-10 h-10" />

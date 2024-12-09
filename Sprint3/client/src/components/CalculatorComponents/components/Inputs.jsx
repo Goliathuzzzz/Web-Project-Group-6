@@ -30,7 +30,7 @@ const Inputs = ({ power, setPower, cost, setCost, batteryCapacity, setBatteryCap
             />
             <input
                 type="number"
-                placeholder="Electricity cost (€/kWh)"
+                placeholder="Electricity cost (cnt/kWh)"
                 className="py-2 px-3 rounded w-full lg:w-[45%]"
                 value={cost}
                 onChange={(e) => setCost(e.target.value)}

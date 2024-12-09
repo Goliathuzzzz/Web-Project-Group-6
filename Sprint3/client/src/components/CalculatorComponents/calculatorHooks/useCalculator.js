@@ -15,11 +15,22 @@ export const useCalculator = () => {
         const current = parseFloat(currentCharge);
         const target = parseFloat(targetCharge);
         const pow = parseFloat(power);
-        const cos = parseFloat(cost);
+        const cos = parseFloat(cost) * 0.01; // Convert to €/kWh
         const eff = parseFloat(efficiency) / 100;
 
-        if (!capacity || !current || !pow || !cos || !eff) {
-            setErrorMessage("Please fill in all fields");
+        if (
+            isNaN(capacity) || 
+            isNaN(current) || 
+            isNaN(pow) || 
+            isNaN(cos) || 
+            isNaN(eff)
+        ) {
+            setErrorMessage("Please fill in all fields with valid values.");
+            return;
+        }
+
+        if (!pow || !eff) {
+            setErrorMessage("Power and efficiency must be greater than zero.");
             return;
         }
 
@@ -61,7 +72,7 @@ export const useCalculator = () => {
         const capacity = parseFloat(batteryCapacity);
         const current = parseFloat(currentCharge);
         const pow = parseFloat(power);
-        const cos = parseFloat(cost);
+        const cos = parseFloat(cost) * 0.01; // Convert to euros
         const eff = parseFloat(efficiency) / 100;
 
         const energyNeeded = capacity * ((newTargetCharge - current) / 100);
