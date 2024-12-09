@@ -10,6 +10,7 @@ import {
   connectorImages,
   connectorColors,
   connectorTypes,
+  providerImages,
 } from "../connectorUtils";
 
 // Helper functions
