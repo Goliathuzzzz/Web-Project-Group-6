@@ -29,9 +29,9 @@ const userSchema = new Schema(
     location: {
       type: String,
     },
-    stations: [String],
+    stations: [Number],
   },
-  { timestamps: true }
+  { timestamps: true, collection: 'users' }
 );
 
 userSchema.set("toJSON", {

@@ -15,6 +15,8 @@ const {
   userLogin,
   getMe,
   googleLogin,
+  addUserStation,
+  removeUserStation,
 } = require('../controllers/userController');
 const s3 = new S3Client({
   region: process.env.AWS_REGION,
@@ -66,5 +68,11 @@ router.patch('/:userId', userAuth, upload.single("picture"), updateUser);
 
 // DELETE /users/:stationId
 router.delete('/:userId', deleteUser);
+
+// POST /users/:userId/stations
+router.post('/:userId/stations', userAuth, addUserStation);
+
+// DELETE /users/:userId/stations
+router.delete('/:userId/stations/:stationId', userAuth, removeUserStation);
 
 module.exports = router;

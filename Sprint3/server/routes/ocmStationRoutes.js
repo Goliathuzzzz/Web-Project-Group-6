@@ -90,22 +90,18 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.getById('/:id', async (req, res) => {
+router.get('/bookmarks/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const idArray = id.split(',');
-    let queryString = '';
-    idArray.forEach((id) => {
-      queryString += `&id=${id}`;
-    });
+    const queryString = idArray.map(id => `id=${id}`).join('&');
     const response = await axios.get(
       `https://api.openchargemap.io/v3/poi/?${queryString}`,
       {
         params: {
           output: 'json',
           countrycode: 'FI',
-          maxresults: 1, //due to filtering, this number gets all the chargers in Finland but it's filtered later
-          // compact: true,
+          maxresults: idArray.length,
           verbose: true,
         },
         headers: {
