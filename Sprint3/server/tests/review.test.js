@@ -24,15 +24,23 @@ let token = null;
 
 beforeAll(async () => {
     await User.deleteMany({});
-    const user = await api.post('/api/users').send({
+    await Review.deleteMany({});
+
+    const newUser = {
         username: 'testuser',
         password: 'testpassword',
         email: 'jonjon.doe@example.com',
-        picture: 'https://example.com/picture.jpg',
-        location: 'New York, NY',
-        isAdmin: false,
+    };
+
+    await api.post('/api/users').send(newUser).expect(201);
+
+    const loginResponse = await api.post('/api/users/login').send({
+        email: newUser.email,
+        password: newUser.password,
     });
-    token = user.body.token;
+
+    token = loginResponse.body.token;
+    expect(token).toBeDefined();
 });
 
 describe('Reviews API', () => {
@@ -41,13 +49,14 @@ describe('Reviews API', () => {
         await Promise.all([
             api
                 .post('/api/reviews')
-                .set('Authorization', `Bearer ${token}`)
+                .set('Authorization', 'Bearer ' + token)
                 .send(initialReviews[0]),
             api
                 .post('/api/reviews')
-                .set('Authorization', `Bearer ${token}`)
+                .set('Authorization', 'Bearer ' + token)
                 .send(initialReviews[1])
         ]);
+        console.log("TOKEN HERE: " + token);
     });
 
     afterAll(() => {
@@ -105,7 +114,7 @@ describe('Reviews API', () => {
                 expect(response.body.rating).toBe(review.rating);
             });
             it('should return 400 if job does not exist', async () => {
-                const invalidId = '64c72b8fc4393b4f8b8e1f1d';
+                const invalidId = '123456789012';
                 await api
                     .get(`/api/reviews/${invalidId}`)
                     .expect(400);
@@ -132,7 +141,7 @@ describe('Reviews API', () => {
                 expect(response.body.text).toBe(updatedReview.text);
             });
             it('should return 400 if job does not exist', async () => {
-                const invalidId = '64c72b8fc4393b4f8b8e1f1d';
+                const invalidId = '123456789012';
                 await api
                     .put(`/api/reviews/${invalidId}`)
                     .set('Authorization', `Bearer ${token}`)
@@ -153,7 +162,7 @@ describe('Reviews API', () => {
                 expect(reviewsAtEnd).toHaveLength(initialReviews.length - 1);
             });
             it('should return 400 if job does not exist', async () => {
-                const invalidId = '64c72b8fc4393b4f8b8e1f1d';
+                const invalidId = '123456789012';
                 await api
                     .delete(`/api/reviews/${invalidId}`)
                     .set('Authorization', `Bearer ${token}`)
