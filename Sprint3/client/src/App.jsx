@@ -20,6 +20,7 @@ import { FilterDataProvider } from "../routes/FilterDataContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminContactForms from "./components/contactComponents/AdminContactForms";
 import MyPage from "./components/myPageComponents/myPage";
+import "react-leaflet-markercluster/dist/styles.min.css";
 
 /* Placeholder code for testing */
 function App() {
