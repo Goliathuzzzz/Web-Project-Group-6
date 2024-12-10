@@ -19,7 +19,7 @@ if (!process.env.MONGO_URI) {
   process.exit(1);
 }
 const corsOptions = {
-  origin: 'PATHMISSING', // Replace with your deployed frontend URL
+  origin: 'https://web-project-group-6-client.onrender.com', // Replace with your deployed frontend URL
   optionsSuccessStatus: 200,
 };
 
