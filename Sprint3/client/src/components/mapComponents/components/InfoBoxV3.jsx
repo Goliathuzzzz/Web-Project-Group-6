@@ -13,29 +13,9 @@ import {
   providerImages,
 } from "../mapUtils/connectorUtils";
 
-// Helper functions
-// Find the provider based on the station title
-const findProvider = (title) => {
-  return providers.find((provider) => title.includes(provider)) || "Unknown";
-};
-
-// Get the connector type name based on the connection type ID
-const getConnectorTypeName = (connectionTypeID) => {
-  return connectorTypes[connectionTypeID] || "Type 2";
-};
-
-// Calculate the average rating from the reviews
-const calculateAverageRating = (reviews) => {
-  if (!reviews || reviews.length === 0) return 0;
-  const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
-  return Math.round(totalRating / reviews.length);
-};
-
 // Connector Component to display information for each connector
-const ConnectorInfo = ({ connector, powerKW, reviews, onShowReviews }) => {
-
+const ConnectorInfo = ({ connector, powerKW, count }) => {
   const connectorType = getConnectorTypeName(connector.connectionTypeID); // Get connector type
-  const averageRating = calculateAverageRating(reviews); // Calculate average rating
 
   return (
     <div className="relative p-3 bg-mediumBlue text-white rounded-md shadow space-y-1 w-64">
@@ -56,26 +36,49 @@ const ConnectorInfo = ({ connector, powerKW, reviews, onShowReviews }) => {
         <span className="font-Roboto ml-auto">{powerKW} kW</span>
         {/* Connector availability (commented out) */}
         {/* <span className="ml-1 font-Orbitron">{`${station.available}/${station.total}`}</span> */}
-      </div>
-      <div className="mt-3 flex flex-col">
-        <div className="font-Roboto">{/*<strong>24h Price</strong>{" "}*/}</div>
-        {/* Average rating */}
-        <div className="flex items-center">
-          <span className="text-yellow-400">
-            {"★".repeat(averageRating)}
-            {"☆".repeat(5 - averageRating)}
+        {/* Display the count of connectors */}
+        {count > 1 && (
+          <span className="text-gray-300 ml-2 font-Roboto">
+            x{count}
           </span>
-          {/* Show reviews button */}
-          <button
-            onClick={onShowReviews}
-            className="text-blue-300 hover:underline ml-auto"
-          >
-            Show reviews
-          </button>
-        </div>
+        )}
       </div>
     </div>
   );
+};
+
+// Helper functions
+
+// Function to group connectors by type and power
+const groupConnectors = (connectors) => {
+  return connectors.reduce((acc, connector) => {
+    // Create a unique key based on connection type ID and power which groups connectors
+    const key = `${connector.connectionTypeID}-${connector.powerKW}`;
+    // If the key doesn't exist, create a new key
+    if (!acc[key]) {
+      acc[key] = { connector, count: 0 }; // Initialize count to 0
+    }
+    acc[key].count += 1; // Increment count
+    // Return the accumulator (grouped connectors) for the next iteration
+    return acc;
+  }, {}); // Initialize accumulator as an empty object
+};
+
+// Find the provider based on the station title
+const findProvider = (title) => {
+  return providers.find((provider) => title.includes(provider)) || "Unknown";
+};
+
+// Get the connector type name based on the connection type ID
+const getConnectorTypeName = (connectionTypeID) => {
+  return connectorTypes[connectionTypeID] || "Type 2";
+};
+
+// Calculate the average rating from the reviews
+const calculateAverageRating = (reviews) => {
+  if (!reviews || reviews.length === 0) return 0;
+  const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+  return Math.round(totalRating / reviews.length);
 };
 
 // InfoBox Component to display station information
@@ -83,11 +86,16 @@ function InfoBox({ station, onBookmark }) {
   const { user, isAuthenticated } = useAuth(); // Get user data
   const [isReviewWindowOpen, setReviewWindowOpen] = useState(false); // State to control review window visibility
   const [isBookmarked, setIsBookmarked] = useState(false); // State to track if the station is bookmarked
+
+  // Google Maps links
   const googleMapsLink = `https://www.google.com/maps?q=${station.location.latitude},${station.location.longitude}`; // Google Maps link
   const googleMapsDirections = `https://www.google.com/maps/dir/?api=1&destination=${station.location.latitude},${station.location.longitude}`; // Google Maps directions link
 
   // Fetch reviews for the station
   const { reviews, loading, error } = useFetchReviews(station.id);
+
+  // Calculate average rating
+  const averageRating = calculateAverageRating(reviews); // Calculate average rating
 
   // Open and close review window
   const openReviewWindow = () => setReviewWindowOpen(true);
@@ -98,7 +106,7 @@ function InfoBox({ station, onBookmark }) {
     if (isAuthenticated && user.stations) {
       setIsBookmarked(user.stations.includes(station.id));
     }
-  }, [user, station.id]);
+  }, [user, station.id, isAuthenticated]);
 
   // Find the provider based on the station title
   const provider = findProvider(station.location.title);
@@ -110,6 +118,9 @@ function InfoBox({ station, onBookmark }) {
       setIsBookmarked(!isBookmarked);
     }
   };
+
+  // Group connectors by type and power
+  const groupedConnectors = groupConnectors(station.connections);
 
   return (
     <div className="absolute top-0 left-0 m-4 p-4 bg-gradient-to-b from-darkerBlue to-darkBlue text-white rounded-md shadow-lg w-fit">
@@ -168,6 +179,7 @@ function InfoBox({ station, onBookmark }) {
         <p>
           <strong>Usage Cost:</strong> {station.usageCost || "N/A"}
         </p>
+        {/* Provider image */}
         {providerImages[provider] && (
           <img
             src={providerImages[provider]}
@@ -176,23 +188,38 @@ function InfoBox({ station, onBookmark }) {
           />
         )}
       </div>
+      {/* Average rating */}
+      <div className="flex items-center justify-start">
+        <span className="text-yellow-400">
+          {"★".repeat(averageRating)}
+          {"☆".repeat(5 - averageRating)}
+        </span>
+        {/* Show reviews button */}
+        <button
+          onClick={openReviewWindow}
+          className="text-blue-300 hover:underline ml-2"
+        >
+          Show reviews
+        </button>
+      </div>
       {/* Connectors */}
       <div className="mt-3 space-y-3 max-h-[300px] overflow-y-auto">
-        {station.connections.map((connector, index) => (
+        {Object.values(groupedConnectors).map(({ connector, count }, index) => (
           <ConnectorInfo
             key={index}
             connector={connector}
             powerKW={connector.powerKW}
-            reviews={reviews}
-            onShowReviews={openReviewWindow}
+            count={count}
           />
         ))}
       </div>
       {/* Review window */}
-      {isReviewWindowOpen && (
-        <ReviewWindow station={station} onClose={closeReviewWindow} />
-      )}
-    </div>
+      {
+        isReviewWindowOpen && (
+          <ReviewWindow station={station} onClose={closeReviewWindow} />
+        )
+      }
+    </div >
   );
 }
 
