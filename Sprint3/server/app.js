@@ -33,6 +33,7 @@ app.use(
   swaggerUi.serve,
   swaggerUi.setup(swaggerDocument, {
     customCssUrl: '/swagger.css',
+    customfavIcon: '/pin_icon.png',
   })
 );
 

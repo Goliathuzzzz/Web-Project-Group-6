@@ -12,10 +12,13 @@ export default defineConfig({
         changeOrigin: true,
       },
       '/api-docs': {
-        target: 'http://localhost:4000', 
+        target: 'http://localhost:4000',
         changeOrigin: true,
       },
       '/swagger.css': {
+        target: 'http://localhost:4000',
+      },
+      '/pin_icon.png': {
         target: 'http://localhost:4000',
       },
     },
