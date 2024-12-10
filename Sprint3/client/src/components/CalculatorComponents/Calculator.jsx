@@ -26,7 +26,7 @@ const Calculator = () => {
   } = useCalculator();
 
   return (
-    <div className="relative ml-10 md:ml-0 mr-10 lg:ml-0 md:mr-10 mt-8 md:mt-0 rounded-md shadow-xl shadow-lightGreen lg:w-calculatorWidth overflow-hidden bg-gradient-to-b from-darkerBlue to-darkBlue">
+    <div className="relative ml-10 md:ml-0 mr-10 lg:ml-0 mt-8 md:mt-0 rounded-md shadow-xl shadow-lightGreen lg:w-calculatorWidth overflow-hidden bg-gradient-to-b from-darkerBlue to-darkBlue">
       {result ? (
         <Results
           result={result}
@@ -55,7 +55,7 @@ const Calculator = () => {
           />
           {/* Error message */}
           {errorMessage && (
-            <p className="text-red-500 text-center font-Roboto text-lg mt-4">
+            <p className="text-red-500 text-center font-Roboto text-lg mt-2">
               {errorMessage}
             </p>
           )}
