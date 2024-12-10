@@ -6,6 +6,7 @@ import { useAuth } from "../../../routes/AuthProvider";
 import Find from "../../assets/images/find_me.png";
 import { Link } from "react-router-dom";
 import useFetch from "./myPageHooks/useFetch";
+import dropdownArrow from "../../assets/images/dropdown_arrow.png";
 
 function Specifications() {
   const [name, setName] = useState("");
@@ -53,7 +54,10 @@ function Specifications() {
 
             <div className="mb-4">
               <label className="block mb-1">Charger Type</label>
-              <select className="w-full p-2 bg-mediumBlue text-white rounded-md bg-no-repeat bg-[calc(100%-1rem)_center] bg-[length:1.25rem_1.25rem] bg-dropdownArrow appearance-none hover:bg-myPageBlue hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <select
+                className="w-full p-2 bg-mediumBlue text-white rounded-md bg-no-repeat bg-[calc(100%-1rem)_center] bg-[length:1.25rem_1.25rem] appearance-none hover:bg-myPageBlue hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                style={{ backgroundImage: `url(${dropdownArrow})` }}
+              >
                 {chargerTypes.map((type, index) => (
                   <option key={index}>{type}</option>
                 ))}
@@ -62,7 +66,10 @@ function Specifications() {
 
             <div className="mb-4">
               <label className="block mb-1">Charger Power (kW)</label>
-              <select className="w-full p-2 bg-mediumBlue text-white rounded-md bg-no-repeat bg-[calc(100%-1rem)_center] bg-[length:1.25rem_1.25rem] bg-dropdownArrow appearance-none hover:bg-myPageBlue hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <select
+                className="w-full p-2 bg-mediumBlue text-white rounded-md bg-no-repeat bg-[calc(100%-1rem)_center] bg-[length:1.25rem_1.25rem] appearance-none hover:bg-myPageBlue hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                style={{ backgroundImage: `url(${dropdownArrow})` }}
+              >
                 {chargerPowers.map((power, index) => (
                   <option key={index}>{power}</option>
                 ))}
@@ -71,7 +78,10 @@ function Specifications() {
 
             <div>
               <label className="block mb-1">Service Provider</label>
-              <select className="w-full p-2 bg-mediumBlue text-white rounded-md bg-no-repeat bg-[calc(100%-1rem)_center] bg-[length:1.25rem_1.25rem] bg-dropdownArrow appearance-none hover:bg-myPageBlue hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <select
+                className="w-full p-2 bg-mediumBlue text-white rounded-md bg-no-repeat bg-[calc(100%-1rem)_center] bg-[length:1.25rem_1.25rem] appearance-none hover:bg-myPageBlue hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                style={{ backgroundImage: `url(${dropdownArrow})` }}
+              >
                 {serviceProviders.map((provider, index) => (
                   <option key={index}>{provider}</option>
                 ))}
@@ -118,7 +128,9 @@ function Specifications() {
               >
                 <p className="text-sm">{review.text}</p>
                 <div>{renderStars(review.rating)}</div>
-                <p className="text-sm">{review.stationTitle || "Station N/A"}</p>
+                <p className="text-sm">
+                  {review.stationTitle || "Station N/A"}
+                </p>
               </div>
             ))}
           </div>

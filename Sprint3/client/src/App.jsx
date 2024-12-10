@@ -20,11 +20,15 @@ import { FilterDataProvider } from "../routes/FilterDataContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminContactForms from "./components/contactComponents/AdminContactForms";
 import MyPage from "./components/myPageComponents/myPage";
+import bgHomepage from "../assets/images/bg_homepage.png";
 
 /* Placeholder code for testing */
 function App() {
   return (
-    <div className="max-w-screen-2xl m-auto bg-homepage bg-cover">
+    <div
+      className="max-w-screen-2xl m-auto bg-homepage bg-cover"
+      style={{ backgroundImage: `url(${bgHomepage})` }}
+    >
       <BrowserRouter>
         <GoogleOAuthProvider
           clientId={import.meta.env.VITE_REACT_APP_GOOGLE_CLIENT_ID}

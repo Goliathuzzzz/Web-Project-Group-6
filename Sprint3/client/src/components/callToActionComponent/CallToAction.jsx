@@ -1,10 +1,14 @@
 import React from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import ctaBg from "../../assets/images/call_to_action.png"; // Adjust the path as necessary
 
 function CallToAction() {
   return (
     <div className="flex justify-center w-full rounded-md pb-4">
-      <div className="flex flex-col items-center justify-center bg-ctaBg bg-cover w-[70%]">
+      <div
+        className="flex flex-col items-center justify-center bg-cover w-[70%]"
+        style={{ backgroundImage: `url(${ctaBg})` }}
+      >
         <h2 className="text-electricBlue text-2xl tracking-wider w-full text-center p-2 mt-10 font-Orbitron font-bold">
           Map Out Your Next Charge in Seconds
         </h2>
