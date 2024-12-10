@@ -63,6 +63,7 @@ const Map = ({ minimap = false }) => {
 
   // Fetch stations hook with initial bounds
   const {
+    customSearch,
     stations,
     fetchStations,
     error: stationsError,
@@ -88,7 +89,7 @@ const Map = ({ minimap = false }) => {
   return (
     <div className={`relative w-full ${mapHeight}`}>
       {/* Display filter buttons if the map is not a minimap */}
-      {!minimap && <FilterButtons />}
+      {!minimap && <FilterButtons customSearch={customSearch}/>}
       {/* Map container */}
       <MapContainer
         center={INITIAL_POSITION}
