@@ -108,4 +108,4 @@ Allows users to associate or disassociate stations with their profile.
 - Middleware like express.json() and express.urlencoded() ensures it can handle various content types.
 
 **Development Flexibility**
-Conditional server startup allows testing by exporting the app without immediately starting the server.
+- Conditional server startup allows testing by exporting the app without immediately starting the server.
