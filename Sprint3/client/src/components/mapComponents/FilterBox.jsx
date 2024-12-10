@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import Cancel from "../../assets/images/close.png";
 import { useFilterData } from "../../../routes/FilterDataContext";
+import { useStations } from "./mapHooks/useStations";
 
 function FilterBox({
   title,
@@ -13,6 +14,7 @@ function FilterBox({
 }) {
   const [chargingPower, setChargingPower] = useState(22);
   const { providers, locations } = useFilterData();
+  const { customSearch } = useStations();
 
   // Sort providers and locations alphabetically
   const sortedProviders = [...providers].sort((a, b) => a.localeCompare(b));
@@ -26,16 +28,8 @@ function FilterBox({
     onClose();
   };
 
-  const search = async () => {
-    const stationSearch = "api/stations/customSearch?" + query;
-    console.log(stationSearch);
-    try {
-      const res = await fetch(stationSearch);
-      const data = await res.json();
-      console.log(data);
-    } catch (error) {
-      console.error("Failed to fetch stations", error);
-    }
+  const handleSearch = () => {
+    customSearch(query);
   };
 
   return (
@@ -46,7 +40,7 @@ function FilterBox({
         </h3>
         <button
           className="text-lg font-semibold font-Orbitron text-eGreen transition-transform duration-200 hover:scale-110"
-          onClick={search}
+          onClick={handleSearch}
         >
           Search
         </button>
