@@ -19,9 +19,20 @@ export const useStations = (initialBounds) => {
     }
   };
 
+  const customSearch = async (query) => {
+    const stationSearch = "api/chargers/customSearch/" + query;
+    console.log(stationSearch);
+    try {
+      const response = await axios.get(stationSearch);
+      setStations(response.data);
+    } catch (error) {
+      console.error("Failed to fetch stations", error);
+    }
+  };
+
   useEffect(() => {
     fetchStations(initialBounds); // Fetch initial stations on load
   }, []);
 
-  return { stations, fetchStations, error };
+  return { stations, fetchStations, customSearch, error };
 };

@@ -1,28 +1,29 @@
-import React from 'react';
-import Hero from './components/heroComponents/Hero';
-import Specifications from './components/myPageComponents/Specifications';
-import Login from './components/loginComponents/Login';
-import Register from './components/registerComponents/Register';
-import ProcessList from './components/processComponents/ProcessList';
-import ReviewList from './components/ReviewComponents/ReviewList';
-import Calculator from './components/CalculatorComponents/Calculator';
-import PowerUp from './components/poweredUpComponent/PoweredUp';
-import CallToAction from './components/callToActionComponent/CallToAction';
-import Map from './components/mapComponents/Map';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Layout from './components/Layout';
-import ProfilePic from './components/myPageComponents/ProfilePic';
-import SavedStations from './components/myPageComponents/SavedStations';
-import AuthProvider from '../routes/AuthProvider';
-import PrivateRoute from '../routes/PrivateRoute';
-import { GoogleOAuthProvider } from '@react-oauth/google';
-import AboutUs from './components/aboutUsComponents/AboutUs';
-import ContactUs from './components/contactComponents/ContactUs';
-import Legal from './components/legalComponents/Legal';
-import { FilterDataProvider } from '../routes/FilterDataContext';
-import Footer from './components/footerComponents/Footer';
-import ProtectedRoute from './components/ProtectedRoute';
-import AdminContactForms from './components/contactComponents/AdminContactForms';
+import React from "react";
+import Hero from "./components/heroComponents/Hero";
+import Specifications from "./components/myPageComponents/Specifications";
+import Login from "./components/loginComponents/Login";
+import Register from "./components/registerComponents/Register";
+import ProcessList from "./components/processComponents/ProcessList";
+import ReviewList from "./components/ReviewComponents/ReviewList";
+import Calculator from "./components/CalculatorComponents/Calculator";
+import PowerUp from "./components/poweredUpComponent/PoweredUp";
+import CallToAction from "./components/callToActionComponent/CallToAction";
+import Map from "./components/mapComponents/Map";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Layout from "./components/Layout";
+import ProfilePic from "./components/myPageComponents/ProfilePic";
+import SavedStations from "./components/myPageComponents/SavedStations";
+import AuthProvider from "../routes/AuthProvider";
+import PrivateRoute from "../routes/PrivateRoute";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import AboutUs from "./components/aboutUsComponents/AboutUs";
+import ContactUs from "./components/contactComponents/ContactUs";
+import Legal from "./components/legalComponents/Legal";
+import { FilterDataProvider } from "../routes/FilterDataContext";
+import Footer from "./components/footerComponents/Footer";
+import ProtectedRoute from "./components/ProtectedRoute";
+import AdminContactForms from "./components/contactComponents/AdminContactForms";
+import MyPage from "./components/myPageComponents/myPage";
 
 /* Placeholder code for testing */
 function App() {
@@ -67,15 +68,7 @@ function App() {
                   />
                   <Route
                     path="dashboard"
-                    element={
-                      <div className=''>
-                        <div className="flex flex-col my-page:flex-row justify-center my-page:gap-5 mb-2">
-                          <ProfilePic />
-                          <SavedStations />
-                        </div>
-                        <Specifications />
-                      </div>
-                    }
+                    element={<PrivateRoute element={MyPage} />}
                   />
                   <Route path="map" element={<Map />} />
                   <Route path="registration" element={<Register />} />

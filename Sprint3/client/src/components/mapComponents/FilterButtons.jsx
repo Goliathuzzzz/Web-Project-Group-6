@@ -4,6 +4,7 @@ import mapService from "../../assets/images/map_service.png";
 import mapOther from "../../assets/images/map_other.png";
 import FilterBox from "./FilterBox";
 import { ChargerTypeData } from "./filterData";
+import { useFilterData } from "../../../routes/FilterDataContext";
 
 function FilterButtons() {
   const [visible, setVisible] = useState(null);
@@ -11,17 +12,39 @@ function FilterButtons() {
   const [selectedProviders, setSelectedProviders] = useState([]);
   const [selectedLocations, setSelectedLocations] = useState([]);
   const [selectedConnectors, setSelectedConnectors] = useState([]);
+  const { stations } = useFilterData();
+
   const updateQuery = () => {
-    let newQuery = "";
+    let filteredStations = stations;
+
+    // Filter by providers
     if (selectedProviders.length > 0) {
-      newQuery += "&provider=" + selectedProviders.join("&provider=");
+      filteredStations = filteredStations.filter((station) =>
+        selectedProviders.some((provider) => station.title.includes(provider))
+      );
     }
+
+    // Filter by locations
     if (selectedLocations.length > 0) {
-      newQuery += "&location=" + selectedLocations.join("&location=");
+      filteredStations = filteredStations.filter((station) =>
+        selectedLocations.includes(station.location)
+      );
     }
+
+    // Filter by connectors
     if (selectedConnectors.length > 0) {
-      newQuery += "&connectors=" + selectedConnectors.join("&connectors=");
+      filteredStations = filteredStations.filter((station) =>
+        station.connector.some((connector) =>
+          selectedConnectors.includes(connector)
+        )
+      );
     }
+
+    // Extract station IDs
+    const stationIds = filteredStations.map((station) => station.id);
+
+    // Construct the query string
+    const newQuery = stationIds.map((id) => `id=${id}`).join("&");
     setQuery(newQuery);
   };
 
@@ -60,7 +83,6 @@ function FilterButtons() {
 
   const clearQuery = () => {
     setQuery("");
-    setComplexQuery(false);
     setSelectedProviders([]);
     setSelectedLocations([]);
     setSelectedConnectors([]);
