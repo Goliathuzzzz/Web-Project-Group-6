@@ -37,7 +37,7 @@ const ConnectorInfo = ({ connector, powerKW, reviews, onShowReviews }) => {
   const averageRating = calculateAverageRating(reviews); // Calculate average rating
 
   return (
-    <div className="relative p-3 bg-mediumBlue text-white rounded-md shadow space-y-1">
+    <div className="relative p-3 bg-mediumBlue text-white rounded-md shadow space-y-1 w-64">
       <div className="flex items-center">
         {/* Display connector icon */}
         <img
