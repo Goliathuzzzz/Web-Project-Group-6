@@ -41,6 +41,12 @@ app.use(
   })
 );
 
+app.use((req, res, next) => {
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin'); // This allows cross-origin pop-ups to be handled
+  res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp'); // This ensures cross-origin resources are blocked unless they're from a trusted source
+  next();
+});
+
 app.get('/', (req, res) => res.send('API Running!'));
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -48,6 +54,8 @@ app.use('/api/users', userRoutes);
 app.use('/api/chargers', chargerRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/contact', contactFormRoutes);
+
+
 
 //export the app for testing without starting the server
 module.exports = app;
