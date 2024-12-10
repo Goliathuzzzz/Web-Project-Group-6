@@ -20,7 +20,7 @@ import { FilterDataProvider } from "../routes/FilterDataContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminContactForms from "./components/contactComponents/AdminContactForms";
 import MyPage from "./components/myPageComponents/myPage";
-import bgHomepage from "../assets/images/bg_homepage.png";
+import bgHomepage from "./assets/images/bg_homepage.png";
 
 /* Placeholder code for testing */
 function App() {

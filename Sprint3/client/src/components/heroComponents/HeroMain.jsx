@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import ArrowLeft from "../../assets/images/expand_left_2.png";
 import ArrowRight from "../../assets/images/expand_right_2.png";
-import HeroCar from "../../assets/images/hero_car.png";
+import HeroCar from "../../assets/images/hero_section.png";
 import HeroFind from "../../assets/images/hero_locate.png";
 import HeroCharge from "../../assets/images/hero_charge.png";
 import HeroGreen from "../../assets/images/hero_green.png";
