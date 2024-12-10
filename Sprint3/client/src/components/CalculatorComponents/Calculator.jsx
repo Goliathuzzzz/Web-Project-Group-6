@@ -22,7 +22,7 @@ const Calculator = () => {
     errorMessage,
     calculateCharging,
     resetCalculator,
-    handleSliderChange
+    handleSliderChange,
   } = useCalculator();
 
   return (
