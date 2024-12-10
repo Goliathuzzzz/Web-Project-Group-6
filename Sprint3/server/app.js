@@ -28,8 +28,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(logger);
 app.use(helmet());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
-  customCssUrl: '/swagger.css'} ));
+app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument, {
+    customCssUrl: '/swagger.css',
+  })
+);
 
 app.get('/', (req, res) => res.send('API Running!'));
 
