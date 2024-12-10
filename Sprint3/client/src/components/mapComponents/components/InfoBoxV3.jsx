@@ -122,17 +122,19 @@ function InfoBox({ station, onBookmark }) {
         </h3>
         <div className="absolute top-4 right-4 flex">
           {/* Bookmark button */}
-          <button
-            onClick={handleBookmarkToggle}
-            className="w-7 h-7 flex items-center justify-center transform transition-transform duration-200 hover:scale-110 hover:brightness-150"
-            title="Bookmark"
-          >
-            <img
-              src={isBookmarked ? bookmarked : bookmark}
-              alt="Bookmark"
-              className="w-4 h-4"
-            />
-          </button>
+          {isAuthenticated && (
+            <button
+              onClick={handleBookmarkToggle}
+              className="w-7 h-7 flex items-center justify-center transform transition-transform duration-200 hover:scale-110 hover:brightness-150"
+              title="Bookmark"
+            >
+              <img
+                src={isBookmarked ? bookmarked : bookmark}
+                alt="Bookmark"
+                className="w-4 h-4"
+              />
+            </button>
+          )}
           {/* Navigate button */}
           <button
             onClick={() => window.open(googleMapsDirections, "_blank")}
