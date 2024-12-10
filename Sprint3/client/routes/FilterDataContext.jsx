@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import axios from "axios";
 
 const FilterDataContext = createContext();
 
@@ -10,8 +11,8 @@ export const FilterDataProvider = ({ children }) => {
 
   const getAllFilterData = async () => {
     try {
-      const res = await fetch("/api/stations/unique-providers-locations");
-      const data = await res.json();
+      const res = await axios.get(`/api/chargers/filters`, {});
+      const data = res.data;
       console.log(data);
       return data;
     } catch (error) {

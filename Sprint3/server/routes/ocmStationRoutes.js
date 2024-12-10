@@ -179,4 +179,70 @@ router.get('/bookmarks/:id', async (req, res) => {
   }
 });
 
+const providers = ["Neste", "ABC", "Recharge", "Helen", "Virta", "Tesla", "Lidl", "K-Lataus"];
+
+const findProvider = (title) => {
+  return providers.find((provider) => title.includes(provider)) || "Unknown";
+};
+
+const capitalizeString = (str) => {
+  const loweredString = str.toLowerCase();
+  const capitalizedString = loweredString.charAt(0).toUpperCase() + loweredString.slice(1);
+  return capitalizedString;
+};
+
+router.get('/filters', async (req, res) => {
+  try {
+    const response = await axios.get(
+      `https://api.openchargemap.io/v3/poi/`,
+      {
+        params: {
+          output: 'json',
+          countrycode: 'FI',
+          maxresults: 2000,
+          verbose: true,
+        },
+        headers: {
+          'X-API-Key': process.env.OPEN_CHARGE_MAP_API_KEY,
+        },
+      });
+    const formattedData = response.data
+      .filter((item) =>
+        item.Connections?.some(
+          (
+            connection //filtering out the connection types that are not useful for the project
+          ) =>
+            [2, 25, 27, 28, 30, 32, 33, 1036].includes(
+              connection.ConnectionTypeID
+            ) //30, 27 tesla; 32 type1; 33 type2; 2 chademo; 25 type2 socket only; 28 type F slow charge; 1036 type 2 tethered
+        )
+      )
+      .map((item) => ({
+        id: item.ID || 'N/A',
+        location: item.AddressInfo?.Town || 'N/A',
+        title: item.AddressInfo?.Title || 'N/A',
+      }));
+    console.log(formattedData);
+    const filterLocations = formattedData.map((item) => item.location).map(capitalizeString);
+    const uniqueLocations = Array.from(new Set(filterLocations));
+    const titles = formattedData.map((item) => item.title);
+    const filterProviders = [];
+    titles.forEach(element => {
+      const provider = findProvider(element);
+      filterProviders.push(provider);
+    });
+    const uniqueProviders = Array.from(new Set(filterProviders));
+
+    const filters = {
+      locations: uniqueLocations,
+      providers: uniqueProviders
+    };
+    console.log(filters);
+    res.json(filters);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error retrieving charging point');
+  }
+});
+
 module.exports = router;

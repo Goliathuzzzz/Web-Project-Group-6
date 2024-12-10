@@ -14,6 +14,10 @@ function FilterBox({
   const [chargingPower, setChargingPower] = useState(22);
   const { providers, locations } = useFilterData();
 
+  // Sort providers and locations alphabetically
+  const sortedProviders = [...providers].sort((a, b) => a.localeCompare(b));
+  const sortedLocations = [...locations].sort((a, b) => a.localeCompare(b));
+
   const handleClearQuery = () => {
     onClearQuery();
   };
@@ -61,15 +65,15 @@ function FilterBox({
             <h4 className="font-semibold text-sm text-white font-Orbitron">
               Providers:
             </h4>
-            {providers.map((provider) => (
-              <label key={provider.id} className="flex items-center">
+            {sortedProviders.map((provider, index) => (
+              <label key={index} className="flex items-center">
                 <input
                   type="checkbox"
-                  value={provider.provider}
+                  value={provider}
                   onChange={(e) => onUpdateQuery(e.target.value)}
                   className="mr-2"
                 />
-                <span className="text-white">{provider.provider}</span>
+                <span className="text-white">{provider}</span>
               </label>
             ))}
           </div>
@@ -83,15 +87,15 @@ function FilterBox({
             <h4 className="font-semibold text-sm text-white font-Orbitron">
               Locations:
             </h4>
-            {locations.map((location) => (
-              <label key={location.id} className="flex items-center">
+            {sortedLocations.map((location, index) => (
+              <label key={index} className="flex items-center">
                 <input
                   type="checkbox"
-                  value={location.location}
+                  value={location}
                   onChange={(e) => onUpdateQuery(e.target.value)}
                   className="mr-2"
                 />
-                <span className="text-white">{location.location}</span>
+                <span className="text-white">{location}</span>
               </label>
             ))}
           </div>
