@@ -7,12 +7,18 @@ export default defineConfig({
   server: {
     port: 3000, // Set the default port to 3000. IMPORTANT BECAUSE GOOGLE LOGIN USES THIS PORT!
     proxy: {
-    "/api": {
-      target: "http://localhost:4000", // Proxies backend requests to port 4000.
-      changeOrigin: true,
+      '/api': {
+        target: 'http://localhost:4000',
+        changeOrigin: true,
+      },
+      '/api-docs': {
+        target: 'http://localhost:4000', 
+        changeOrigin: true,
+      },
+      '/swagger.css': {
+        target: 'http://localhost:4000',
       },
     },
     open: true, // Automatically opens the browser
   },
-  
 });
