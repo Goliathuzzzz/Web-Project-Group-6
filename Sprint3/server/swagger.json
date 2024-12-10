@@ -3,7 +3,7 @@
   "info": {
     "title": "Plug It API",
     "version": "1.0.0",
-    "description": "API documentation for user management and contact forms."
+    "description": "API documentation for user management, reviews and contact forms."
   },
   "servers": [
     {
