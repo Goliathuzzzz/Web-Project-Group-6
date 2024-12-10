@@ -20,4 +20,9 @@ export default defineConfig({
     },
     open: true, // Automatically opens the browser
   },
+  resolve: {
+    alias: {
+      'react-leaflet-markercluster': 'node_modules/react-leaflet-markercluster/dist/styles.min.css'
+    }
+  }
 });
