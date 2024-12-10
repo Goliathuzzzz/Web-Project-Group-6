@@ -71,7 +71,7 @@ describe('User API', () => {
 
   describe('Deleting a user', () => {
     describe('DELETE /api/users/:userId', () => {
-      it('should delete the user', async () => {
+      it('should delete the user when provided a valid token and userId', async () => {
         const result = await api
           .delete(`/api/users/${userId}`)
           .set('Authorization', `Bearer ${token}`);
