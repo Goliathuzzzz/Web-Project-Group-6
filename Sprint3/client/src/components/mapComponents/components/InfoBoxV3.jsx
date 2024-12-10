@@ -24,7 +24,7 @@ const ConnectorInfo = ({ connector, powerKW, count }) => {
         <img
           src={connectorImages[connectorType] || ""}
           alt={connectorType}
-          className="w-6 h-6 mr-2"
+          className="w-7 h-7 mr-3"
         />
         <span
           className={`${connectorColors[connectorType] || "text-gray-400"
