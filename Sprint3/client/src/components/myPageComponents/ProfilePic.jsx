@@ -70,7 +70,7 @@ function ProfilePic() {
   };
 
   return (
-    <div className="relative flex bg-gradient-to-b mx-4 my-page:mr-0 from-darkerBlue to-darkBlue my-page:max-w-md my-page:w-profileWidth justify-center rounded-sm mt-10 items-center">
+    <div className="relative flex bg-gradient-to-b mx-4 my-page:mr-0 from-darkerBlue to-darkBlue my-page:max-w-md my-page:w-profileWidth justify-center rounded-md mt-10 items-center">
       {/* Profile image and username */}
       <div className="flex flex-col items-center text-white font-Orbitron tracking-wider text-xl my-4 my-page:my-0 z-10">
         <img
@@ -78,7 +78,7 @@ function ProfilePic() {
           alt="profile-picture"
           className="w-28 h-28 rounded-full"
         />
-        <h2>{username}</h2>
+        <h2 className="mt-1">{username}</h2>
       </div>
 
       {/* Edit button */}
@@ -89,7 +89,7 @@ function ProfilePic() {
         onClick={() => setIsWindowOpen(true)}
       />
 
-      <div className="absolute bottom-0 left-0 w-full h-16 bg-mediumBlue" />
+      <div className="absolute bottom-0 left-0 w-full h-16 bg-mediumBlue rounded-b-md" />
 
       {isWindowOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20">
