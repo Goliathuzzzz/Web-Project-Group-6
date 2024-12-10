@@ -72,7 +72,11 @@ function Specifications() {
 
         {/* Right side car image */}
         <div className="bg-myPageBlue pb-20 flex flex-col items-center relative rounded-b-md">
-          <img src={Car} alt="Tesla Model X" className="h-auto w-60 rounded-t-md" />
+          <img
+            src={Car}
+            alt="Tesla Model X"
+            className="h-auto w-60 rounded-t-md"
+          />
           <div className="absolute bottom-10 flex flex-col items-center">
             <Link to="/map">
               <img
@@ -110,22 +114,22 @@ function Specifications() {
         </div>
 
         {/* Profile section */}
-        <div className="bg-gradient-to-b from-darkerBlue to-darkBlue text-white rounded-md px-4 py-3 w-80">
-          <h3 className="text-base font-Orbitron mb-1 font-bold pl-1">
+        <div className="bg-gradient-to-b from-darkerBlue to-darkBlue text-white rounded-md shadow-md px-4 py-3 w-80">
+          <h3 className="text-sm font-Orbitron mb-2 font-bold pl-1 border-b border-myPageBlue pb-1">
             Profile Information
           </h3>
-          <div className="space-y-0.5 bg-myPageBlue p-3 rounded-md">
-            <div>
-              <span className="font-bold text-base font-Roboto">Name </span>
-              <span className="ml-3 text-xs font-Roboto">{name}</span>
+          <div className="space-y-1 bg-myPageBlue p-3 rounded-md">
+            <div className="flex justify-between items-center">
+              <span className="font-bold text-sm font-Roboto">Name:</span>
+              <span className="text-xs font-Roboto">{name}</span>
             </div>
-            <div>
-              <span className="font-bold font-Roboto">Email </span>
-              <span className="ml-3 text-xs">{email}</span>
+            <div className="flex justify-between items-center">
+              <span className="font-bold text-sm font-Roboto">Email:</span>
+              <span className="text-xs font-Roboto break-all">{email}</span>
             </div>
-            <div>
-              <span className="font-bold font-Roboto">Location </span>
-              <span className="ml-3 text-xs ">{location}</span>
+            <div className="flex justify-between items-center">
+              <span className="font-bold text-sm font-Roboto">Location:</span>
+              <span className="text-xs font-Roboto">{location}</span>
             </div>
           </div>
         </div>
