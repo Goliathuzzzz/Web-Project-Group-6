@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Cancel from "../../assets/images/close.png";
 import { useAuth } from "../../../routes/AuthProvider";
 import useFetchReviews from "./mapHooks/useFetchReviews";
@@ -10,7 +10,7 @@ function ReviewWindow({ station, onClose }) {
   const { user, token } = useAuth();
 
   // Fetch reviews for the station
-  const { reviews, setReviews, loading, error } = useFetchReviews(station.id);
+  const { reviews, setReviews } = useFetchReviews(station.id);
 
   // State variables
   const [newReview, setNewReview] = useState(""); // New review text
@@ -32,7 +32,7 @@ function ReviewWindow({ station, onClose }) {
         const payload = {
           text: newReview, // Review text
           rating: newRating, // Review rating
-          user: user.id, // User ID submitting the review
+          user: user.id, // User submitting the review
           station: station.id, // Station being reviewed
         };
 
