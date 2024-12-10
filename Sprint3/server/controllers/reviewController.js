@@ -48,7 +48,6 @@ const getStationReviews = async (req, res) => {
 
 const getUserReviews = async (req, res) => {
   const userId = req.params.userId;
-  console.log("userId", userId);
 
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     return res.status(400).json({ message: 'Invalid user ID' });
@@ -56,7 +55,6 @@ const getUserReviews = async (req, res) => {
 
   try {
     const reviews = await Review.find({ user: userId }).sort({ createdAt: -1 });
-    console.log(reviews);
     res.status(200).json(reviews);
   } catch (error) {
     res.status(500).json({ message: 'Failed to retrieve reviews' });
