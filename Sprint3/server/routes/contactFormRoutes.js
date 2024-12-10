@@ -7,18 +7,19 @@ const {
   deleteContactForm,
 } = require('../controllers/contactFormController');
 const { authenticateToken } = require('../middleware/auth');
+const userAuth = require('../middleware/userAuth');
 
 
 // GET /contact
-router.get('/', authenticateToken, getAllContactForms);
+router.get('/', userAuth, getAllContactForms);
 
 // GET /contact/<id>
-router.get('/:contactFormId', authenticateToken, getContactFormById);
+router.get('/:contactFormId', userAuth, getContactFormById);
 
 // POST /contact
 router.post('/', createContactForm);
 
 // DELETE /contact/<id>
-router.delete('/:contactFormId', authenticateToken, deleteContactForm);
+router.delete('/:contactFormId', userAuth, deleteContactForm);
 
 module.exports = router;

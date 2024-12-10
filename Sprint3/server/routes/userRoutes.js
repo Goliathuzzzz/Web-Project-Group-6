@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const { auth } = require('../middleware/auth');
 const userAuth = require('../middleware/userAuth');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
@@ -51,9 +50,6 @@ router.post('/google-login', googleLogin)
 
 // GET /users/me (Fetch currently logged in user)
 router.get('/me', userAuth, getMe);
-
-//custom middleware for authentication
-// router.use(auth);
 
 // GET /users
 router.get('/', getAllUsers);

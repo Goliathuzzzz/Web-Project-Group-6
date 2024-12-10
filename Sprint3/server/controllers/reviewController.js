@@ -14,15 +14,19 @@ const getAllReviews = async (req, res) => {
 // POST a review
 const createReview = async (req, res) => {
   try {
-    const userId = req.user._id;
+    const userId = req.user.id;
     const { rating, text, station } = req.body;
+
+    if (!userId) {
+      return res.status(401).json({ message: 'User is not authenticated' });
+    }
 
     if (!rating || !text || !station) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
 
     const newReview = await Review.create({ ...req.body, user: userId });
-
+    await newReview.populate('user', 'username');
     res.status(201).json(newReview);
   } catch (error) {
     res.status(500).json({ message: 'Failed to create review', error: error.message });

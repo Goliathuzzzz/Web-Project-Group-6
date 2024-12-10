@@ -7,6 +7,7 @@ export const useStations = (initialBounds) => {
   const [error, setError] = useState(null);
 
   const fetchStations = async (bounds) => {
+    setError(null);
     try {
       const response = await axios.get("/api/chargers", {
         params: { ...bounds, maxResults: 100 },
