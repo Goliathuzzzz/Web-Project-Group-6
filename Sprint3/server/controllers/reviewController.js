@@ -15,13 +15,13 @@ const getAllReviews = async (req, res) => {
 const createReview = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { rating, text, station } = req.body;
+    const { rating, text, station, stationTitle } = req.body;
 
     if (!userId) {
       return res.status(401).json({ message: 'User is not authenticated' });
     }
 
-    if (!rating || !text || !station) {
+    if (!rating || !text || !station || !stationTitle) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
 
@@ -30,8 +30,6 @@ const createReview = async (req, res) => {
     res.status(201).json(newReview);
   } catch (error) {
     res.status(500).json({ message: 'Failed to create review', error: error.message });
-    console.log("Request Body:", req.body);
-    console.log("Authenticated User:", req.user);
     console.error("Error in createReview:", error.message);
   }
 };
@@ -42,6 +40,23 @@ const getStationReviews = async (req, res) => {
     const reviews = await Review.find({ station: stationId })
     .populate('user', 'username')
     .sort({ createdAt: -1 });
+    res.status(200).json(reviews);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to retrieve reviews' });
+  }
+};
+
+const getUserReviews = async (req, res) => {
+  const userId = req.params.userId;
+  console.log("userId", userId);
+
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(400).json({ message: 'Invalid user ID' });
+  }
+
+  try {
+    const reviews = await Review.find({ user: userId }).sort({ createdAt: -1 });
+    console.log(reviews);
     res.status(200).json(reviews);
   } catch (error) {
     res.status(500).json({ message: 'Failed to retrieve reviews' });
@@ -116,6 +131,7 @@ const deleteReview = async (req, res) => {
 module.exports = {
   getAllReviews,
   getStationReviews,
+  getUserReviews,
   getReviewById,
   createReview,
   updateReview,

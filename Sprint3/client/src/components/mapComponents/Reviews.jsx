@@ -34,6 +34,7 @@ function ReviewWindow({ station, onClose }) {
           rating: newRating, // Review rating
           user: user.id, // User submitting the review
           station: station.id, // Station being reviewed
+          stationTitle: station.location.title, // Station name
         };
 
         // Submit the review to the server
