@@ -42,7 +42,7 @@ const connectorImages = {
     Tesla: Tesla,
     "Type 2 Socket": Type2,
     "Type 2 Tethered": Type2,
-    "Type F": Type2,
+    "Type F": null,
 };
 
 const connectorColors = {

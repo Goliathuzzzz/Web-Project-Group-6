@@ -43,7 +43,7 @@ function HeroMap() {
   return (
     <>
       {/* Map container */}
-      <div className="relative h-80 md:w-[40%]">
+      <div className="relative h-80 md:w-[40%] mt-8 md:mt-0">
         <Map minimap={true} />
         {/* Small search bar in the top left corner */}
         <div className="absolute top-4 left-4 w-72 flex flex-col md:map-buttons-size:flex-row map-buttons-size:items-center map-buttons-size:space-x-4">

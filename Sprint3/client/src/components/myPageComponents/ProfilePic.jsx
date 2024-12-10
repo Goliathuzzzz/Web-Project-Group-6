@@ -118,7 +118,7 @@ function ProfilePic() {
                 <div className="flex flex-col w-64">
                   <input
                     type="text"
-                    placeholder=""
+                    placeholder="Enter Username"
                     value={username}
                     onChange={(e) => setName(e.target.value)}
                     className="mb-1 p-2 border rounded-md w-full max-w-md mx-auto"
@@ -127,7 +127,7 @@ function ProfilePic() {
                 <div className="flex flex-col w-full">
                   <input
                     type="text"
-                    placeholder=""
+                    placeholder="Enter Location"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                     className="mb-1 p-2 border rounded-md w-full max-w-md mx-auto"
