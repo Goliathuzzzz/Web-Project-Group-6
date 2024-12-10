@@ -22,7 +22,7 @@ function Specifications() {
   }, [user]);
 
   return (
-    <div className="flex flex-col lg:flex-row justify-center gap-4 lg:gap-7 p-4">
+    <div className="flex flex-col lg:flex-row justify-center gap-4 lg:gap-7 p-4 mb-12">
       {/* Main specifications section */}
       <div className="flex flex-col main-spec:flex-row bg-gradient-to-b from-darkerBlue to-darkBlue rounded-sm gap-4 p-4 w-fit mx-auto lg:mx-0">
         {/* Left side car spec and filters */}
