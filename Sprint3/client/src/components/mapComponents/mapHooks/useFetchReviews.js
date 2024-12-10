@@ -10,7 +10,7 @@ const useFetchReviews = (stationId) => {
     const fetchReviews = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`/api/reviews/station/${stationId}`);
+        const response = await axios.get(`${import.meta.env.VITE_REACT_API_URL}/api/reviews/station/${stationId}`);
         setReviews(response.data);
       } catch (err) {
         setError(err);

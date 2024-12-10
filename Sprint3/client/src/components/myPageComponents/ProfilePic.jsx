@@ -28,13 +28,16 @@ function ProfilePic() {
   const updateUser = async (formData) => {
     try {
       const id = user._id;
-      const res = await fetch(`api/users/${id}`, {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_REACT_API_URL}/api/users/${id}`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      );
 
       if (!res.ok) {
         throw new Error("Failed to update user");

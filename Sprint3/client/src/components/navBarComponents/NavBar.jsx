@@ -67,7 +67,10 @@ function NavBar() {
     if (location.pathname !== "/map") {
       navigate("/map");
     }
-    const query = "api/stations/customSearch?location=" + searchValue;
+    const query =
+      `${
+        import.meta.env.VITE_REACT_API_URL
+      }/api/stations/customSearch?location=` + searchValue;
     const res = await fetch(query);
     const data = await res.json();
     console.log(data);
@@ -97,7 +100,7 @@ function NavBar() {
     <div className="relative flex items-center justify-between px-4 py-2 bg-gradient-to-b from-darkerBlue to-darkBlue nav-phone:px-12">
       {/* Logo on the left */}
       <div className="flex items-center">
-        <Link to={'/'}>
+        <Link to={"/"}>
           <img src={logo} alt="Plug It company logo" className="h-10 w-auto" />
         </Link>
       </div>
@@ -193,7 +196,11 @@ function NavBar() {
               name="submitbutton"
               className="absolute left-5 h-5 w-5 mt-2.5 text-gray-400 font-Roboto"
             >
-              <img src={Search} alt="Search Icon" className="h-full w-full ml-2 transform transition-transform duration-200 hover:scale-125 hover:brightness-150" />
+              <img
+                src={Search}
+                alt="Search Icon"
+                className="h-full w-full ml-2 transform transition-transform duration-200 hover:scale-125 hover:brightness-150"
+              />
             </button>
           </form>
           {searchSuggestions.length > 0 && (

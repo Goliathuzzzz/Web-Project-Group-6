@@ -32,13 +32,16 @@ const ContactUs = () => {
 
   const addContactForm = async (newContactForm) => {
     try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newContactForm),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_REACT_API_URL}/api/contact`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newContactForm),
+        }
+      );
       if (response.ok) {
         console.log("Form data sent successfully");
       } else {

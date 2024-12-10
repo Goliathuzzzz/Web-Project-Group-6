@@ -38,11 +38,15 @@ function ReviewWindow({ station, onClose }) {
         };
 
         // Submit the review to the server
-        const res = await axios.post("/api/reviews", payload, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const res = await axios.post(
+          `${import.meta.env.VITE_REACT_API_URL}/api/reviews`,
+          payload,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         // Update the reviews state variable with the new review
         setReviews([...reviews, res.data]);
@@ -91,19 +95,21 @@ function ReviewWindow({ station, onClose }) {
         <div className="flex border-b mb-4">
           <button
             onClick={() => setActiveTab("existing")}
-            className={`px-4 py-2 ${activeTab === "existing"
-              ? "border-b-2 border-blue-500 text-blue-500"
-              : "text-gray-500 font-Roboto"
-              }`}
+            className={`px-4 py-2 ${
+              activeTab === "existing"
+                ? "border-b-2 border-blue-500 text-blue-500"
+                : "text-gray-500 font-Roboto"
+            }`}
           >
             Existing Reviews
           </button>
           <button
             onClick={() => setActiveTab("new")}
-            className={`px-4 py-2 ${activeTab === "new"
-              ? "border-b-2 border-blue-500 text-blue-500"
-              : "text-gray-500 font-Roboto"
-              }`}
+            className={`px-4 py-2 ${
+              activeTab === "new"
+                ? "border-b-2 border-blue-500 text-blue-500"
+                : "text-gray-500 font-Roboto"
+            }`}
           >
             Write a Review
           </button>
@@ -156,8 +162,9 @@ function ReviewWindow({ station, onClose }) {
               </p>
             )}
             <textarea
-              className={`w-full p-2 border rounded mb-2 text-sm text-black flex-grow min-h-36 font-Roboto ${!user ? "bg-gray-200 cursor-not-allowed" : ""
-                }`}
+              className={`w-full p-2 border rounded mb-2 text-sm text-black flex-grow min-h-36 font-Roboto ${
+                !user ? "bg-gray-200 cursor-not-allowed" : ""
+              }`}
               placeholder={
                 user ? "Write your review here..." : "Log in to write a review."
               }
@@ -168,8 +175,9 @@ function ReviewWindow({ station, onClose }) {
             {/* Rating */}
             <div className="flex items-center mb-4">
               <span
-                className={`text-sm mr-2 font-Roboto ${user ? "text-black" : "text-gray-400"
-                  }`}
+                className={`text-sm mr-2 font-Roboto ${
+                  user ? "text-black" : "text-gray-400"
+                }`}
               >
                 Rating:
               </span>
@@ -177,12 +185,13 @@ function ReviewWindow({ station, onClose }) {
                 {Array.from({ length: 5 }, (_, i) => (
                   <span
                     key={i}
-                    className={`text-2xl ${i < newRating
-                      ? user
-                        ? "text-yellow-400"
-                        : "text-gray-400"
-                      : "text-gray-300"
-                      } ${user ? "cursor-pointer" : "cursor-not-allowed"}`}
+                    className={`text-2xl ${
+                      i < newRating
+                        ? user
+                          ? "text-yellow-400"
+                          : "text-gray-400"
+                        : "text-gray-300"
+                    } ${user ? "cursor-pointer" : "cursor-not-allowed"}`}
                     onClick={() => {
                       if (user) setNewRating(i + 1);
                     }}
@@ -195,10 +204,11 @@ function ReviewWindow({ station, onClose }) {
             {/* Submit button */}
             <button
               onClick={handleSubmit}
-              className={`w-full py-2 rounded transition font-Roboto ${user
-                ? "bg-blue-500 text-white hover:bg-blue-600"
-                : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                }`}
+              className={`w-full py-2 rounded transition font-Roboto ${
+                user
+                  ? "bg-blue-500 text-white hover:bg-blue-600"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              }`}
               disabled={!user}
             >
               Submit Review

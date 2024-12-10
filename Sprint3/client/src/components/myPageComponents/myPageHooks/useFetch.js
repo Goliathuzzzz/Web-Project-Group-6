@@ -9,7 +9,7 @@ const useFetch = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const reviewsRes = await axios.get(`/api/reviews/user/${user._id}`, {
+                const reviewsRes = await axios.get(`${import.meta.env.VITE_REACT_API_URL}/api/reviews/user/${user._id}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },

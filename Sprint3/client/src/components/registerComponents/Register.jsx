@@ -52,11 +52,14 @@ function Register() {
 
   const addUser = async (newUser) => {
     try {
-      const res = await fetch("/api/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newUser),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_REACT_API_URL}/api/users`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newUser),
+        }
+      );
       if (res.ok) {
         console.log("Registered successfully:", { username, email });
         alert("Registration successful!");

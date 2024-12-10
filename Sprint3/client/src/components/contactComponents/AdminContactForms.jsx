@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 const AdminContactForms = () => {
   const [contactForms, setContactForms] = useState([]);
   const [expandedRows, setExpandedRows] = useState({});
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
-  const token = localStorage.getItem('site');
+  const token = localStorage.getItem("site");
 
   useEffect(() => {
     fetchContactForms();
@@ -14,21 +14,24 @@ const AdminContactForms = () => {
 
   const fetchContactForms = async () => {
     try {
-      const response = await fetch('/api/contact', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_REACT_API_URL}/api/contact`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (response.ok) {
         const data = await response.json();
         setContactForms(data);
       } else {
-        setError('Failed to fetch contact forms');
+        setError("Failed to fetch contact forms");
       }
     } catch (err) {
-      setError('An error occurred while fetching contact forms');
+      setError("An error occurred while fetching contact forms");
       console.error(err);
     } finally {
       setLoading(false);
@@ -37,21 +40,24 @@ const AdminContactForms = () => {
 
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`/api/contact/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_REACT_API_URL}/api/contact/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (response.ok) {
         setContactForms(contactForms.filter((form) => form._id !== id));
-        alert('Contact form deleted successfully');
+        alert("Contact form deleted successfully");
       } else {
-        alert('Failed to delete contact form');
+        alert("Failed to delete contact form");
       }
     } catch (err) {
-      alert('An error occurred while deleting the contact form');
+      alert("An error occurred while deleting the contact form");
       console.error(err);
     }
   };
@@ -114,17 +120,15 @@ const AdminContactForms = () => {
                   {form.email}
                 </td>
                 <td className="border border-mediumBlue px-4 py-2">
-                  {expandedRows[form._id] || form.content.length <= 100 ? (
-                    form.content
-                  ) : (
-                    `${form.content.substring(0, 120)}...`
-                  )}
+                  {expandedRows[form._id] || form.content.length <= 100
+                    ? form.content
+                    : `${form.content.substring(0, 120)}...`}
                   {form.content.length > 100 && (
                     <button
                       onClick={() => toggleRowExpansion(form._id)}
                       className="ml-2 text-eGreen underline"
                     >
-                      {expandedRows[form._id] ? 'Show Less' : 'Show More'}
+                      {expandedRows[form._id] ? "Show Less" : "Show More"}
                     </button>
                   )}
                 </td>

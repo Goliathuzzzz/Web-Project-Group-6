@@ -16,13 +16,16 @@ const AuthProvider = ({ children }) => {
     const fetchUserData = async () => {
       if (token) {
         try {
-          const response = await fetch("/api/users/me", {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          });
+          const response = await fetch(
+            `${import.meta.env.VITE_REACT_API_URL}/api/users/me`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
           const res = await response.json();
           if (response.ok) {
             setUser(res.user);
@@ -41,13 +44,16 @@ const AuthProvider = ({ children }) => {
 
   const loginAction = async (email, password) => {
     try {
-      const response = await fetch("api/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email: email, password: password }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_REACT_API_URL}/api/users/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: email, password: password }),
+        }
+      );
       const res = await response.json();
       console.log(res);
       if (res.token) {
@@ -75,13 +81,16 @@ const AuthProvider = ({ children }) => {
           tokenResponse.access_token
         );
         try {
-          const response = await fetch("/api/users/google-login", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ token: tokenResponse.access_token }), // Use the access token
-          });
+          const response = await fetch(
+            `${import.meta.env.VITE_REACT_API_URL}/api/users/google-login`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ token: tokenResponse.access_token }), // Use the access token
+            }
+          );
           const data = await response.json();
           if (data.token) {
             setUser(data.user);

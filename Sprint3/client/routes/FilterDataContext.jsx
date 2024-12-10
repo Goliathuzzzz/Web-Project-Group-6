@@ -13,7 +13,10 @@ export const FilterDataProvider = ({ children }) => {
 
   const getAllFilterData = async () => {
     try {
-      const res = await axios.get(`/api/chargers/filters`, {});
+      const res = await axios.get(
+        `${import.meta.env.VITE_REACT_API_URL}/api/chargers/filters`,
+        {}
+      );
       const data = res.data;
       console.log(data);
       return data;

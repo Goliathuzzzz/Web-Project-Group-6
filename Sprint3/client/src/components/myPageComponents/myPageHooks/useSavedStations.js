@@ -10,7 +10,7 @@ export const useSavedStations = (query) => {
     console.log(queryString);
     if (queryString) {
       try {
-        const response = await axios.get(`/api/chargers/bookmarks/${queryString}`, {
+        const response = await axios.get(`${import.meta.env.VITE_REACT_API_URL}/api/chargers/bookmarks/${queryString}`, {
         });
         setStations(response.data);
         console.log(response.data);

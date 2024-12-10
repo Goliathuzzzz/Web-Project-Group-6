@@ -15,7 +15,7 @@ export const useUserStationIds = () => {
     const addStationId = async (stationId) => {
         const userId = loadedUser._id;
         try {
-            const response = await fetch(`/api/users/${userId}/stations`, {
+            const response = await fetch(`${import.meta.env.VITE_REACT_API_URL}/api/users/${userId}/stations`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -31,7 +31,7 @@ export const useUserStationIds = () => {
     const removeStationId = async (stationId) => {
         const userId = loadedUser._id;
         try {
-            await fetch(`/api/users/${userId}/stations/${stationId}`, {
+            await fetch(`${import.meta.env.VITE_REACT_API_URL}/api/users/${userId}/stations/${stationId}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",

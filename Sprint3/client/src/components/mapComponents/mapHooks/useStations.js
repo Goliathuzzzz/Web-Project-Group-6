@@ -9,7 +9,7 @@ export const useStations = (initialBounds) => {
   const fetchStations = async (bounds) => {
     setError(null);
     try {
-      const response = await axios.get("/api/chargers", {
+      const response = await axios.get(`${import.meta.env.VITE_REACT_API_URL}/api/chargers`, {
         params: { ...bounds, maxResults: 100 },
       });
       setStations(response.data);
@@ -20,7 +20,7 @@ export const useStations = (initialBounds) => {
   };
 
   const customSearch = async (query) => {
-    const stationSearch = "api/chargers/customSearch/" + query;
+    const stationSearch = `${import.meta.env.VITE_REACT_API_URL}/api/chargers/` + query;
     console.log(stationSearch);
     try {
       const response = await axios.get(stationSearch);
