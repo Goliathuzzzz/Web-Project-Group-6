@@ -18,11 +18,15 @@ if (!process.env.MONGO_URI) {
   console.error('Error: MONGO_URI not set in environment variables');
   process.exit(1);
 }
+const corsOptions = {
+  origin: 'PATHMISSING', // Replace with your deployed frontend URL
+  optionsSuccessStatus: 200,
+};
 
 connectDB();
 
 const app = express();
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logger);
