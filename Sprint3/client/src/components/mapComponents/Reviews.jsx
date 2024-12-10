@@ -1,49 +1,63 @@
 import React, { useState, useEffect } from "react";
 import Cancel from "../../assets/images/close.png";
-import reviewsData from "../../../../server/mock-data/reviews_mock_data.json";
 import { useAuth } from "../../../routes/AuthProvider";
+import useFetchReviews from "./mapHooks/useFetchReviews";
+import axios from "axios";
 
+// Review window component
 function ReviewWindow({ station, onClose }) {
-  const { user } = useAuth();
-  const [reviews, setReviews] = useState([]);
-  const [newReview, setNewReview] = useState("");
-  const [newRating, setNewRating] = useState(0);
-  const [activeTab, setActiveTab] = useState("existing");
-  const [expandedReviewIndex, setExpandedReviewIndex] = useState(null);
+  // Get the user and token from the AuthProvider
+  const { user, token } = useAuth();
 
-  useEffect(() => {
-    const stationReviews = reviewsData.find(
-      (review) => review.stationName === station.name
-    );
-    setReviews(stationReviews ? stationReviews.reviews : []);
-  }, [station.name]);
+  // Fetch reviews for the station
+  const { reviews, setReviews, loading, error } = useFetchReviews(station.id);
 
-  const handleSubmit = () => {
+  // State variables
+  const [newReview, setNewReview] = useState(""); // New review text
+  const [newRating, setNewRating] = useState(0); // New review rating
+  const [activeTab, setActiveTab] = useState("existing"); // Active tab (existing/new)
+  const [expandedReviewIndex, setExpandedReviewIndex] = useState(null); // Expanded review index
+
+  // Handle review submission
+  const handleSubmit = async () => {
     if (!user) {
+      // If the user is not logged in, display an alert
       alert("You must be logged in to submit a review.");
       return;
     }
 
     if (newReview.trim() && newRating > 0) {
-      const updatedReviews = [
-        ...reviews,
-        {
-          user: user.username || "Anonymous",
-          text: newReview,
-          rating: newRating,
-        },
-      ];
-      setReviews(updatedReviews);
-      setNewReview("");
-      setNewRating(0);
+      // If the review text and rating are valid, submit the review
+      try {
+        const payload = {
+          text: newReview, // Review text
+          rating: newRating, // Review rating
+          user: user.id, // User ID submitting the review
+          station: station.id, // Station being reviewed
+        };
 
-      // Add logic to persist the new review with rating
-      setActiveTab("existing"); // Switch back to the existing reviews tab
+        // Submit the review to the server
+        const res = await axios.post("/api/reviews", payload, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        // Update the reviews state variable with the new review
+        setReviews([...reviews, res.data]);
+        setNewReview(""); // Clear the review text
+        setNewRating(0); // Reset the review rating
+        setActiveTab("existing"); // Switch back to the existing reviews tab
+      } catch (error) {
+        console.error("Error submitting review", error);
+        alert("Failed to submit review. Please try again.");
+      }
     } else {
-      alert("Please add a review and select a rating.");
+      alert("Please enter a review and rating.");
     }
   };
 
+  // Render stars based on the rating
   const renderStars = (rating) => (
     <span className="text-yellow-400">
       {"★".repeat(rating)}
@@ -51,6 +65,7 @@ function ReviewWindow({ station, onClose }) {
     </span>
   );
 
+  // Truncate text to a specified length
   const truncateText = (text, length) => {
     return text.length > length ? text.slice(0, length) + "..." : text;
   };
@@ -75,21 +90,19 @@ function ReviewWindow({ station, onClose }) {
         <div className="flex border-b mb-4">
           <button
             onClick={() => setActiveTab("existing")}
-            className={`px-4 py-2 ${
-              activeTab === "existing"
-                ? "border-b-2 border-blue-500 text-blue-500"
-                : "text-gray-500 font-Roboto"
-            }`}
+            className={`px-4 py-2 ${activeTab === "existing"
+              ? "border-b-2 border-blue-500 text-blue-500"
+              : "text-gray-500 font-Roboto"
+              }`}
           >
             Existing Reviews
           </button>
           <button
             onClick={() => setActiveTab("new")}
-            className={`px-4 py-2 ${
-              activeTab === "new"
-                ? "border-b-2 border-blue-500 text-blue-500"
-                : "text-gray-500 font-Roboto"
-            }`}
+            className={`px-4 py-2 ${activeTab === "new"
+              ? "border-b-2 border-blue-500 text-blue-500"
+              : "text-gray-500 font-Roboto"
+              }`}
           >
             Write a Review
           </button>
@@ -104,7 +117,7 @@ function ReviewWindow({ station, onClose }) {
                   key={index}
                   className="bg-gray-100 p-2 rounded shadow-sm text-sm text-black overflow-hidden break-words font-Roboto"
                 >
-                  <p className="font-semibold">{review.user}:</p>
+                  <p className="font-semibold">{review.user.username}:</p>
                   <p className="break-words">
                     {expandedReviewIndex === index
                       ? review.text
@@ -142,9 +155,8 @@ function ReviewWindow({ station, onClose }) {
               </p>
             )}
             <textarea
-              className={`w-full p-2 border rounded mb-2 text-sm text-black flex-grow min-h-36 font-Roboto ${
-                !user ? "bg-gray-200 cursor-not-allowed" : ""
-              }`}
+              className={`w-full p-2 border rounded mb-2 text-sm text-black flex-grow min-h-36 font-Roboto ${!user ? "bg-gray-200 cursor-not-allowed" : ""
+                }`}
               placeholder={
                 user ? "Write your review here..." : "Log in to write a review."
               }
@@ -155,9 +167,8 @@ function ReviewWindow({ station, onClose }) {
             {/* Rating */}
             <div className="flex items-center mb-4">
               <span
-                className={`text-sm mr-2 font-Roboto ${
-                  user ? "text-black" : "text-gray-400"
-                }`}
+                className={`text-sm mr-2 font-Roboto ${user ? "text-black" : "text-gray-400"
+                  }`}
               >
                 Rating:
               </span>
@@ -165,13 +176,12 @@ function ReviewWindow({ station, onClose }) {
                 {Array.from({ length: 5 }, (_, i) => (
                   <span
                     key={i}
-                    className={`text-2xl ${
-                      i < newRating
-                        ? user
-                          ? "text-yellow-400"
-                          : "text-gray-400"
-                        : "text-gray-300"
-                    } ${user ? "cursor-pointer" : "cursor-not-allowed"}`}
+                    className={`text-2xl ${i < newRating
+                      ? user
+                        ? "text-yellow-400"
+                        : "text-gray-400"
+                      : "text-gray-300"
+                      } ${user ? "cursor-pointer" : "cursor-not-allowed"}`}
                     onClick={() => {
                       if (user) setNewRating(i + 1);
                     }}
@@ -184,11 +194,10 @@ function ReviewWindow({ station, onClose }) {
             {/* Submit button */}
             <button
               onClick={handleSubmit}
-              className={`w-full py-2 rounded transition font-Roboto ${
-                user
-                  ? "bg-blue-500 text-white hover:bg-blue-600"
-                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
-              }`}
+              className={`w-full py-2 rounded transition font-Roboto ${user
+                ? "bg-blue-500 text-white hover:bg-blue-600"
+                : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                }`}
               disabled={!user}
             >
               Submit Review
