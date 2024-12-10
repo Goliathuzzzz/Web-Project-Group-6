@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 const AdminContactForms = () => {
   const [contactForms, setContactForms] = useState([]);
+  const [expandedRows, setExpandedRows] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -53,6 +54,10 @@ const AdminContactForms = () => {
       alert('An error occurred while deleting the contact form');
       console.error(err);
     }
+  };
+
+  const toggleRowExpansion = (id) => {
+    setExpandedRows((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
   if (loading) {
@@ -109,7 +114,19 @@ const AdminContactForms = () => {
                   {form.email}
                 </td>
                 <td className="border border-mediumBlue px-4 py-2">
-                  {form.content}
+                  {expandedRows[form._id] || form.content.length <= 100 ? (
+                    form.content
+                  ) : (
+                    `${form.content.substring(0, 120)}...`
+                  )}
+                  {form.content.length > 100 && (
+                    <button
+                      onClick={() => toggleRowExpansion(form._id)}
+                      className="ml-2 text-electricBlue underline"
+                    >
+                      {expandedRows[form._id] ? 'Show Less' : 'Show More'}
+                    </button>
+                  )}
                 </td>
                 <td className="border border-mediumBlue px-4 py-2">
                   {new Date(form.createdAt).toLocaleString()}
