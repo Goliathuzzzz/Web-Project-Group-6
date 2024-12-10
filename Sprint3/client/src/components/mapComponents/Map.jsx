@@ -4,7 +4,7 @@ import L from "leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import "leaflet/dist/leaflet.css";
 import "mapbox-gl/dist/mapbox-gl.css";
-import "react-leaflet-markercluster/dist/styles.min.css";
+import "../../assets/css/styles.min.css";
 import { useStations } from "./mapHooks/useStations";
 import { useDebounce } from "./mapHooks/useDebounce";
 import MapEventHandler from "./mapHooks/MapEventHandler";
@@ -89,7 +89,7 @@ const Map = ({ minimap = false }) => {
   return (
     <div className={`relative w-full ${mapHeight}`}>
       {/* Display filter buttons if the map is not a minimap */}
-      {!minimap && <FilterButtons customSearch={customSearch}/>}
+      {!minimap && <FilterButtons customSearch={customSearch} />}
       {/* Map container */}
       <MapContainer
         center={INITIAL_POSITION}
