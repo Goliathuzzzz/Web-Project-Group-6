@@ -80,10 +80,8 @@ const ConnectorInfo = ({ connector, powerKW, reviews, onShowReviews }) => {
 
 // InfoBox Component to display station information
 function InfoBox({ station, onBookmark }) {
-  const { user } = useAuth(); // Get user data
-  const [isReviewWindowOpen, setReviewWindowOpen] = useState(
-    user.stations.includes(station.id) || false
-  ); // State to control review window visibility
+  const { user, isAuthenticated } = useAuth(); // Get user data
+  const [isReviewWindowOpen, setReviewWindowOpen] = useState(false); // State to control review window visibility
   const [isBookmarked, setIsBookmarked] = useState(false); // State to track if the station is bookmarked
   const googleMapsLink = `https://www.google.com/maps?q=${station.location.latitude},${station.location.longitude}`; // Google Maps link
   const googleMapsDirections = `https://www.google.com/maps/dir/?api=1&destination=${station.location.latitude},${station.location.longitude}`; // Google Maps directions link
@@ -98,7 +96,7 @@ function InfoBox({ station, onBookmark }) {
 
   // Check if the station is bookmarked
   useEffect(() => {
-    if (user && user.stations) {
+    if (isAuthenticated && user.stations) {
       setIsBookmarked(user.stations.includes(station.id));
     }
   }, [user, station.id]);
@@ -108,8 +106,10 @@ function InfoBox({ station, onBookmark }) {
 
   // Handle bookmark toggle
   const handleBookmarkToggle = () => {
-    onBookmark(station);
-    setIsBookmarked(!isBookmarked);
+    if (isAuthenticated) {
+      onBookmark(station);
+      setIsBookmarked(!isBookmarked);
+    }
   };
 
   return (
