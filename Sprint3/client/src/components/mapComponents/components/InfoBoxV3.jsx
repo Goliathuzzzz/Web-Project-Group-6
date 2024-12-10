@@ -38,7 +38,7 @@ const ConnectorInfo = ({ connector, powerKW, count }) => {
         {/* <span className="ml-1 font-Orbitron">{`${station.available}/${station.total}`}</span> */}
         {/* Display the count of connectors */}
         {count > 1 && (
-          <span className="text-gray-300 ml-2 font-Roboto">
+          <span className="text-eGreen ml-2 font-Roboto">
             x{count}
           </span>
         )}

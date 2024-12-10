@@ -122,7 +122,7 @@ const AdminContactForms = () => {
                   {form.content.length > 100 && (
                     <button
                       onClick={() => toggleRowExpansion(form._id)}
-                      className="ml-2 text-electricBlue underline"
+                      className="ml-2 text-eGreen underline"
                     >
                       {expandedRows[form._id] ? 'Show Less' : 'Show More'}
                     </button>
@@ -134,7 +134,7 @@ const AdminContactForms = () => {
                 <td className="border border-mediumBlue px-4 py-2">
                   <button
                     onClick={() => handleDelete(form._id)}
-                    className="bg-salmonRed text-white px-4 py-2 rounded hover:bg-darkGreen hover:shadow-lg transition-all duration-300"
+                    className="bg-salmonRed text-white px-4 py-2 rounded hover:bg-red-700 transition-colors duration-300"
                   >
                     Delete
                   </button>

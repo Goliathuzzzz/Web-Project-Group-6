@@ -37,7 +37,7 @@ function SavedStations() {
 
   return (
     <div className="flex justify-center items-center mx-4 my-page:ml-0 bg-gradient-to-b from-darkerBlue to-darkBlue rounded-md my-page:max-w-xl md:min-w-96 mt-4 my-page:mt-10">
-      <div className="flex flex-col bg-mediumBlue p-6 m-5 rounded-md max-h-36 saved-stations:min-h-[144px] saved-stations:min-w-[425px]">
+      <div className="flex flex-col bg-mediumBlue py-6 px-4 m-5 rounded-md max-h-36 saved-stations:min-h-[144px] saved-stations:min-w-[425px] w-32">
         <h2 className="text-xl font-Orbitron  text-ctaYellow text-center my-page:text-left font--medium tracking-wider pb-0 top-0 bg-mediumBlue z-10">
           Saved Stations
         </h2>

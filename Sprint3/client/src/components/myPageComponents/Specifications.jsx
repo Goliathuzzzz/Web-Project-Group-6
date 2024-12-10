@@ -119,15 +119,15 @@ function Specifications() {
             Profile Information
           </h3>
           <div className="space-y-1 bg-myPageBlue p-3 rounded-md">
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-start space-x-2">
               <span className="font-bold text-sm font-Roboto">Name:</span>
               <span className="text-xs font-Roboto">{name}</span>
             </div>
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-start space-x-2">
               <span className="font-bold text-sm font-Roboto">Email:</span>
               <span className="text-xs font-Roboto break-all">{email}</span>
             </div>
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-start space-x-2">
               <span className="font-bold text-sm font-Roboto">Location:</span>
               <span className="text-xs font-Roboto">{location}</span>
             </div>
