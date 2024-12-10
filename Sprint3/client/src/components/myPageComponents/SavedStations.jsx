@@ -1,12 +1,38 @@
-import React, { useState } from "react";
-import { stations as initialStations } from "./stationData";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSavedStations } from "./myPageHooks/useSavedStations";
+import { useUserStationIds } from "./myPageHooks/useUserStationIds";
+import { useAuth } from "../../../routes/AuthProvider";
 import Station from "./Station";
 
 function SavedStations() {
-  const [stations, setStations] = useState(initialStations);
+  const { fetchStations, stations, setStations } = useSavedStations();
+  const { getStationIds, removeStationId } = useUserStationIds();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      const query = getStationIds(user);
+      if (query) {
+        const queryString = query.join(",");
+        fetchStations(queryString);
+      }
+    }
+  }, [user]);
 
   const removeStation = (id) => {
+    removeStationId(id);
     setStations(stations.filter((station) => station.id !== id));
+  };
+
+  const toStation = (station) => {
+    navigate("/map", {
+      state: {
+        latitude: station.location.latitude,
+        longitude: station.location.longitude,
+      },
+    });
   };
 
   return (
@@ -20,8 +46,9 @@ function SavedStations() {
             stations.map((item) => (
               <Station
                 key={item.id}
-                name={item.name}
+                name={item.location.title}
                 removeStation={() => removeStation(item.id)}
+                toStation={() => toStation(item)}
               />
             ))
           ) : (

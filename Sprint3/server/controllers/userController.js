@@ -235,6 +235,50 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const addUserStation = async (req, res) => {
+  const { userId } = req.params;
+  const { stationId } = req.body;
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(400).json({ message: 'Invalid user ID' });
+  }
+
+  try {
+    const user = await User.findById(userId);
+    if (user) {
+      if (user.stations.includes(stationId)) {
+        return res.status(400).json({ message: 'Station already added to user' });
+      }
+      user.stations.push(stationId);
+      await user.save();
+      res.status(200).json(user);
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to add station to user' });
+  }
+};
+
+const removeUserStation = async (req, res) => {
+  const { userId, stationId } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(400).json({ message: 'Invalid user ID' });
+  }
+
+  try {
+    const user = await User.findById(userId);
+    if (user) {
+      user.stations = user.stations.filter((station) => station != stationId);
+      await user.save();
+      res.status(204).send();
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to remove station from user' });
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUserById,
@@ -245,4 +289,6 @@ module.exports = {
   replaceUser,
   updateUser,
   deleteUser,
+  addUserStation,
+  removeUserStation,
 };
