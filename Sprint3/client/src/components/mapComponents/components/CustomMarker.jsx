@@ -2,7 +2,7 @@ import React from 'react';
 import L from 'leaflet';
 import { Marker } from 'react-leaflet';
 
-import { connectorTypes, connectorMarkerImages } from '../connectorUtils';
+import { connectorTypes, connectorMarkerImages } from '../mapUtils/connectorUtils';
 
 // Get the connector type name based on the connection type ID
 const getConnectorTypeName = (connectionTypeID) => {

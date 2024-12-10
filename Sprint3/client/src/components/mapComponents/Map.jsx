@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { MapContainer, TileLayer, Circle } from "react-leaflet";
+import React, { useState } from "react";
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import L from "leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import "leaflet/dist/leaflet.css";
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -7,13 +8,14 @@ import "react-leaflet-markercluster/dist/styles.min.css";
 import { useStations } from "./mapHooks/useStations";
 import { useDebounce } from "./mapHooks/useDebounce";
 import MapEventHandler from "./mapHooks/MapEventHandler";
-import FetchStations from "./components/FetchStations";
+import FetchStations from "./mapUtils/FetchStations";
 import CustomMarker from "./components/CustomMarker";
 import InfoBox from "./components/InfoBoxV3";
 import FilterButtons from "./FilterButtons";
-import MapButtons from "./MapButtons";
+import MapButtons from "./components/MapButtons";
 import { useBookMark } from "./mapHooks/useBookMark";
 import { useLocation } from "react-router-dom";
+import userMarkerIcon from "../../assets/images/user_marker.png";
 
 // Environment variables
 const {
@@ -76,6 +78,13 @@ const Map = ({ minimap = false }) => {
   // Set map height based on whether the map is a minimap
   const mapHeight = minimap ? "h-80" : "h-[calc(100vh-56px)]"; // if minimap is true, set height to 36px, else set height to 100vh-56px
 
+  // User marker icon for geolocation
+  const userMarker = new L.Icon({
+    iconUrl: userMarkerIcon,
+    iconSize: [43, 43],
+    iconAnchor: [16, 43],
+  });
+
   return (
     <div className={`relative w-full ${mapHeight}`}>
       {/* Display filter buttons if the map is not a minimap */}
@@ -97,12 +106,7 @@ const Map = ({ minimap = false }) => {
         />
         {/* Geolocation circle */}
         {isGeolocated && currentPosition && accuracy && (
-          <Circle
-            center={currentPosition}
-            radius={accuracy}
-            fillColor="#2B7FE5"
-            fillOpacity={0.6}
-          />
+          <Marker position={currentPosition} icon={userMarker} />
         )}
         {/* Display map buttons if map isn't a minimap */}
         {!minimap && (
