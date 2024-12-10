@@ -9,13 +9,13 @@ import geoLocateOn from "../../../assets/images/map_geolocate_on.png";
 
 const MapButtons = ({ setCurrentPosition, setAccuracy, isGeolocated, setIsGeolocated }) => {
     const map = useMap();
+    const [geoLocateIcon, setGeoLocateIcon] = useState(geoLocate);
+
     const { coords, getPosition } = useGeolocated({
         positionOptions: { enableHighAccuracy: true },
         userDecisionTimeout: 5000,
         isOptimisticGeolocationEnabled: true,
     });
-
-    const [geoLocateIcon, setGeoLocateIcon] = useState(geoLocate);
 
     useEffect(() => {
         if (isGeolocated && coords) {
@@ -23,33 +23,27 @@ const MapButtons = ({ setCurrentPosition, setAccuracy, isGeolocated, setIsGeoloc
             setCurrentPosition(newPosition);
             setAccuracy(coords.accuracy);
             map.setView(newPosition, 15);
+            setIsGeolocated(true);
+            setGeoLocateIcon(geoLocateOn);
         }
-    }, [isGeolocated, coords, map, setCurrentPosition, setAccuracy]);
+    }, [coords, isGeolocated, map, setCurrentPosition, setAccuracy]);
 
     const handleGeolocate = () => {
         if (!navigator.geolocation) {
-            setErrorMessage("Geolocation is not supported by your browser.");
-            console.log("Geolocation is not supported.");
+            setErrorMessage("Geolocation is not supported by the browser.");
             return;
         }
 
         if (isGeolocated) {
+            // Disable geolocation
             setIsGeolocated(false);
             setGeoLocateIcon(geoLocate);
             setCurrentPosition(null);
             setAccuracy(null);
-            console.log("Geolocation tracking disabled");
         } else {
-            try {
-                getPosition();
-            } catch (error) {
-                setErrorMessage("Failed to retrieve location.");
-                console.log("Geolocation error: ", error);
-                return;
-            }
+            getPosition();
             setIsGeolocated(true);
             setGeoLocateIcon(geoLocateOn);
-            console.log("Geolocation tracking enabled");
         }
     };
 
