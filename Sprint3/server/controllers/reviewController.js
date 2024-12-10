@@ -15,12 +15,32 @@ const getAllReviews = async (req, res) => {
 const createReview = async (req, res) => {
   try {
     const userId = req.user._id;
-    const newReview = await Review.create({ ...req.body, user_id: userId });
+    const { rating, text, station } = req.body;
+
+    if (!rating || !text || !station) {
+      return res.status(400).json({ message: 'Missing required fields' });
+    }
+
+    const newReview = await Review.create({ ...req.body, user: userId });
+
     res.status(201).json(newReview);
   } catch (error) {
-    res
-      .status(400)
-      .json({ message: 'Failed to create review', error: error.message });
+    res.status(500).json({ message: 'Failed to create review', error: error.message });
+    console.log("Request Body:", req.body);
+    console.log("Authenticated User:", req.user);
+    console.error("Error in createReview:", error.message);
+  }
+};
+
+const getStationReviews = async (req, res) => {
+  const { stationId } = req.params;
+  try {
+    const reviews = await Review.find({ station: stationId })
+    .populate('user', 'username')
+    .sort({ createdAt: -1 });
+    res.status(200).json(reviews);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to retrieve reviews' });
   }
 };
 
@@ -78,7 +98,7 @@ const deleteReview = async (req, res) => {
   }
   try {
     const userId = req.user._id;
-    const deletedReview = await Review.findOneAndDelete({ _id: reviewId, user_id: userId});
+    const deletedReview = await Review.findOneAndDelete({ _id: reviewId, user_id: userId });
     if (deletedReview) {
       res.status(204).send();
     } else {
@@ -91,6 +111,7 @@ const deleteReview = async (req, res) => {
 
 module.exports = {
   getAllReviews,
+  getStationReviews,
   getReviewById,
   createReview,
   updateReview,

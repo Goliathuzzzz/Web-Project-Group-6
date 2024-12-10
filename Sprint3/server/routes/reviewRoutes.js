@@ -3,6 +3,7 @@ const router = express.Router();
 const auth = require('../middleware/userAuth');
 const {
   getAllReviews,
+  getStationReviews,
   getReviewById,
   createReview,
   replaceReview,
@@ -11,6 +12,7 @@ const {
 } = require('../controllers/reviewController');
 
 router.get('/', getAllReviews);
+router.get('/station/:stationId', getStationReviews);
 router.get('/:reviewId', getReviewById);
 
 // middleware for authentication

@@ -7,7 +7,7 @@ import "react-leaflet-markercluster/dist/styles.min.css";
 import { useStations } from "./mapHooks/useStations";
 import { useDebounce } from "./mapHooks/useDebounce";
 import MapEventHandler from "./mapHooks/MapEventHandler";
-import FetchStations from "./components/FetchStations";
+import FetchStations from "./mapUtils/FetchStations";
 import CustomMarker from "./components/CustomMarker";
 import InfoBox from "./components/InfoBoxV3";
 import FilterButtons from "./FilterButtons";
@@ -73,8 +73,20 @@ const Map = ({ minimap = false }) => {
   const [currentPosition, setCurrentPosition] = useState(INITIAL_POSITION);
   const [accuracy, setAccuracy] = useState(null);
   const [isGeolocated, setIsGeolocated] = useState(false);
+  const [loading, setLoading] = useState(true);
   // Set map height based on whether the map is a minimap
   const mapHeight = minimap ? "h-80" : "h-[calc(100vh-56px)]"; // if minimap is true, set height to 36px, else set height to 100vh-56px
+
+  // Show loading state while stations are fetching
+  useEffect(() => {
+    if (stationsError) {
+      setLoading(false); // Stop loading if there is an error
+    } else if (stations.length === 0) {
+      setLoading(true); // Show loading if there are no stations
+    } else {
+      setLoading(false); // Stop loading if stations are loaded
+    }
+  }, [stations, stationsError]);
 
   return (
     <div className={`relative w-full ${mapHeight}`}>

@@ -14,14 +14,13 @@ const reviewSchema = new Schema(
       type: String,
       required: true,
     },
+    station: {
+      type: Number,
+      required: true,
+    },
     user: {
       type: Schema.Types.ObjectId,
       ref: 'User', // reference to the user
-      required: true,
-    },
-    station: {
-      type: Schema.Types.ObjectId,
-      ref: 'Station', // reference to the station
       required: true,
     },
   },

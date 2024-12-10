@@ -3,7 +3,7 @@ import bookmark from "../../../assets/images/info_bookmark.png";
 import bookmarked from "../../../assets/images/info_bookmark_selected.png";
 import locate from "../../../assets/images/info_loc.png";
 import ReviewWindow from "../Reviews";
-import reviewsData from "../../../../../server/mock-data/reviews_mock_data.json";
+import useFetchReviews from "../mapHooks/useFetchReviews";
 import { useAuth } from "../../../../routes/AuthProvider";
 import {
   providers,
@@ -11,7 +11,7 @@ import {
   connectorColors,
   connectorTypes,
   providerImages,
-} from "../connectorUtils";
+} from "../mapUtils/connectorUtils";
 
 // Helper functions
 // Find the provider based on the station title
@@ -33,6 +33,7 @@ const calculateAverageRating = (reviews) => {
 
 // Connector Component to display information for each connector
 const ConnectorInfo = ({ connector, powerKW, reviews, onShowReviews }) => {
+
   const connectorType = getConnectorTypeName(connector.connectionTypeID); // Get connector type
   const averageRating = calculateAverageRating(reviews); // Calculate average rating
 
@@ -46,9 +47,8 @@ const ConnectorInfo = ({ connector, powerKW, reviews, onShowReviews }) => {
           className="w-6 h-6 mr-2"
         />
         <span
-          className={`${
-            connectorColors[connectorType] || "text-gray-400"
-          } font-semibold font-Orbitron`}
+          className={`${connectorColors[connectorType] || "text-gray-400"
+            } font-semibold font-Orbitron`}
         >
           {connectorType}
         </span>
@@ -88,13 +88,12 @@ function InfoBox({ station, onBookmark }) {
   const googleMapsLink = `https://www.google.com/maps?q=${station.location.latitude},${station.location.longitude}`; // Google Maps link
   const googleMapsDirections = `https://www.google.com/maps/dir/?api=1&destination=${station.location.latitude},${station.location.longitude}`; // Google Maps directions link
 
+  // Fetch reviews for the station
+  const { reviews, loading, error } = useFetchReviews(station.id);
+
   // Open and close review window
   const openReviewWindow = () => setReviewWindowOpen(true);
   const closeReviewWindow = () => setReviewWindowOpen(false);
-  // Find the reviews for the station
-  const stationReviews =
-    reviewsData.find((data) => data.stationName === station.name)?.reviews ||
-    [];
 
   // Check if the station is bookmarked
   useEffect(() => {
@@ -182,7 +181,7 @@ function InfoBox({ station, onBookmark }) {
             key={index}
             connector={connector}
             powerKW={connector.powerKW}
-            reviews={stationReviews}
+            reviews={reviews}
             onShowReviews={openReviewWindow}
           />
         ))}
