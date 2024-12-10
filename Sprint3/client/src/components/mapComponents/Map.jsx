@@ -11,7 +11,7 @@ import FetchStations from "./mapUtils/FetchStations";
 import CustomMarker from "./components/CustomMarker";
 import InfoBox from "./components/InfoBoxV3";
 import FilterButtons from "./FilterButtons";
-import MapButtons from "./MapButtons";
+import MapButtons from "./components/MapButtons";
 import { useBookMark } from "./mapHooks/useBookMark";
 import { useLocation } from "react-router-dom";
 

@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useMap } from 'react-leaflet';
 import { useGeolocated } from 'react-geolocated';
-import zoomOut from "../../assets/images/map_out.png";
-import zoomIn from "../../assets/images/map_in.png";
-import geoLocate from "../../assets/images/map_geolocate.png";
-import geoLocateOn from "../../assets/images/map_geolocate_on.png";
 import ReactDOM from 'react-dom';
+import zoomOut from "../../../assets/images/map_out.png";
+import zoomIn from "../../../assets/images/map_in.png";
+import geoLocate from "../../../assets/images/map_geolocate.png";
+import geoLocateOn from "../../../assets/images/map_geolocate_on.png";
 
 const MapButtons = ({ setCurrentPosition, setAccuracy, isGeolocated, setIsGeolocated }) => {
     const map = useMap();
