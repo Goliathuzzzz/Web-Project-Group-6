@@ -84,7 +84,7 @@ const Map = ({ minimap = false }) => {
       <MapContainer
         center={INITIAL_POSITION}
         zoom={INITIAL_ZOOM}
-        minZoom={INITIAL_ZOOM}
+        minZoom={5}
         maxBounds={INITIAL_BOUNDS}
         maxBoundsViscosity={1.0}
         zoomControl={false}
