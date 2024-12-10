@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import logo from "../../assets/images/logo.png";
 import userCircle from "../../assets/images/user.png";
-import menuIcon from "../../assets/images/menu.png";
+import menuIcon from "../../assets/images/Menu.png";
 import PageLinks from "./PageLinks";
 import Search from "../../assets/images/search.png";
 import { Link } from "react-router-dom";
