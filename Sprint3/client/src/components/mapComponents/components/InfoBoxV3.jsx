@@ -38,7 +38,7 @@ const ConnectorInfo = ({ connector, powerKW, reviews, onShowReviews }) => {
   const averageRating = calculateAverageRating(reviews); // Calculate average rating
 
   return (
-    <div className="relative p-3 bg-mediumBlue text-white rounded-md shadow space-y-1">
+    <div className="relative p-3 bg-mediumBlue text-white rounded-md shadow space-y-1 w-64">
       <div className="flex items-center">
         {/* Display connector icon */}
         <img
@@ -80,10 +80,8 @@ const ConnectorInfo = ({ connector, powerKW, reviews, onShowReviews }) => {
 
 // InfoBox Component to display station information
 function InfoBox({ station, onBookmark }) {
-  const { user } = useAuth(); // Get user data
-  const [isReviewWindowOpen, setReviewWindowOpen] = useState(
-    user.stations.includes(station.id) || false
-  ); // State to control review window visibility
+  const { user, isAuthenticated } = useAuth(); // Get user data
+  const [isReviewWindowOpen, setReviewWindowOpen] = useState(false); // State to control review window visibility
   const [isBookmarked, setIsBookmarked] = useState(false); // State to track if the station is bookmarked
   const googleMapsLink = `https://www.google.com/maps?q=${station.location.latitude},${station.location.longitude}`; // Google Maps link
   const googleMapsDirections = `https://www.google.com/maps/dir/?api=1&destination=${station.location.latitude},${station.location.longitude}`; // Google Maps directions link
@@ -97,7 +95,7 @@ function InfoBox({ station, onBookmark }) {
 
   // Check if the station is bookmarked
   useEffect(() => {
-    if (user && user.stations) {
+    if (isAuthenticated && user.stations) {
       setIsBookmarked(user.stations.includes(station.id));
     }
   }, [user, station.id]);
@@ -107,8 +105,10 @@ function InfoBox({ station, onBookmark }) {
 
   // Handle bookmark toggle
   const handleBookmarkToggle = () => {
-    onBookmark(station);
-    setIsBookmarked(!isBookmarked);
+    if (isAuthenticated) {
+      onBookmark(station);
+      setIsBookmarked(!isBookmarked);
+    }
   };
 
   return (
@@ -121,17 +121,19 @@ function InfoBox({ station, onBookmark }) {
         </h3>
         <div className="absolute top-4 right-4 flex">
           {/* Bookmark button */}
-          <button
-            onClick={handleBookmarkToggle}
-            className="w-7 h-7 flex items-center justify-center transform transition-transform duration-200 hover:scale-110 hover:brightness-150"
-            title="Bookmark"
-          >
-            <img
-              src={isBookmarked ? bookmarked : bookmark}
-              alt="Bookmark"
-              className="w-4 h-4"
-            />
-          </button>
+          {isAuthenticated && (
+            <button
+              onClick={handleBookmarkToggle}
+              className="w-7 h-7 flex items-center justify-center transform transition-transform duration-200 hover:scale-110 hover:brightness-150"
+              title="Bookmark"
+            >
+              <img
+                src={isBookmarked ? bookmarked : bookmark}
+                alt="Bookmark"
+                className="w-4 h-4"
+              />
+            </button>
+          )}
           {/* Navigate button */}
           <button
             onClick={() => window.open(googleMapsDirections, "_blank")}

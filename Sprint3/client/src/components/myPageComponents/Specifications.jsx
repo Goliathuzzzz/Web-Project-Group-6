@@ -4,6 +4,8 @@ import Charger from "../../assets/images/Tesla.png";
 import { chargerTypes, chargerPowers, serviceProviders } from "./selectOptions";
 import { reviews } from "./reviews";
 import { useAuth } from "../../../routes/AuthProvider";
+import Find from "../../assets/images/find_me.png";
+import { Link } from "react-router-dom";
 
 function Specifications() {
   const [name, setName] = useState("");
@@ -69,8 +71,21 @@ function Specifications() {
         </div>
 
         {/* Right side car image */}
-        <div className="bg-myPageBlue pb-20 flex justify-center">
+        <div className="bg-myPageBlue pb-20 flex flex-col items-center relative">
           <img src={Car} alt="Tesla Model X" className="h-auto w-60" />
+          <div className="absolute bottom-10 flex flex-col items-center">
+            <Link to="/map">
+              <img
+                src={Find}
+                alt="Locate Me"
+                className="w-16 h-16 cursor-pointer hover:scale-105 transition-transform"
+                onClick={() => console.log("Locate button clicked")} // locate logic here
+              />
+            </Link>
+            <span className="text-white font-semibold mt-2 font-Roboto">
+              Locate Me
+            </span>
+          </div>
         </div>
       </div>
 
