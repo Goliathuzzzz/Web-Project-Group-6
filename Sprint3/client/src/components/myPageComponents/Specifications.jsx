@@ -2,16 +2,26 @@ import React, { useEffect, useState } from "react";
 import Car from "../../assets/images/tesla_car.png";
 import Charger from "../../assets/images/Tesla.png";
 import { chargerTypes, chargerPowers, serviceProviders } from "./selectOptions";
-import { reviews } from "./reviews";
 import { useAuth } from "../../../routes/AuthProvider";
 import Find from "../../assets/images/find_me.png";
 import { Link } from "react-router-dom";
+import useFetch from "./myPageHooks/useFetch";
 
 function Specifications() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [location, setLocation] = useState("");
   const { user } = useAuth();
+
+  const { reviews } = useFetch();
+
+  // Render stars based on the rating
+  const renderStars = (rating) => (
+    <span className="text-yellow-400">
+      {"★".repeat(rating)}
+      {"☆".repeat(5 - rating)}
+    </span>
+  );
 
   useEffect(() => {
     if (user) {
@@ -106,8 +116,9 @@ function Specifications() {
                 key={index}
                 className="p-3 pl-4 bg-myPageBlue rounded-md h-24 overflow-y-scroll scrollbar-thin scrollbar-thumb-darkBlue scrollbar-track-mediumBlue"
               >
-                <p className="text-sm">"{review.text}"</p>
-                <span className="text-xs">- {review.reviewer}</span>
+                <p className="text-sm">{review.text}</p>
+                <div>{renderStars(review.rating)}</div>
+                <p className="text-sm">{review.stationTitle || "Station N/A"}</p>
               </div>
             ))}
           </div>

@@ -18,6 +18,10 @@ const reviewSchema = new Schema(
       type: Number,
       required: true,
     },
+    stationTitle: {
+      type: String,
+      required: true,
+    },
     user: {
       type: Schema.Types.ObjectId,
       ref: 'User', // reference to the user

@@ -6,7 +6,7 @@ import FilterBox from "./FilterBox";
 import { ChargerTypeData } from "./filterData";
 import { useFilterData } from "../../../routes/FilterDataContext";
 
-function FilterButtons() {
+function FilterButtons({ customSearch, updateMarkers }) {
   const [visible, setVisible] = useState(null);
   const [query, setQuery] = useState("");
   const [selectedProviders, setSelectedProviders] = useState([]);
@@ -44,8 +44,15 @@ function FilterButtons() {
     const stationIds = filteredStations.map((station) => station.id);
 
     // Construct the query string
-    const newQuery = stationIds.map((id) => `id=${id}`).join("&");
+    // const newQuery = stationIds.map((id) => `id=${id}`).join("&");
+    const newQuery = {
+      providers: selectedProviders,
+      locations: selectedLocations,
+      connectors: selectedConnectors,
+      ids: filteredStations.map((station) => station.id)
+    };
     setQuery(newQuery);
+    customSearch(newQuery);
   };
 
   const handleProviderChange = (value) => {

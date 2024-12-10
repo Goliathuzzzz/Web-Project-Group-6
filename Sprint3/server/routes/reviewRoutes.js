@@ -4,6 +4,7 @@ const auth = require('../middleware/userAuth');
 const {
   getAllReviews,
   getStationReviews,
+  getUserReviews,
   getReviewById,
   createReview,
   replaceReview,
@@ -18,6 +19,7 @@ router.get('/:reviewId', getReviewById);
 // middleware for authentication
 router.use(auth);
 
+router.get('/user/:userId', getUserReviews);
 router.post('/', createReview);
 router.put('/:reviewId', updateReview);
 router.delete('/:reviewId', deleteReview);

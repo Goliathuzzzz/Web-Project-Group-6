@@ -24,6 +24,7 @@ export const useStations = (initialBounds) => {
     console.log(stationSearch);
     try {
       const response = await axios.get(stationSearch);
+      console.log(response.data);
       setStations(response.data);
     } catch (error) {
       console.error("Failed to fetch stations", error);
