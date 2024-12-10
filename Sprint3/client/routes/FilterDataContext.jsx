@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import axios from "axios";
 
 const FilterDataContext = createContext();
 
@@ -7,11 +8,13 @@ export const useFilterData = () => useContext(FilterDataContext);
 export const FilterDataProvider = ({ children }) => {
   const [providers, setProviders] = useState([]);
   const [locations, setLocations] = useState([]);
+  const [titles, setTitles] = useState([]);
+  const [stations, setStations] = useState([]);
 
   const getAllFilterData = async () => {
     try {
-      const res = await fetch("/api/stations/unique-providers-locations");
-      const data = await res.json();
+      const res = await axios.get(`/api/chargers/filters`, {});
+      const data = res.data;
       console.log(data);
       return data;
     } catch (error) {
@@ -22,10 +25,13 @@ export const FilterDataProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { locations, providers } = await getAllFilterData();
-      if (locations && providers) {
+      const { locations, providers, titles, stations } =
+        await getAllFilterData();
+      if (locations && providers && titles && stations) {
         setLocations(locations);
         setProviders(providers);
+        setTitles(titles);
+        setStations(stations);
       }
     };
 
@@ -33,7 +39,9 @@ export const FilterDataProvider = ({ children }) => {
   }, []);
 
   return (
-    <FilterDataContext.Provider value={{ providers, locations }}>
+    <FilterDataContext.Provider
+      value={{ providers, locations, titles, stations }}
+    >
       {children}
     </FilterDataContext.Provider>
   );

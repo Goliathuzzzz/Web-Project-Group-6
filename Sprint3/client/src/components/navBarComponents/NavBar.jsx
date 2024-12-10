@@ -103,7 +103,7 @@ function NavBar() {
       </div>
 
       {/* Search bar visible only on medium and larger screens */}
-      <div className="relative items-center w-1/4 mx-6 ml-20 hidden search-bar-bp:flex">
+      <div className="relative items-center w-1/4 mx-6 ml-6 hidden search-bar-bp:flex">
         <form className="flex" onSubmit={handleSubmit} name="SearchForm">
           <input
             type="text"
@@ -146,7 +146,7 @@ function NavBar() {
       {/* Page links visible on medium and larger screens */}
       <div className="hidden md:flex items-center space-x-6 ml-auto">
         <PageLinks
-          parentClass="flex space-x-10"
+          parentClass="flex space-x-6"
           itemClass="text-white hover:text-gray-300 transition duration-300 font-Roboto"
         />
         <a href="#user-profile">
