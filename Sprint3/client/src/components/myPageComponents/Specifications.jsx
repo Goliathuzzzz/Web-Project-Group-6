@@ -105,12 +105,13 @@ function Specifications() {
 
       {/* Reviews and profile Section */}
       <div className="flex flex-col gap-4 lg:items-start items-center">
-        {/* Reviews section */}
-        <div className="bg-gradient-to-b from-darkerBlue to-darkBlue text-white rounded-md p-4 w-80 h-96 overflow-y-scroll">
-          <h2 className="p-3 text-lg font-Orbitron mb-4 bg-myPageBlue text-eGreen rounded-md pl-4">
+        {/* Reviews Section */}
+        {/* Reviews Section */}
+        <div className="bg-gradient-to-b from-darkerBlue to-darkBlue text-white rounded-md p-4 w-80 h-96 flex flex-col">
+          <h2 className="p-3 text-lg font-Orbitron text-eGreen rounded-md pl-4 sticky top-0 z-10">
             My Reviews
           </h2>
-          <div className="space-y-4">
+          <div className="flex-1 overflow-y-scroll space-y-4 scrollbar-thin scrollbar-thumb-darkBlue scrollbar-track-mediumBlue">
             {reviews.map((review, index) => (
               <div
                 key={index}
@@ -118,7 +119,9 @@ function Specifications() {
               >
                 <p className="text-sm">{review.text}</p>
                 <div>{renderStars(review.rating)}</div>
-                <p className="text-sm">{review.stationTitle || "Station N/A"}</p>
+                <p className="text-sm">
+                  {review.stationTitle || "Station N/A"}
+                </p>
               </div>
             ))}
           </div>
