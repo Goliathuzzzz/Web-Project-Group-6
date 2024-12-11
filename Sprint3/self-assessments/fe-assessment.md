@@ -34,7 +34,7 @@ The new map implementation has been changed to use `Leaflet`, `React-Leaflet` an
 - Replaced placeholder elements with styling that correspond to the prototype.
 
 **Basic Implementation of the Map:**
-```
+```jsx
 import { MapContainer, TileLayer } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 
